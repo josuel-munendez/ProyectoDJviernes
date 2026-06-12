@@ -1,0 +1,305 @@
+{% include 'base.html' %}
+{% block content %}
+
+<style>
+    :root {
+        --primary-blue: #0066cc;
+        --gradient-start: #0052a3;
+        --gradient-end: #0073e6;
+    }
+
+    .login-split-container {
+        min-height: calc(100vh - 56px); /* Ajustar según altura de tu navbar */
+        display: flex;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Sección izquierda - Azul con degradado */
+    .login-left-section {
+        background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Forma curva en el borde derecho */
+    .login-left-section::after {
+        content: '';
+        position: absolute;
+        right: -50px;
+        top: 0;
+        width: 100px;
+        height: 100%;
+        background: white;
+        border-radius: 50% 0 0 50%;
+    }
+
+    .login-rocket-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .login-welcome-text {
+        text-align: center;
+        z-index: 1;
+    }
+
+    .login-welcome-text h1 {
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+    }
+
+    .login-welcome-text p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 300px;
+        line-height: 1.6;
+    }
+
+    /* Sección derecha - Formulario */
+    .login-right-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem 5rem;
+        background: white;
+    }
+
+    .login-header {
+        text-align: right;
+        margin-bottom: 3rem;
+    }
+
+    .login-header h2 {
+        color: var(--primary-blue);
+        font-weight: 400;
+        font-size: 2rem;
+    }
+
+    .login-form-control {
+        border: 1px solid #e0e0e0;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .login-form-control:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.15);
+    }
+
+    .login-form-label {
+        color: #666;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .login-required::after {
+        content: ' *';
+        color: #dc3545;
+    }
+
+    .login-btn {
+        background-color: var(--primary-blue);
+        border: none;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        float: right;
+        margin-top: 1rem;
+        color: white;
+    }
+
+    .login-btn:hover {
+        background-color: var(--gradient-start);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 82, 163, 0.3);
+        color: white;
+    }
+
+    .login-input-group-text {
+        background-color: transparent;
+        border-right: none;
+        color: #999;
+        padding: 0.8rem 1rem;
+    }
+
+    .login-form-control.login-with-icon {
+        border-left: none;
+    }
+
+    .login-input-group {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .login-input-group .login-input-group-text {
+        border: 1px solid #e0e0e0;
+        border-right: none;
+        border-radius: 0.375rem 0 0 0.375rem;
+    }
+
+    .login-input-group .login-form-control {
+        border-radius: 0 0.375rem 0.375rem 0;
+        flex: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .login-split-container {
+            flex-direction: column;
+        }
+
+        .login-left-section::after {
+            display: none;
+        }
+
+        .login-left-section {
+            min-height: 40vh;
+            padding: 2rem;
+        }
+
+        .login-right-section {
+            padding: 2rem;
+        }
+    }
+
+    /* Mensajes de Django */
+    .login-messages {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 1050;
+    }
+</style>
+
+<!-- Mensajes de Django -->
+{% if messages %}
+<div class="login-messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="login-split-container">
+    {% if user.is_authenticated %}
+    <!-- Usuario autenticado - Vista de bienvenida -->
+    <div class="login-left-section" style="flex: 2;">
+        <div class="login-rocket-icon">
+            🚀
+        </div>
+        <div class="login-welcome-text">
+            <h1>👏🏼 Bienvenido de vuelta!</h1>
+            <p>Estás listo para continuar donde lo dejaste. ¡Que tengas un excelente día!</p>
+        </div>
+    </div>
+    <div class="login-right-section" style="flex: 1; justify-content: center; align-items: center;">
+        <div class="text-center">
+            <h3 class="text-primary mb-4">✋🏼 Hola, {{ user.username }}</h3>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger">Cerrar sesión</a>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Usuario no autenticado - Formulario de login -->
+    <div class="login-left-section">
+        <div class="login-rocket-icon">
+            🚀
+        </div>
+        <div class="login-welcome-text">
+            <h1>Welcome</h1>
+            <p>You are 30 seconds away from earning your own money!</p>
+        </div>
+    </div>
+
+    <div class="login-right-section">
+        <div class="login-header">
+            <h2>🔐 Login</h2>
+        </div>
+
+        <form method="POST" action="{% url 'home' %}" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="username" class="login-form-label login-required">Usuario</label>
+                <div class="login-input-group">
+                    <span class="login-input-group-text">👤</span>
+                    <input type="text" class="login-form-control login-with-icon" name="username" id="username" placeholder="Ingresa tu usuario" required>
+                </div>
+                <div class="form-text text-muted">We'll never share your username with anyone else.</div>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="login-form-label login-required">Password</label>
+                <div class="login-input-group">
+                    <span class="login-input-group-text">🔒</span>
+                    <input type="password" class="login-form-control login-with-icon" id="password" name="password" placeholder="••••••••" required>
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword" style="border-left: none;">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                    <label class="form-check-label text-muted" for="remember">
+                        Recordarme
+                    </label>
+                </div>
+                <a href="#" class="text-decoration-none" style="color: var(--primary-blue);">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn login-btn">
+                Login →
+            </button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePassword')?.addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            this.textContent = '👁️';
+        }
+    });
+
+    // Auto-cerrar mensajes después de 5 segundos
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+</script>
+
+{% endblock %}
