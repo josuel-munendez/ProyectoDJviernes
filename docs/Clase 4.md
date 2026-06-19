@@ -1,0 +1,2 @@
+Primero Brayan llegó y nos enseño a instalar Git Flow y de que se trata, y ya nos iba a enseñar a como usarlo pero a muchos les dio fallas por la versión del github y luego Brain se tuvo que ir y ya luego íbamos a continuar la clase con el proyecto django pero hubo problemas con el arranque y luego vino el descanso. Y luego se fue la energia XD 
+
