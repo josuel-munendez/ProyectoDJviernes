@@ -34,7 +34,6 @@ class Command(BaseCommand):
             from usuarios.models import UserProfile as UserProfileModel
             from website.models import Record as RecordModel
 
-            # Clear in FK-safe order
             self.stdout.write("Clearing existing data...")
             CatalogoModel.objects.all().delete()
             ProductoModel.objects.all().delete()
@@ -60,31 +59,36 @@ class Command(BaseCommand):
                         password=USER_PASSWORDS.get(username, password),
                         **fields,
                     )
-                    pk_map[entry["pk"]] = user.pk
+                    pk_map[("auth.user", entry["pk"])] = user.pk
                     self.stdout.write(f"  Created user: {username}")
 
                 elif model == "usuarios.userprofile":
-                    user_pk = pk_map[fields.pop("user")]
-                    profile, created = UserProfileModel.objects.update_or_create(
-                        user_id=user_pk, defaults=fields
+                    old_user_pk = fields.pop("user")
+                    fields["user_id"] = pk_map[("auth.user", old_user_pk)]
+                    UserProfileModel.objects.update_or_create(
+                        user_id=fields["user_id"], defaults=fields
                     )
-                    self.stdout.write(f"  Profile for user pk={user_pk}")
+                    self.stdout.write(f"  Profile for user pk={fields['user_id']}")
 
                 elif model == "website.record":
-                    RecordModel.objects.create(**fields)
+                    obj = RecordModel.objects.create(**fields)
                     self.stdout.write(f"  Record: {fields.get('first_name', '')} {fields.get('last_name', '')}")
 
                 elif model == "catalogo.categoria":
-                    CategoriaModel.objects.create(**fields)
+                    obj = CategoriaModel.objects.create(**fields)
+                    pk_map[("catalogo.categoria", entry["pk"])] = obj.pk
                     self.stdout.write(f"  Category: {fields['nombre']}")
 
                 elif model == "productos.producto":
-                    ProductoModel.objects.create(**fields)
+                    obj = ProductoModel.objects.create(**fields)
+                    pk_map[("productos.producto", entry["pk"])] = obj.pk
                     self.stdout.write(f"  Product: {fields['nombre']}")
 
                 elif model == "catalogo.catalogo":
-                    fields["categoria"] = CategoriaModel.objects.get(pk=fields["categoria"])
-                    fields["producto"] = ProductoModel.objects.get(pk=fields["producto"])
+                    old_cat_pk = fields.pop("categoria")
+                    old_prod_pk = fields.pop("producto")
+                    fields["categoria_id"] = pk_map[("catalogo.categoria", old_cat_pk)]
+                    fields["producto_id"] = pk_map[("productos.producto", old_prod_pk)]
                     CatalogoModel.objects.create(**fields)
                     self.stdout.write(f"  Catalog: {fields['nombre']}")
 

@@ -9,11 +9,8 @@
 .venv/
 entorno*/
 ejemplos_codigo/
-docs/material_de_Clase/
-docs/resumenes_de_clase/*.docx
-docs/modelos/*.docx
-docs/patrones_clave.docx
-docs/patrones_diseno.docx
+docs/
 README.docx
 *.png
 security.log
+dcrm/staticfiles/
