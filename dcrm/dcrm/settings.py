@@ -80,17 +80,20 @@ WSGI_APPLICATION = 'dcrm.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+_is_sqlite = 'sqlite' in os.environ.get('DJANGO_DB_ENGINE', 'mysql')
+
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DJANGO_DB_ENGINE', 'django.db.backends.mysql'),
-        'NAME': os.environ.get('DJANGO_DB_NAME', 'dcrm'),
+        'NAME': os.environ.get('DJANGO_DB_PATH' if _is_sqlite else 'DJANGO_DB_NAME',
+                               str(BASE_DIR / 'db.sqlite3') if _is_sqlite else 'dcrm'),
         'USER': os.environ.get('DJANGO_DB_USER', 'dcrm_user'),
         'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'DcrmPass2026!'),
         'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
         'PORT': os.environ.get('DJANGO_DB_PORT', '3306'),
-        'OPTIONS': {
+        'OPTIONS': {} if _is_sqlite else {
             'charset': 'utf8mb4',
-        } if os.environ.get('DJANGO_DB_ENGINE', 'mysql') != 'sqlite3' else {},
+        },
     }
 }
 

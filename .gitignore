@@ -18,6 +18,7 @@ env/
 venv/
 entorno*/
 .entorno*/
+!.env.example
 
 # ==============================
 # IDE / Editors
