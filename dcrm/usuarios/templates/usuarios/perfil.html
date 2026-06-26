@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Mi Perfil</h1>
+<p><strong>Usuario:</strong> {{ profile.user.username }}</p>
+<p><strong>Email:</strong> {{ profile.user.email }}</p>
+<p><strong>Rol:</strong> {{ profile.get_rol_display }}</p>
+<p><strong>Teléfono:</strong> {{ profile._telefono|default:"No registrado" }}</p>
+<p><strong>Dirección:</strong> {{ profile._direccion|default:"No registrada" }}</p>
+<a href="{% url 'home' %}" class="btn btn-secondary">Volver</a>
+{% endblock %}
