@@ -11,6 +11,11 @@
             </a>
         </li>
         <li>
+            <a href="{% url 'add_record' %}" class="nav-link text-white">
+                + Nuevo Registro
+            </a>
+        </li>
+        <li>
             <a href="{% url 'productos:listado' %}" class="nav-link text-white {% if 'productos' in request.path %}active{% endif %}">
                 Productos
             </a>

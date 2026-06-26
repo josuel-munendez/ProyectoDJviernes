@@ -12,7 +12,7 @@ from django.db.models import Q
 from core.security import has_admin_role, log_delete, log_failed_login
 from core.services import CrudService
 from core.validators import RegexValidator
-from .forms import LoginForm, RecordForm, UserRegisterForm
+from .forms import AddRecordForm, LoginForm, RecordForm, UserRegisterForm
 from .models import Record
 from productos.models import Producto
 from catalogo.models import Categoria
@@ -134,6 +134,16 @@ def search_records(request: HttpRequest) -> HttpResponse:
             | Q(phone__icontains=query)
         )
     return render(request, "search.html", {"results": results, "query": query})
+
+
+@login_required
+def add_record(request: HttpRequest) -> HttpResponse:
+    form: AddRecordForm = AddRecordForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Registro creado exitosamente")
+        return redirect("home")
+    return render(request, "add_record.html", {"form": form})
 
 
 def handler404(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:

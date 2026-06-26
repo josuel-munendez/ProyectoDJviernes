@@ -9,6 +9,7 @@ urlpatterns = [
     path('record/<str:pk>/', views.customer_record, name='customer_record'),
     path('delete_record/<str:pk>/', views.delete_record, name='delete_record'),
     path('update_record/<str:pk>/', views.update_record, name='update_record'),
+    path('add_record/', views.add_record, name='add_record'),
     path('buscar/', views.search_records, name='search'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
