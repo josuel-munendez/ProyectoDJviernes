@@ -1,0 +1,51 @@
+{% if user.is_authenticated %}
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 250px; min-height: calc(100vh - 56px);">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+        <span class="fs-5 fw-semibold">Dashboard</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="{% url 'home' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                Inicio
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'productos:listado' %}" class="nav-link text-white {% if 'productos' in request.path %}active{% endif %}">
+                Productos
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'catalogo:categorias' %}" class="nav-link text-white {% if 'categorias' in request.path %}active{% endif %}">
+                Categorías
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'catalogo:catalogos' %}" class="nav-link text-white {% if 'catalogos' in request.path %}active{% endif %}">
+                Catálogos
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'perfil' %}" class="nav-link text-white {% if 'perfil' in request.path %}active{% endif %}">
+                Mi Perfil
+            </a>
+        </li>
+        <li>
+            <a href="/admin/" class="nav-link text-white">
+                Admin Django
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+            <strong>{{ user.username }}</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a></li>
+        </ul>
+    </div>
+</div>
+{% endif %}

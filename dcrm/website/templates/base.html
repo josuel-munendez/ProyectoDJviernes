@@ -1,32 +1,40 @@
 {% load static %}
-<!--#region encabezados-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django✨</title>
-    <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
-
+    <title>Django CRM</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
-<!--#endregion-->
 <body>
-    {% include 'navbar.html'%}
-    <div class="container mt-4">
-        <br>
+    {% include 'navbar.html' %}
 
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>{{ message }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-        {% endif %}
-        {% block content %}
-        {% endblock %}
+    {% if messages %}
+    <div class="container-fluid mt-2">
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
     </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}" ></script>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="d-flex">
+        {% include 'sidebar.html' %}
+        <div class="container-fluid p-4">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% else %}
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+    {% endif %}
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

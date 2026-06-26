@@ -189,18 +189,6 @@
     }
 </style>
 
-<!-- Mensajes de Django -->
-{% if messages %}
-<div class="login-messages">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
 <div class="login-split-container">
     {% if user.is_authenticated %}
     <!-- Usuario autenticado - Vista con tabla de registros -->

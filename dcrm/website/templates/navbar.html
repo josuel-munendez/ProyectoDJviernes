@@ -1,28 +1,39 @@
-<!-- Este es el código para la barra de navegación (navbar) usando Bootstrap -->
-<!-- navbar.html -->
-<!-- para mas estilos https://getbootstrap.com/docs/5.3/components/navbar/-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <div class="container-fluid">
-    <!-- El enlace de la marca que redirige a la página de inicio href="{% url 'home' %} -->
-    <a class="navbar-brand" href="{% url 'home' %}">Django CMR</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="{% url 'home' %}">Django CRM</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-        {% if user.is_authenticated%}
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Cerrar Usuario ❌</a>
-        </li>
-        {%else%}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}">Registrar✍🏼</a>
+          <a class="nav-link" href="{% url 'home' %}">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Iniciar sesion 👨🏼‍💼</a>
+          <a class="nav-link" href="{% url 'productos:listado' %}">Productos</a>
         </li>
-        {%endif%}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'catalogo:catalogos' %}">Catálogos</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+            {{ user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{% url 'perfil' %}">Mi Perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}">Registrar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Iniciar Sesión</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>

@@ -8,6 +8,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+from core.security import has_admin_role, log_delete, log_failed_login
 from core.services import CrudService
 from core.validators import RegexValidator
 from .forms import LoginForm, RecordForm, UserRegisterForm
@@ -30,6 +31,7 @@ def home(request: HttpRequest) -> HttpResponse:
             login(request, user)
             messages.success(request, "Acceso realizado exitosamente")
             return redirect("home")
+        log_failed_login(request, request.POST.get("username", "desconocido"))
         messages.error(request, "Las credenciales no son validas")
 
     return render(request, "home.html", {"records": records_page})
@@ -93,7 +95,11 @@ def customer_record(request: HttpRequest, pk: str) -> HttpResponse:
 
 @login_required
 def delete_record(request: HttpRequest, pk: str) -> HttpResponse:
+    if not has_admin_role(request.user):
+        messages.error(request, "No tienes permisos para eliminar registros")
+        return redirect("home")
     record: Record = get_object_or_404(Record, id=pk)
+    log_delete(request, "Record", record.id)
     _record_service.delete(record)
     messages.success(request, "Registro eliminado correctamente")
     return redirect("home")
