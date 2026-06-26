@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .export import export_csv
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('buscar/', views.search_records, name='search'),
     path('users/', views.user_list, name='user_list'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('exportar-csv/', export_csv, name='export_csv'),
 ]
 
 handler404 = 'website.views.handler404'
