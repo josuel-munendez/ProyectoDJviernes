@@ -71,83 +71,75 @@ python manage.py seed_data
 | Admin | Acceso completo (excepto Django admin) | Todo excepto /admin/ |
 | Superuser | Acceso total | Todo incluido /admin/ |
 
-## Instalación (Desarrollo Local)
+## Quick Start (Cualquier SO)
 
-### Requisitos
+### Requisitos mínimos
 
-- Python 3.12+
-- pip
-- virtualenv (recomendado)
-- MySQL 8.0+ (o Docker para ejecutar MySQL en contenedor)
+| Opción | Requisito |
+|--------|-----------|
+| **Solo Python** | Python 3.12+ y pip |
+| **Solo Docker** | Docker y Docker Compose |
 
-### Opción A: Local con MySQL
-
-#### 1. Preparar MySQL
+### Opción 1: Solo Python (SQLite) — recomendado para pruebas rápidas
 
 ```bash
-# Asegúrate de tener MySQL corriendo y crea la base de datos:
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS dcrm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -p -e "CREATE USER IF NOT EXISTS 'dcrm_user'@'localhost' IDENTIFIED BY 'DcrmPass2026!';"
-mysql -u root -p -e "GRANT ALL PRIVILEGES ON dcrm.* TO 'dcrm_user'@'localhost'; FLUSH PRIVILEGES;"
-```
-
-O usa Docker para levantar solo MySQL:
-```bash
-docker run -d --name dcrm_mysql -p 3306:3306 \
-  -e MYSQL_ROOT_PASSWORD=Admin12345! \
-  -e MYSQL_DATABASE=dcrm \
-  -e MYSQL_USER=dcrm_user \
-  -e MYSQL_PASSWORD=DcrmPass2026! \
-  mysql:8.0
-```
-
-#### 2. Preparar Python
-
-```bash
-# Clonar repositorio
+# 1. Clonar
 git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
 cd ProyectoDJviernes
 
-# Crear y activar entorno virtual
+# 2. Setup automático
+make setup                    # Linux/macOS (si tienes make)
+# O:
+bash setup.sh                 # Linux/macOS
+# O Windows PowerShell:
+# .\setup.ps1
+
+# 3. Iniciar servidor
+cd dcrm && python manage.py runserver
+```
+
+Abrir http://localhost:8000
+
+### Opción 2: Solo Python con MySQL
+
+```bash
+# 1. Preparar MySQL (o usa Docker: ver más abajo)
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS dcrm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p -e "CREATE USER IF NOT EXISTS 'dcrm_user'@'localhost' IDENTIFIED BY 'DcrmPass2026!';"
+mysql -u root -p -e "GRANT ALL PRIVILEGES ON dcrm.* TO 'dcrm_user'@'localhost'; FLUSH PRIVILEGES;"
+
+# 2. Clonar y setup
+git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
+cd ProyectoDJviernes
 python -m venv entorno
 source entorno/bin/activate      # Linux/Mac
 # .\entorno\Scripts\activate     # Windows
-
-# Instalar dependencias (incluye mysqlclient)
 pip install -r requirements.txt
-```
 
-#### 3. Migrar y cargar datos
-
-```bash
+# 3. Migrar y ejecutar
 cd dcrm
 python manage.py migrate
 python manage.py seed_data
 python manage.py runserver
 ```
 
-Acceder en http://localhost:8000
-
-### Opción B: Todo con Docker
+### Opción 3: Solo Docker (todo incluido)
 
 ```bash
+git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
+cd ProyectoDJviernes
 docker compose up -d
-# Esperar ~30s a que MySQL esté listo y las migraciones terminen
-# Acceder en http://localhost:8000
+# Esperar ~30s, luego abrir http://localhost:8000
 ```
 
-### Opción C: SQLite (alternativa)
+### Usuarios de prueba (seed data)
 
-Si no tienes MySQL, puedes usar SQLite sobreescribiendo variables de entorno:
-
-```bash
-export DJANGO_DB_ENGINE=django.db.backends.sqlite3
-export DJANGO_DB_PATH=db.sqlite3
-cd dcrm
-python manage.py migrate
-python manage.py seed_data
-python manage.py runserver
-```
+| Usuario | Rol | Contraseña |
+|---------|-----|-----------|
+| `admin` | Administrador | `admin123` |
+| `gestor` | Gestor | `gestor123` |
+| `vendedor` | Vendedor | `vendedor123` |
+| `cliente` | Cliente | `cliente123` |
 
 ## Despliegue con Contenedores (Docker / Podman)
 
