@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'website',# por defecto no se crea, hay que crearla con el comando "python manage.py startapp website"
+    'website',
+    'core',
 ]
 
 MIDDLEWARE = [
