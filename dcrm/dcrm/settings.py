@@ -77,12 +77,8 @@ WSGI_APPLICATION = 'dcrm.wsgi.application'
 # Por defecto se usa sqlite3, pero se puede cambiar por otro motor de base de datos como MySQL, PostgreSQL, etc.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Cambiar por el motor de base de datos que se quiera usar, por ejemplo 'django.db.backends.postgresql' para PostgreSQL
-        'NAME': 'clientes', # Cambiar por el nombre de la base de datos que se quiera usar
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

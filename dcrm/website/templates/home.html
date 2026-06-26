@@ -1,4 +1,4 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 
 <style>
@@ -203,21 +203,97 @@
 
 <div class="login-split-container">
     {% if user.is_authenticated %}
-    <!-- Usuario autenticado - Vista de bienvenida -->
-    <div class="login-left-section" style="flex: 2;">
-        <div class="login-rocket-icon">
-            🚀
+    <!-- Usuario autenticado - Vista con tabla de registros -->
+    <div class="container-fluid p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary">Registros</h2>
+            <div>
+                <span class="text-muted me-3">Hola, <strong>{{ user.username }}</strong></span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+            </div>
         </div>
-        <div class="login-welcome-text">
-            <h1>👏🏼 Bienvenido de vuelta!</h1>
-            <p>Estás listo para continuar donde lo dejaste. ¡Que tengas un excelente día!</p>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">C.P.</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if records %}
+                        {% for record in records %}
+                        <tr>
+                            <td><a href="{% url 'customer_record' record.id %}">{{ record.id }}</a></td>
+                            <td>{{ record.first_name }}</td>
+                            <td>{{ record.last_name }}</td>
+                            <td>{{ record.email }}</td>
+                            <td>{{ record.phone }}</td>
+                            <td>{{ record.address }}</td>
+                            <td>{{ record.city }}</td>
+                            <td>{{ record.state }}</td>
+                            <td>{{ record.zip_code }}</td>
+                            <td>
+                                <a href="{% url 'customer_record' record.id %}" class="btn btn-sm btn-info">Ver</a>
+                                <a href="{% url 'update_record' record.id %}" class="btn btn-sm btn-warning">Editar</a>
+                                <a href="{% url 'delete_record' record.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">No hay registros disponibles</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
-    </div>
-    <div class="login-right-section" style="flex: 1; justify-content: center; align-items: center;">
-        <div class="text-center">
-            <h3 class="text-primary mb-4">✋🏼 Hola, {{ user.username }}</h3>
-            <a href="{% url 'logout' %}" class="btn btn-outline-danger">Cerrar sesión</a>
-        </div>
+
+        <!-- Paginación -->
+        {% if records.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if records.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ records.previous_page_number }}">Anterior</a>
+                </li>
+                {% endif %}
+
+                {% for num in records.paginator.page_range %}
+                    {% if records.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% elif num > records.number|add:'-3' and num < records.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if records.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ records.next_page_number }}">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ records.paginator.num_pages }}">Última &raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     </div>
 
     {% else %}

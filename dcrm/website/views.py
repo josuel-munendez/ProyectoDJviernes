@@ -1,42 +1,99 @@
-from django.shortcuts import redirect, render#permite cambiar la plantilla  html con datos  y devolver respuesta
+from typing import Any
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import Page, Paginator
+from django.db.models import QuerySet
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 
-# Esta es la función que se ejecuta cuando entras a la página
-# login para incio de sesion  segun el rol
-#logout para cerrar sesion 
-from django.contrib.auth import authenticate, login, logout# type: ignore # Importamos las funciones de autenticación, inicio de sesión y cierre de sesión de Django.
-from django.contrib import messages # type: ignore #
-def home(request):# type: ignore
-    #si el metodo  de la solicitud  es post, significa que se esta  enviado un formulario
-    # post esta enviando informacion 
-    if request.method =='POST': # pyright: ignore[reportUnknownMemberType]
-        # si  el metodo  de la solicitud  post  significa que se esta en viando el formulario
-        # aqui podemos manehjar  la logica del formulario  como la autentificacion del usuario
-        username = request.POST['username'] # pyright: ignore[reportUnknownVariableType, reportUnusedVariable, reportUnknownMemberType] #  ontiene este valor des de  formulario
-        password = request.POST['password'] # type: ignore
-        user = authenticate(request, username=username, password= password) # type: ignore
-        if user is not None: # valor o nulo 
-            login(request, user) # pyright: ignore[reportUnknownArgumentType] # indicando la sesion 
-            #muestra el mensaje de exito 
-            messages.success(request,"ingresado exitosamente") # pyright: ignore[reportUnknownArgumentType]
-            return redirect('home')
-        else:
-            # si las credenciales no fueron existosas 
-            messages.error(request," las credenciales son invalidas !!📢") # pyright: ignore[reportUnknownArgumentType]
-            return render(request, 'home.html', {})  # type: ignore
+from .forms import LoginForm, RecordForm, UserRegisterForm
+from .models import Record
+
+
+def home(request: HttpRequest) -> HttpResponse:
+    records_queryset: QuerySet[Any] = Record.objects.all().order_by("id")
+    paginator: Paginator = Paginator(records_queryset, 5)
+    page_number: str | None = request.GET.get("page")
+    records_page: Page = paginator.get_page(page_number)
+
+    if request.method == "POST":
+        form: LoginForm = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            user: User = form.get_user()
+            login(request, user)
+            messages.success(request, "Acceso realizado exitosamente")
+            return redirect("home")
+        messages.error(request, "Las credenciales no son validas")
+
+    return render(request, "home.html", {"records": records_page})
+
+
+def login_user(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form: LoginForm = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            user: User = form.get_user()
+            login(request, user)
+            messages.success(request, "Acceso realizado exitosamente")
+            return redirect("home")
+        messages.error(request, "Las credenciales no son validas")
     else:
-        # si el metodo  de la solicitud no es POST, simplemente renderiza la plantilla 'home.html
-        return render(request, 'home.html', {})# type: ignore # El tercer argumento es un diccionario para pasar datos a la plantilla, pero aquí lo dejamos vacío por ahora.
-# funcion para logiar
-def login_user(request): # type: ignore
-    pass
+        form: LoginForm = LoginForm()
 
-# funcion para poder salir  cerrar sesion 
-def logout_user(request): # type: ignore
-    logout(request)# cierre de la sesion del usuario 
-    #muestra un mensaje de exito al usuario
-    messages.success(request,"cerraste la session correctamente")
-    return redirect('home')# direccionar al usuario a la pafina de inicio
+    return render(request, "home.html", {"form": form})
 
 
-def register_user(request):# type: ignore
-    return render(request, 'register.html',{})# type: ignore
+@login_required
+def logout_user(request: HttpRequest) -> HttpResponse:
+    logout(request)
+    messages.success(request, "Cerraste la sesion correctamente")
+    return redirect("home")
+
+
+@login_required
+def register_user(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form: UserRegisterForm = UserRegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username: str = form.cleaned_data["username"]
+            password: str = form.cleaned_data["password1"]
+            user: User | None = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+            messages.success(request, "Registro exitoso")
+            return redirect("home")
+    else:
+        form: UserRegisterForm = UserRegisterForm()
+
+    return render(request, "register.html", {"form": form})
+
+
+@login_required
+def customer_record(request: HttpRequest, pk: str) -> HttpResponse:
+    customer_record: Record = get_object_or_404(Record, id=pk)
+    return render(request, "record.html", {"customer_record": customer_record})
+
+
+@login_required
+def delete_record(request: HttpRequest, pk: str) -> HttpResponse:
+    delete_it: Record = get_object_or_404(Record, id=pk)
+    delete_it.delete()
+    messages.success(request, "Registro eliminado correctamente")
+    return redirect("home")
+
+
+@login_required
+def update_record(request: HttpRequest, pk: str) -> HttpResponse:
+    current_record: Record = get_object_or_404(Record, id=pk)
+    form: RecordForm = RecordForm(request.POST or None, instance=current_record)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Registro actualizado correctamente")
+        return redirect("home")
+
+    return render(request, "update_record.html", {"form": form})
