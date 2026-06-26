@@ -1,4 +1,6 @@
+# ==============================
 # Django
+# ==============================
 *.log
 *.pot
 *.pyc
@@ -7,15 +9,19 @@ __pycache__/
 db.sqlite3
 local_settings.py
 
-# Environment
+# ==============================
+# Environment / Virtual Env
+# ==============================
 .env
 .venv
 env/
 venv/
-entorno/
-entorno_viejo_lilliana/
+entorno*/
+.entorno*/
 
-# IDE
+# ==============================
+# IDE / Editors
+# ==============================
 .vscode/
 .obsidian/
 .sixth/
@@ -23,19 +29,31 @@ entorno_viejo_lilliana/
 *.swp
 *.swo
 *~
+*.orig
+.vs/
 
+# ==============================
 # OS
+# ==============================
 .DS_Store
 Thumbs.db
+desktop.ini
+*.lnk
 
+# ==============================
 # Security
+# ==============================
 security.log
 
+# ==============================
 # Project specific
+# ==============================
 ejemplos_codigo/
 clientes.sql
 dcrm/staticfiles/
 
+# ==============================
 # Templates / examples
+# ==============================
 *.zip
 *.fig

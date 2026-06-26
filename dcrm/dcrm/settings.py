@@ -80,11 +80,17 @@ WSGI_APPLICATION = 'dcrm.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-# Por defecto se usa sqlite3, pero se puede cambiar por otro motor de base de datos como MySQL, PostgreSQL, etc.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3'),
+        'ENGINE': os.environ.get('DJANGO_DB_ENGINE', 'django.db.backends.mysql'),
+        'NAME': os.environ.get('DJANGO_DB_NAME', 'dcrm'),
+        'USER': os.environ.get('DJANGO_DB_USER', 'dcrm_user'),
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'DcrmPass2026!'),
+        'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DJANGO_DB_PORT', '3306'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        } if os.environ.get('DJANGO_DB_ENGINE', 'mysql') != 'sqlite3' else {},
     }
 }
 

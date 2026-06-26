@@ -1,9 +1,17 @@
 #!/bin/bash
 set -e
 
-# Ensure data directory exists for persistent database
-DB_DIR=$(dirname "${DJANGO_DB_PATH:-db.sqlite3}")
-mkdir -p "$DB_DIR"
+echo "==> Waiting for database..."
+if [ "$DJANGO_DB_ENGINE" = "django.db.backends.mysql" ]; then
+    until mysqladmin ping -h"${DJANGO_DB_HOST:-db}" -u"${DJANGO_DB_USER:-dcrm_user}" -p"${DJANGO_DB_PASSWORD:-DcrmPass2026!}" --silent 2>/dev/null; do
+        echo "Waiting for MySQL..."
+        sleep 2
+    done
+    echo "MySQL is ready!"
+else
+    DB_DIR=$(dirname "${DJANGO_DB_PATH:-db.sqlite3}")
+    mkdir -p "$DB_DIR"
+fi
 
 echo "==> Applying database migrations..."
 python manage.py migrate --noinput
@@ -11,14 +19,12 @@ python manage.py migrate --noinput
 echo "==> Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
-# Seed only once (flag file persists in data volume)
-SEED_FLAG="${DB_DIR}/.seed_done"
-if [ ! -f "$SEED_FLAG" ]; then
+# Seed only once
+if python manage.py seed_data --check 2>/dev/null; then
+    echo "==> Seed data already loaded. Skipping."
+else
     echo "==> Loading seed data..."
     python manage.py seed_data
-    touch "$SEED_FLAG"
-else
-    echo "==> Seed data already loaded. Skipping."
 fi
 
 echo "==> Starting gunicorn..."
