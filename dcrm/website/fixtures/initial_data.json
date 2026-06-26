@@ -1,0 +1,44 @@
+[
+{
+    "model": "website.record",
+    "pk": 1,
+    "fields": {
+        "first_name": "Juan",
+        "last_name": "Perez",
+        "email": "juan@example.com",
+        "phone": "3001234567",
+        "address": "Calle 123",
+        "city": "Bogota",
+        "state": "Cundinamarca",
+        "zip_code": "110111"
+    }
+},
+{
+    "model": "website.record",
+    "pk": 2,
+    "fields": {
+        "first_name": "Maria",
+        "last_name": "Gomez",
+        "email": "maria@example.com",
+        "phone": "3107654321",
+        "address": "Carrera 45",
+        "city": "Medellin",
+        "state": "Antioquia",
+        "zip_code": "050001"
+    }
+},
+{
+    "model": "website.record",
+    "pk": 3,
+    "fields": {
+        "first_name": "Carlos",
+        "last_name": "Lopez",
+        "email": "carlos@example.com",
+        "phone": "3209876543",
+        "address": "Avenida 78",
+        "city": "Cali",
+        "state": "Valle",
+        "zip_code": "760001"
+    }
+}
+]
