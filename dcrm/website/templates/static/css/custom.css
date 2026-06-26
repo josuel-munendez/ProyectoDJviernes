@@ -68,7 +68,7 @@ body {
 }
 
 #star-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M50 0L61 35L98 35L68 57L79 91L50 70L21 91L32 57L2 35L39 35Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M50 0L61 35L98 35L68 57L79 91L50 70L21 91L32 57L2 35L39 35Z' fill='rgba(255,255,255,0.5)'/%3E%3C/svg%3E");
   background-size: 8%;
   position: absolute;
   left: 50%;
@@ -78,19 +78,19 @@ body {
   height: 100%;
   width: 100%;
   min-width: 1200px;
-  opacity: 0.08;
+  opacity: 0.25;
   animation: pan 240s linear infinite;
   will-change: background-position;
 }
 
 #star-gradient-overlay {
-  background: radial-gradient(circle, transparent 60%, rgb(30, 27, 75) 100%);
+  background: radial-gradient(circle, transparent 50%, rgb(30, 27, 75) 100%);
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.7;
+  opacity: 0.5;
   z-index: 2;
 }
 
@@ -514,9 +514,12 @@ body {
   justify-content: center;
   background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 50%, #C7D2FE 100%);
   padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
-body.has-animated-bg .login-page {
+body.star-bg .login-page,
+body.star-bg > .container .login-page {
   background: transparent;
   min-height: 100vh;
 }
