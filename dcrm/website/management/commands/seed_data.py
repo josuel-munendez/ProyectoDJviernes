@@ -10,7 +10,7 @@ FIXTURE_PATH = (
 )
 
 USER_PASSWORDS = {
-    "admin": "admin123",
+    "admin_usu": "admin123",
     "gestor": "gestor123",
     "vendedor": "vendedor123",
     "cliente": "cliente123",
@@ -49,8 +49,10 @@ class Command(BaseCommand):
             ProductoModel.objects.all().delete()
             CategoriaModel.objects.all().delete()
             RecordModel.objects.all().delete()
-            UserProfileModel.objects.all().delete()
-            User.objects.all().delete()
+            # Preserve superusers created via `createsuperuser`
+            superuser_ids = list(User.objects.filter(is_superuser=True).values_list("pk", flat=True))
+            UserProfileModel.objects.exclude(user_id__in=superuser_ids).delete()
+            User.objects.exclude(is_superuser=True).delete()
 
             pk_map = {}
 

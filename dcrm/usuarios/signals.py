@@ -7,5 +7,5 @@ from .models import UserProfile
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
+    if created and not instance.is_superuser:
         UserProfile.objects.get_or_create(user=instance, defaults={"_rol": UserProfile.ROL_CLIENTE})

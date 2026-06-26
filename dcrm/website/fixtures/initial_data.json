@@ -1,24 +1,6 @@
 [
   {
     "model": "auth.user",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$1200000$ojSuaJtYFqBFXP7WKNHga2$fVVRB9zNp2kd6s7X/NbJ6oX/Nfhf8Rf7ncbclYUEvZ4=",
-      "is_superuser": true,
-      "username": "admin",
-      "first_name": "Admin",
-      "last_name": "Istrador",
-      "email": "admin@example.com",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2024-01-15T10:00:00Z",
-      "last_login": "2024-01-15T10:00:00Z",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "auth.user",
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$1200000$YP494hZC8D1QXkJRhTFW4D$Aty4xxTek6Oy9HtpeqR5lmzg7De85QU7WdZ0GOb5bU4=",
@@ -72,13 +54,31 @@
     }
   },
   {
-    "model": "usuarios.userprofile",
-    "pk": 1,
+    "model": "auth.user",
+    "pk": 5,
     "fields": {
-      "user": 1,
+      "password": "pbkdf2_sha256$1200000$CT1zfmWWnlWLQTLcJ4heP2$RpgRsUNU9NFU/AleHFRn3MEEx9H9cInqR8qpvRWx1NQ=",
+      "is_superuser": false,
+      "username": "admin_usu",
+      "first_name": "Admin",
+      "last_name": "Usu",
+      "email": "admin_usu@crm.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "last_login": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usuarios.userprofile",
+    "pk": 5,
+    "fields": {
+      "user": 5,
       "_rol": "admin",
       "_telefono": "3001112233",
-      "_direccion": "Calle 100 #15-20, Bogota"
+      "_direccion": "Oficina Principal"
     }
   },
   {
