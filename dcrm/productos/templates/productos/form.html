@@ -1,10 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{ titulo }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a href="{% url 'productos:listado' %}" class="btn btn-secondary">Cancelar</a>
-</form>
+
+<div class="animate-fade-in">
+    <div class="section-title">
+        <div>
+            <h3><i class="bi bi-box-seam me-2"></i>{{ titulo }}</h3>
+            <p class="subtitle">Completa los datos del producto</p>
+        </div>
+        <a href="{% url 'productos:listado' %}" class="btn btn-crm btn-crm-outline">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </a>
+    </div>
+
+    <div class="card-crm">
+        <div class="card-header">
+            <i class="bi bi-box me-1"></i>{{ titulo }}
+        </div>
+        <div class="card-body">
+            <form method="post" class="form-crm">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-crm btn-crm-success">
+                        <i class="bi bi-check-lg me-1"></i>Guardar
+                    </button>
+                    <a href="{% url 'productos:listado' %}" class="btn btn-crm btn-crm-outline">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -1,13 +1,13 @@
 # Modelos y Diagramas - CRM Django
 
-Este directorio contiene la documentación de modelos, diagramas y metodologías del proyecto, organizados según el enfoque del **Modelo C4** descompuesto en piezas más pequeñas.
+Este directorio contiene la documentación de modelos, diagramas y metodologías del proyecto, organizados según el enfoque del **Modelo C4**.
 
-## Estructura C4 y sus piezas
+## Estructura C4
 
-| Nivel C4 | Piezas que lo componen | Archivos |
-|----------|----------------------|----------|
+| Nivel | Piezas que lo componen | Archivos |
+|-------|----------------------|----------|
 | **C1 - Contexto** | Diagrama de contexto del sistema | `c1_contexto.puml` |
-| **C2 - Contenedores** | Arquitectura de contenedores | `c2_contenedores.puml` |
+| **C2 - Contenedores** | Gunicorn + Django + Whitenoise + SQLite | `c2_contenedores.puml` |
 | **C3 - Componentes** | Componentes internos de cada app | `c3_componentes.puml` |
 | **C4 - Código** | Diagrama de clases (en docs/uml/) | `../uml/diagrama_clases.puml` |
 
@@ -23,10 +23,15 @@ Este directorio contiene la documentación de modelos, diagramas y metodologías
 | Secuencia Login | `../uml/diagrama_secuencia_login.puml` | Flujo de autenticación |
 | Arquitectura | `../uml/diagrama_arquitectura.puml` | Arquitectura general del sistema |
 | Flujo Login | `diagrama_flujo_login.puml` | Flowchart del proceso de login |
-| Nodos (Despliegue) | `diagrama_nodos.puml` | Infraestructura de despliegue |
+| Nodos (Despliegue) | `diagrama_nodos.puml` | Infraestructura Docker/Podman |
 | Instancias | `diagrama_instancias.puml` | Instancias de apps y templates |
 | Mapa de Navegación | `mapa_navegacion.puml` | Flujo de pantallas del sistema |
 | Mapa de Procesos | `mapa_procesos.puml` | Proceso completo del CRM |
+| **Seed Data** | `diagrama_seed_data.puml` | Flujo de carga de datos de ejemplo |
+| **Componentes UI** | `diagrama_ui_componentes.puml` | Árbol de herencia de templates |
+| **Diseño UI** | `diseno_ui.md` | Sistema de diseño moderno (índigo, bento-grid) |
+| **Seed Data** | `seed_data.md` | Documentación del sistema de seed |
+| **Despliegue Contenedores** | `despliegue_contenedores.md` | Documentación de Docker/Podman |
 
 ## Documentación de Requerimientos
 
@@ -46,11 +51,11 @@ Este directorio contiene la documentación de modelos, diagramas y metodologías
 | MoSCoW | `matriz_requerimientos.md` | ✅ Aplicado |
 | MVP | `metodologias.md` | ✅ Definido |
 | POO + SOLID + DRY | `metodologias.md` | ✅ Aplicado |
-| Patrones de Diseño | `../patrones_diseno.md` | ✅ 6 documentados |
+| Patrones de Diseño | `../arquitectura-patrones-diseño/patrones_diseno.md` | ✅ 30 documentados |
 
 ## Cómo visualizar los diagramas
 
 Los archivos `.puml` (PlantUML) se pueden ver en:
 1. https://www.plantuml.com/plantuml/uml/ — pegar el contenido
 2. VS Code con extensión PlantUML — vista previa en vivo
-3. `plantuml -tsvg diagrama.puml` — generar SVG localmente
+3. `plantuml -tsvg diagrama.puml` — generar SVG/PNG localmente

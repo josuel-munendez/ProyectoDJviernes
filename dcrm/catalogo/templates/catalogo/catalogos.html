@@ -1,28 +1,88 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Catálogos</h1>
-<div class="table-responsive">
-<table class="table table-striped table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Producto</th>
-            <th>Activo</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for c in catalogos %}
-        <tr>
-            <td>{{ c.nombre }}</td>
-            <td>{{ c.categoria.nombre }}</td>
-            <td>{{ c.producto.nombre }}</td>
-            <td>{{ c.activo|yesno:"Sí,No" }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4" class="text-center">No hay catálogos</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<div class="animate-fade-in">
+    <div class="section-title">
+        <div>
+            <h3><i class="bi bi-collection me-2"></i>Catálogos</h3>
+            <p class="subtitle">Gestión de catálogos del sistema</p>
+        </div>
+    </div>
+
+    {% if catalogos %}
+    <div class="table-responsive animate-slide-in">
+        <table class="table-crm">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Producto</th>
+                    <th>Activo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in catalogos %}
+                <tr>
+                    <td>{{ c.nombre }}</td>
+                    <td>{{ c.categoria.nombre }}</td>
+                    <td>{{ c.producto.nombre }}</td>
+                    <td>
+                        {% if c.activo %}
+                        <span class="badge-crm role-admin">Sí</span>
+                        {% else %}
+                        <span class="badge-crm role-cliente">No</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center text-muted">No hay catálogos</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if catalogos.has_other_pages %}
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination-crm">
+            {% if catalogos.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1"><i class="bi bi-chevron-double-left"></i></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ catalogos.previous_page_number }}"><i class="bi bi-chevron-left"></i></a>
+            </li>
+            {% endif %}
+
+            {% for num in catalogos.paginator.page_range %}
+                {% if catalogos.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > catalogos.number|add:'-3' and num < catalogos.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if catalogos.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ catalogos.next_page_number }}"><i class="bi bi-chevron-right"></i></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ catalogos.paginator.num_pages }}"><i class="bi bi-chevron-double-right"></i></a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon"><i class="bi bi-collection"></i></div>
+        <h5>No hay catálogos</h5>
+        <p class="text-muted">Aún no se han registrado catálogos.</p>
+    </div>
+    {% endif %}
 </div>
+
 {% endblock %}

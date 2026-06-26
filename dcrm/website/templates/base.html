@@ -1,48 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django CRM</title>
+    <title>{% block title %}Django CRM{% endblock %}</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
 </head>
 <body>
     {% include 'navbar.html' %}
-
+    
     {% if messages %}
-    <div class="container-fluid mt-2 px-3">
+    <div class="container-fluid mt-2 px-4">
         {% for message in messages %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ message }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-crm alert-{{ message.tags }} alert-dismissible fade show animate-slide-in" role="alert">
+            <i class="bi {% if message.tags == 'success' %}bi-check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}bi-exclamation-circle{% elif message.tags == 'warning' %}bi-exclamation-triangle{% else %}bi-info-circle{% endif %}"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="margin-left: auto;"></button>
         </div>
         {% endfor %}
     </div>
     {% endif %}
 
     {% if user.is_authenticated %}
-    <div class="d-flex">
         {% include 'sidebar.html' %}
-        <main class="flex-grow-1 p-3 p-md-4 main-content">
+        <main class="main-content-crm">
     {% else %}
     <div class="container mt-4 px-3">
     {% endif %}
-            {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     {% if user.is_authenticated %}
         </main>
-    </div>
     {% else %}
     </div>
     {% endif %}
 
+    {% if user.is_authenticated %}
+    <footer class="footer-crm">
+        &copy; 2026 Django CRM - Proyecto de Formación
+    </footer>
+    {% endif %}
+
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.alert-crm').forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+    </script>
 </body>
-<footer class="footer">
-    <div class="container">
-        <small>&copy; 2026 Django CRM - Proyecto de Formación</small>
-    </div>
-</footer>
 </html>

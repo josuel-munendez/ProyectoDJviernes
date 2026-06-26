@@ -1,21 +1,38 @@
 {% if user.is_authenticated %}
-{# Offcanvas sidebar for mobile #}
-<div class="offcanvas offcanvas-start d-lg-none text-white bg-dark" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
-  <div class="offcanvas-header">
-    <span class="fs-5 fw-semibold" id="sidebarLabel">Dashboard</span>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body p-0">
-    {% include 'sidebar_menu.html' %}
-  </div>
+
+<div class="offcanvas offcanvas-start d-lg-none offcanvas-sidebar" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header">
+        <span class="fs-5 fw-semibold" id="sidebarOffcanvasLabel">
+            <i class="bi bi-grid me-1"></i> Menú
+        </span>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        {% include 'sidebar_menu.html' %}
+    </div>
 </div>
 
-{# Inline sidebar for desktop #}
-<div class="d-none d-lg-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" style="width: 250px; min-height: calc(100vh - 56px);">
-  <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 text-white text-decoration-none">
-    <span class="fs-5 fw-semibold">Dashboard</span>
-  </a>
-  <hr>
-  {% include 'sidebar_menu.html' %}
+<div class="d-none d-lg-flex flex-column sidebar-crm">
+    <div class="sidebar-header text-center py-3 border-bottom border-secondary">
+        <a href="{% url 'home' %}" class="text-white text-decoration-none">
+            <i class="bi bi-box-seam fs-4"></i>
+            <span class="d-block small fw-semibold mt-1">Django CRM</span>
+        </a>
+    </div>
+    {% include 'sidebar_menu.html' %}
+    <div class="sidebar-footer mt-auto p-3 border-top border-secondary">
+        <div class="d-flex align-items-center">
+            <span class="avatar rounded-circle d-flex align-items-center justify-content-center me-2 flex-shrink-0" style="width: 36px; height: 36px; background: var(--bs-primary, #0d6efd); font-weight: 600; font-size: 0.95rem;">
+                {{ user.username|first|upper }}
+            </span>
+            <div class="text-truncate">
+                <div class="small fw-semibold text-truncate">{{ user.username }}</div>
+                <div class="small text-secondary-emphasis text-truncate">
+                    {% if user.is_staff %}Administrador{% else %}Usuario{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endif %}

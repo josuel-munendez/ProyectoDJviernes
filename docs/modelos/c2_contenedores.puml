@@ -4,18 +4,23 @@
 Person(usuario, "Usuario", "Rol: Cliente/Vendedor/Gestor/Admin")
 
 System_Boundary(crm, "CRM Django") {
-    Container(web, "Aplicación Web", "Django 4.2", "Interfaz HTML+CSS+Bootstrap JS")
-    Container(api, "API Views", "Django Views", "Lógica CRUD y autenticación")
-    Container(core, "Core", "Python/Django", "Modelos base, servicios, repositorios")
+    Container(gunicorn, "Servidor WSGI", "Gunicorn 26.x", "Servidor HTTP Python")
+    Container(web, "Aplicación Web", "Django 6.0 + Bootstrap 5", "Interfaz HTML+CSS+JS local")
+    Container(api, "API Views", "Django Views", "Lógica CRUD, autenticación y seed")
+    Container(core, "Core", "Python/Django", "Modelos base, servicios, repositorios, validadores")
+    Container(whitenoise, "Whitenoise", "Middleware Django", "Servir estáticos en producción")
 }
 
-System_Ext(bbdd, "Base de Datos", "SQLite/MySQL")
-System_Ext(static, "Archivos Estáticos", "CSS/JS/Imágenes")
+System_Ext(bbdd, "Base de Datos", "SQLite (volumen persistente)")
+System_Ext(static, "Archivos Estáticos", "CSS/JS/Fonts locales sin CDN")
 
-Rel(usuario, web, "Navega", "HTTPS")
+Rel(usuario, gunicorn, "HTTP :8000", "HTTPS")
+Rel(gunicorn, web, "Proxy inverso", "WSGI")
+Rel(web, whitenoise, "Solicita estáticos", "HTTP")
+Rel(whitenoise, static, "Sirve", "local filesystem")
 Rel(web, api, "Llama", "Python")
-Rel(api, core, "Usa", "POO")
-Rel(core, bbdd, "ORM", "SQL")
-Rel(web, static, "Carga", "HTTP")
+Rel(api, core, "Usa", "POO + Repository")
+Rel(core, bbdd, "ORM Django", "SQLite")
+Rel(api, bbdd, "Seed/CRUD", "ORM")
 
 @enduml

@@ -2,55 +2,157 @@
 
 Sistema de gestión de clientes (CRM) desarrollado en Django con arquitectura modular, POO, principios SOLID y 4 capas de seguridad.
 
+## Stack Tecnológico
+
+| Tecnología | Versión | Uso |
+|------------|---------|-----|
+| Django | 6.0.6 | Framework web |
+| Bootstrap 5 | 5.3.x | UI components (local) |
+| Bootstrap Icons | 1.11.3 | Iconografía (local) |
+| SQLite | - | Base de datos |
+| Gunicorn | 26.0.0 | Servidor producción |
+| Python | 3.12+ | Lenguaje |
+
+## Diseño UI Moderno
+
+El sistema cuenta con un diseño propio distintivo (apartado del tema original del instructor):
+
+- **Paleta de colores**: Índigo primario (#4F46E5), sky secundario (#0EA5E9), ámbar acento (#F59E0B)
+- **Sidebar degradado**: Gradiente púrpura oscuro (#1E1B4B → #312E81)
+- **Dashboard Bento-Grid**: Layout de tarjetas tipo bento-grid con estadísticas, actividad reciente y accesos rápidos
+- **Glassmorfismo**: Efecto de vidrio esmerilado en navbar y tarjetas
+- **Animaciones**: Fade-in, slide-in, stagger en elementos del dashboard
+- **Responsive**: Offcanvas sidebar en móviles, layout adaptativo
+- **Login**: Tarjeta centrada con fondo degradado (reemplaza el split original del instructor)
+- **Recursos 100% locales**: Bootstrap CSS/JS e iconos servidos internamente sin CDNs
+
 ## Módulos
 
-- **website**: CRUD principal de clientes (Record)
-- **usuarios**: Gestión de usuarios con roles (Cliente, Vendedor, Gestor, Admin)
-- **productos**: CRUD de productos
-- **catalogo**: Categorías y catálogos de productos
+- **website**: CRUD principal de clientes (Record) con tabla de datos y paginación
+- **usuarios**: Gestión de usuarios con roles (Cliente, Vendedor, Gestor, Admin) y perfiles
+- **productos**: CRUD de productos con stock y precios
+- **catalogo**: Categorías y catálogos que vinculan productos con categorías
 - **core**: Capa base con servicios, repositorios, validadores y seguridad
 
-## Requisitos
+## Seed Data
 
-Ver `requirements.txt`.
-
-## Instalación
+El proyecto incluye datos de ejemplo para pruebas inmediatas. Ejecutar después de migrar:
 
 ```bash
+python manage.py seed_data
+```
+
+### Usuarios de prueba
+
+| Usuario | Rol | Password | Staff | Superuser |
+|---------|-----|----------|-------|-----------|
+| `admin` | Administrador | `admin123` | ✅ | ✅ |
+| `gestor` | Gestor | `gestor123` | ✅ | ❌ |
+| `vendedor` | Vendedor | `vendedor123` | ❌ | ❌ |
+| `cliente` | Cliente | `cliente123` | ❌ | ❌ |
+
+### Datos incluidos
+
+- **8 registros** de clientes colombianos (Bogotá, Medellín, Cali, Barranquilla, etc.)
+- **6 categorías**: Electrónica, Ropa y Accesorios, Hogar, Deportes, Libros, Juguetes
+- **12 productos** con precios en COP y stock
+- **8 catálogos** vinculando productos a categorías
+
+## Roles del Sistema
+
+| Rol | Descripción | Acceso |
+|-----|-------------|--------|
+| Cliente | Acceso básico de lectura | Ver registros, perfil |
+| Vendedor | Gestión de clientes y productos | CRUD clientes, CRUD productos |
+| Gestor | Administración de catálogos | CRUD clientes, CRUD productos, CRUD catálogos |
+| Admin | Acceso completo | Todo + panel Django admin + gestión usuarios |
+
+## Instalación (Desarrollo Local)
+
+### Requisitos
+
+- Python 3.12+
+- pip
+- virtualenv (recomendado)
+
+### Pasos
+
+```bash
+# Clonar repositorio
+git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
+cd ProyectoDJviernes
+
+# Crear y activar entorno virtual
 python -m venv entorno
-source entorno/bin/activate
+source entorno/bin/activate  # Linux/Mac
+# .\entorno\Scripts\activate  # Windows
+
+# Instalar dependencias
 pip install -r requirements.txt
+
+# Migrar base de datos
 cd dcrm
 python manage.py migrate
+
+# Cargar datos de ejemplo
+python manage.py seed_data
+
+# Iniciar servidor de desarrollo
 python manage.py runserver
 ```
 
-## Roles
+Acceder en http://localhost:8000
 
-| Rol | Descripción |
-|-----|-------------|
-| Cliente | Acceso básico de lectura |
-| Vendedor | Gestión de clientes y productos |
-| Gestor | Administración de catálogos |
-| Admin | Acceso completo + panel Django |
+## Despliegue con Contenedores (Docker / Podman)
+
+### Construir y ejecutar
+
+```bash
+# Usando docker-compose
+docker compose up -d
+
+# O usando podman-compose
+podman-compose up -d
+```
+
+El contenedor ejecuta automáticamente:
+1. Migraciones de base de datos
+2. Recolección de archivos estáticos
+3. Carga de seed data (solo si la BD está vacía)
+4. Servidor Gunicorn en puerto 8000
+
+La base de datos persiste en un volumen Docker.
+
+### Variables de entorno
+
+| Variable | Default | Descripción |
+|----------|---------|-------------|
+| `DJANGO_SECRET_KEY` | (key por defecto) | Clave secreta de Django |
+| `DJANGO_DEBUG` | `False` | Modo debug (True/False) |
+| `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,0.0.0.0` | Hosts permitidos |
+| `DJANGO_DB_PATH` | `db.sqlite3` (local) | Ruta de la BD SQLite |
 
 ## Seguridad (4 Capas)
 
-1. **Autenticación y Autorización**: `@login_required`, roles por perfil
-2. **CSRF**: Tokens en todos los formularios
-3. **Validación de Entrada**: Django Forms + RegexValidator
-4. **Cabeceras HTTP**: X-Frame-Options, X-Content-Type-Options, etc.
+1. **Autenticación y Autorización**: `@login_required`, roles por perfil (Cliente/Vendedor/Gestor/Admin)
+2. **CSRF**: Tokens en todos los formularios Django
+3. **Validación de Entrada**: Django Forms + RegexValidator en campos críticos
+4. **Cabeceras HTTP**: X-Frame-Options, X-Content-Type-Options, SESSION_COOKIE_HTTPONLY, CSRF_COOKIE_HTTPONLY, SameSite=Lax
 
-## Patrones de Diseño
+## Patrones de Diseño Implementados
 
-- **Singleton**: Core services (CrudService instancia única)
-- **Repository**: Capa de acceso a datos (DjangoRepository)
-- **Template Method**: BaseModel con métodos abstractos
-- **ModelForm**: Generación automática de formularios (DRY)
+| Patrón | Ubicación | Descripción |
+|--------|-----------|-------------|
+| **Singleton** | `core/services.py` (CrudService) | Instancia única de servicios core |
+| **Repository** | `core/repository.py` (DjangoRepository) | Capa de abstracción de acceso a datos |
+| **Template Method** | `core/models.py` (BaseModel) | Métodos abstractos concreto/abstracto |
+| **ModelForm** | `website/forms.py` | Generación automática de formularios desde modelos (DRY) |
+| **Observer** | `usuarios/signals.py` | post_save signal para crear perfil al registrar usuario |
+| **Strategy** | `core/validators.py` | Validación intercambiable vía RegexValidator y CustomValidator |
 
-## Documentación de Modelos y Diagramas
+## Arquitectura y Modelado
 
-Ver `docs/modelos/` para documentación completa:
+Ver `docs/` para documentación completa:
 
 | Documento | Descripción |
 |-----------|-------------|
@@ -65,16 +167,27 @@ Ver `docs/modelos/` para documentación completa:
 | [Mapa de Navegación](docs/modelos/mapa_navegacion.puml) | Flujo de pantallas del sistema |
 | [Mapa de Procesos](docs/modelos/mapa_procesos.puml) | Proceso completo del CRM |
 | [Mapa de Empatía](docs/modelos/mapa_empatia.md) | Perfiles de usuario |
-| [Patrones de Diseño](docs/patrones_diseno.md) | 6 patrones documentados |
+| [Patrones de Diseño](docs/arquitectura-patrones-diseño/patrones_diseno.md) | 30 patrones documentados |
 
-## Estructura
+## Estructura del Proyecto
 
 ```
-dcrm/
-├── core/          # Capa base POO (modelos, servicios, repositorios)
-├── website/       # CRUD clientes
-├── usuarios/      # Gestión de usuarios y roles
-├── productos/     # CRUD productos
-├── catalogo/      # Catálogos y categorías
-└── dcrm/          # Configuración del proyecto
+ProyectoDJviernes/
+├── dcrm/
+│   ├── core/              # Capa base POO (modelos, servicios, repositorios)
+│   ├── website/           # CRUD clientes, seed data, templates
+│   ├── usuarios/          # Gestión de usuarios y roles
+│   ├── productos/         # CRUD productos
+│   ├── catalogo/          # Catálogos y categorías
+│   └── dcrm/              # Configuración del proyecto
+├── Dockerfile             # Construcción de imagen Docker
+├── docker-compose.yml     # Orquestación de contenedores
+├── docker-entrypoint.sh   # Script de inicio (migraciones + seed)
+├── requirements.txt       # Dependencias de desarrollo
+├── requirements.prod.txt  # Dependencias de producción
+└── README.md
 ```
+
+## Requisitos
+
+Ver `requirements.txt` y `requirements.prod.txt`.
