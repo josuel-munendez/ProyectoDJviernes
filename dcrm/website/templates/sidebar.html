@@ -28,7 +28,12 @@
             <div class="text-truncate">
                 <div class="small fw-semibold text-truncate">{{ user.username }}</div>
                 <div class="small text-secondary-emphasis text-truncate">
-                    {% if user.is_staff %}Administrador{% else %}Usuario{% endif %}
+                    {% if user.is_superuser %}Superusuario
+                    {% elif user.profile.rol == 'admin' %}Administrador
+                    {% elif user.profile.rol == 'gestor' %}Gestor
+                    {% elif user.profile.rol == 'vendedor' %}Vendedor
+                    {% else %}Cliente
+                    {% endif %}
                 </div>
             </div>
         </div>

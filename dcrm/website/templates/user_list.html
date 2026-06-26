@@ -24,15 +24,15 @@
             <tbody>
                 {% for u in users %}
                 <tr>
-                    <td><i class="bi bi-person me-1"></i>{{ u.username }}</td>
-                    <td>{{ u.email }}</td>
-                    <td>{{ u.first_name }} {{ u.last_name }}</td>
-                    <td>
+                    <td data-label="Usuario"><i class="bi bi-person me-1"></i>{{ u.username }}</td>
+                    <td data-label="Email">{{ u.email }}</td>
+                    <td data-label="Nombre">{{ u.first_name }} {{ u.last_name }}</td>
+                    <td data-label="Rol">
                         <span class="badge-crm role-{{ u.profile.get_rol_display|lower }}">
                             {{ u.profile.get_rol_display }}
                         </span>
                     </td>
-                    <td>{{ u.is_staff|yesno:"Sí,No" }}</td>
+                    <td data-label="Staff">{{ u.is_staff|yesno:"Sí,No" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -25,6 +25,9 @@ El sistema cuenta con un diseño propio distintivo (apartado del tema original d
 - **Responsive**: Offcanvas sidebar en móviles, layout adaptativo
 - **Login**: Tarjeta centrada con fondo degradado (reemplaza el split original del instructor)
 - **Recursos 100% locales**: Bootstrap CSS/JS e iconos servidos internamente sin CDNs
+- **Catálogo de Productos (Galería)**: Vista pública con tarjetas de producto, filtros por categoría y búsqueda
+- **Seguridad 4 capas**: HTML5 + JavaScript + Django + Base de Datos en cada formulario
+- **Admin Django restringido**: Solo superusuarios pueden acceder a `/admin/`
 
 ## Módulos
 
@@ -62,10 +65,11 @@ python manage.py seed_data
 
 | Rol | Descripción | Acceso |
 |-----|-------------|--------|
-| Cliente | Acceso básico de lectura | Ver registros, perfil |
-| Vendedor | Gestión de clientes y productos | CRUD clientes, CRUD productos |
-| Gestor | Administración de catálogos | CRUD clientes, CRUD productos, CRUD catálogos |
-| Admin | Acceso completo | Todo + panel Django admin + gestión usuarios |
+| Cliente | Acceso básico de lectura | Ver registros, catálogo público, perfil |
+| Vendedor | Gestión de clientes | CRUD clientes, búsqueda, catálogo público |
+| Gestor | Administración de productos y catálogos | CRUD clientes, CRUD productos, CRUD catálogos, exportar CSV |
+| Admin | Acceso completo (excepto Django admin) | Todo excepto /admin/ |
+| Superuser | Acceso total | Todo incluido /admin/ |
 
 ## Instalación (Desarrollo Local)
 
@@ -134,10 +138,10 @@ La base de datos persiste en un volumen Docker.
 
 ## Seguridad (4 Capas)
 
-1. **Autenticación y Autorización**: `@login_required`, roles por perfil (Cliente/Vendedor/Gestor/Admin)
-2. **CSRF**: Tokens en todos los formularios Django
-3. **Validación de Entrada**: Django Forms + RegexValidator en campos críticos
-4. **Cabeceras HTTP**: X-Frame-Options, X-Content-Type-Options, SESSION_COOKIE_HTTPONLY, CSRF_COOKIE_HTTPONLY, SameSite=Lax
+1. **HTML5**: Validación nativa del navegador (`required`, `minlength`, `type="email"`, etc.) en todos los formularios
+2. **JavaScript (Frontend)**: Validación client-side con feedback visual (`is-invalid`), prevención de envío si hay errores
+3. **Django (Backend)**: Autenticación `@login_required`, autorización por roles, `RegexValidator` en campos críticos, CSRF tokens, formularios con validación
+4. **Base de Datos**: Tipos de campo estrictos (`CharField`, `EmailField`, `DecimalField`), valores por defecto, restricciones `unique` y `blank/null`, campos privados (`_rol`) que no se exponen en formularios
 
 ## Patrones de Diseño Implementados
 

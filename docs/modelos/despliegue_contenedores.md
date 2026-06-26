@@ -130,9 +130,40 @@ Navegador → :8000 → Gunicorn → Django WSGI → Whitenoise (static)
 
 ## Security Headers (4 Capas)
 
-Implementados en `settings.py`:
+### Capa 1 - HTML5
+- Atributos `required`, `minlength`, `type="email"`, `type="password"` en todos los inputs
+- `autocomplete` para gestion de contraseñas
+
+### Capa 2 - JavaScript (Frontend)
+- Validacion client-side al enviar formularios
+- Clase `is-invalid` para feedback visual en errores
+- Prevencion de envio si hay campos invalidos
+
+### Capa 3 - Django (Backend)
+- `@login_required` en todas las vistas protegidas
+- `has_admin_role()` para control granular por perfil
+- `RegexValidator` en campos criticos (usuario, password, email, telefono)
+- CSRF tokens en todos los formularios
+- `PasswordChangeForm` con validacion de historial
+
+### Capa 4 - Base de Datos
+- Tipos estrictos: `CharField`, `EmailField`, `DecimalField`, `IntegerField`
+- Restricciones: `unique`, `blank`, `null`, `default`
+- Campos privados (`_rol`, `_telefono`, `_direccion`) no expuestos en formularios
+- `db_column` para separar nombre interno del nombre en BD
+
+### Headers HTTP (settings.py + middleware)
+Implementados en `settings.py` y `core/middleware.py`:
 1. `SECURE_CONTENT_TYPE_NOSNIFF = True`
 2. `SECURE_BROWSER_XSS_FILTER = True`
 3. `SESSION_COOKIE_HTTPONLY = True`
 4. `SESSION_COOKIE_SAMESITE = 'Lax'`
 5. `CSRF_COOKIE_HTTPONLY = True`
+6. `X-Frame-Options: DENY` (via SecurityHeadersMiddleware)
+7. `Referrer-Policy: strict-origin-when-cross-origin`
+8. `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+
+### Admin Django Restringido
+- Solo superusuarios pueden acceder a `/admin/`
+- Custom `SuperuserAdminSite` sobreescribe `has_permission()`
+- Roles `admin`, `gestor`, `vendedor`, `cliente` no tienen acceso aunque naveguen directamente

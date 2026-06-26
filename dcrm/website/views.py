@@ -25,7 +25,10 @@ _record_service = CrudService(Record)
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    records_queryset: QuerySet = _record_service.get_all()
+    if not request.user.is_authenticated and request.method == "GET":
+        return render(request, "landing.html")
+
+    records_queryset: QuerySet = _record_service.get_all().order_by("-id")
     paginator: Paginator = Paginator(records_queryset, 5)
     page_number: str | None = request.GET.get("page")
     records_page: Page = paginator.get_page(page_number)

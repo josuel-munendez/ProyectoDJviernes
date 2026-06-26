@@ -23,10 +23,10 @@
             <tbody>
                 {% for c in catalogos %}
                 <tr>
-                    <td>{{ c.nombre }}</td>
-                    <td>{{ c.categoria.nombre }}</td>
-                    <td>{{ c.producto.nombre }}</td>
-                    <td>
+                    <td data-label="Nombre">{{ c.nombre }}</td>
+                    <td data-label="Categoría">{{ c.categoria.nombre }}</td>
+                    <td data-label="Producto">{{ c.producto.nombre }}</td>
+                    <td data-label="Activo">
                         {% if c.activo %}
                         <span class="badge-crm role-admin">Sí</span>
                         {% else %}
