@@ -1,0 +1,33 @@
+@startuml
+package "Capa Presentacion" {
+  [Templates HTML]
+  [Bootstrap Local]
+  [Menú SPA]
+}
+
+package "Capa Aplicacion" {
+  [Views/Controllers]
+  [Forms (ModelForm)]
+  [Core Services]
+}
+
+package "Capa Datos" {
+  [Models (ORM)]
+  [Repository]
+  [SQLite]
+}
+
+package "Capa Seguridad" {
+  [Autenticación]
+  [CSRF]
+  [Validación Regex]
+  [Cabeceras HTTP]
+  [Logging]
+}
+
+"Capa Presentacion" --> "Capa Aplicacion"
+"Capa Aplicacion" --> "Capa Datos"
+"Capa Seguridad" -up-> "Capa Presentacion"
+"Capa Seguridad" -up-> "Capa Aplicacion"
+"Capa Seguridad" -up-> "Capa Datos"
+@enduml

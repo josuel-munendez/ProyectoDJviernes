@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+actor "Cliente" as C
+actor "Vendedor" as V
+actor "Gestor" as G
+actor "Admin" as A
+
+rectangle CRM {
+  usecase "Iniciar Sesión" as UC1
+  usecase "Ver Registros" as UC2
+  usecase "Crear Registro" as UC3
+  usecase "Editar Registro" as UC4
+  usecase "Eliminar Registro" as UC5
+  usecase "Gestionar Productos" as UC6
+  usecase "Gestionar Catálogos" as UC7
+  usecase "Gestionar Usuarios" as UC8
+  usecase "Ver Perfil" as UC9
+}
+
+C --> UC1
+C --> UC2
+C --> UC9
+
+V --> UC1
+V --> UC2
+V --> UC3
+V --> UC4
+V --> UC6
+
+G --> UC1
+G --> UC2
+G --> UC7
+
+A --> UC1
+A --> UC2
+A --> UC3
+A --> UC4
+A --> UC5
+A --> UC6
+A --> UC7
+A --> UC8
+@enduml

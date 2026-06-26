@@ -1,0 +1,16 @@
+@startuml
+actor Usuario
+participant "Navegador" as N
+participant "Django" as D
+database "BD" as BD
+
+Usuario -> N: Ingresa credenciales
+N -> D: POST /login
+D -> D: Valida CSRF Token
+D -> D: AuthenticationForm.is_valid()
+D -> BD: Consulta usuario
+BD --> D: Retorna usuario
+D -> D: login(request, user)
+D --> N: Redirect home
+N --> Usuario: Muestra dashboard
+@enduml

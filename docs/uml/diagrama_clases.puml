@@ -1,0 +1,73 @@
+@startuml
+package "Core" {
+  abstract class BaseModel {
+    # _created_at : DateTime
+    # _updated_at : DateTime
+    # _get_created_at()
+    # _get_updated_at()
+    + get_metadata()
+  }
+  class CrudService {
+    - _model_class
+    + get_all()
+    + get_by_id()
+    + create(data)
+    + update(instance, data)
+    + delete(instance)
+  }
+  class RegexValidator {
+    {static} + validate(field_type, value)
+  }
+}
+
+package "Website" {
+  class Record extends BaseModel {
+    + first_name
+    + last_name
+    + email
+    + phone
+    + address
+    + city
+    + state
+    + zip_code
+    + full_name()
+    + get_contact_info()
+  }
+}
+
+package "Usuarios" {
+  class UserProfile {
+    - _rol
+    - _telefono
+    - _direccion
+    + es_admin()
+    + es_vendedor()
+    + es_gestor()
+    + es_cliente()
+  }
+  UserProfile o-- User
+}
+
+package "Productos" {
+  class Producto extends BaseModel {
+    + nombre
+    + descripcion
+    + precio
+    + stock
+    + codigo
+  }
+}
+
+package "Catalogo" {
+  class Categoria extends BaseModel {
+    + nombre
+    + descripcion
+  }
+  class Catalogo extends BaseModel {
+    + nombre
+    + activo
+  }
+  Catalogo *-- Categoria
+  Catalogo *-- Producto
+}
+@enduml
