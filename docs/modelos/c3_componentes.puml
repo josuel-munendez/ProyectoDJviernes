@@ -1,5 +1,5 @@
 @startuml C3 - Diagrama de Componentes
-!include <C4/C4_Component>
+!include c4lib/C4_Component.puml
 
 Person(usuario, "Usuario")
 
@@ -42,5 +42,4 @@ Rel(core, bbdd, "ORM")
 Rel(crud_service, repo, "Usa")
 Rel(repo, base_model, "Opera")
 
-SHORT_TITLE("CRM - Componentes")
 @enduml

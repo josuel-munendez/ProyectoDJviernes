@@ -21,42 +21,36 @@ if (¿Credenciales válidas?) then (Sí)
   repeat
     :Muestra tabla de registros (paginada);
 
-    if (¿Qué acción realizar?) as accion (
-    ┌─ Ver detalle ─┐) then (Ver detalle)
-      :Click en ID del cliente;
-      :Muestra tarjeta con datos completos;
-
-      if (¿Editar o Eliminar?) then (Editar)
-        :Formulario precargado;
-        :Valida campos con regex;
-        if (¿Datos válidos?) then (Sí)
-          :Guarda en BD;
-        else (No)
-          :Muestra errores;
-        endif
-      else (Eliminar)
-        :Elimina registro;
-        :Mensaje de éxito;
+    if (¿Qué acción realizar?) then (Ver detalle)
+    :Click en ID del cliente;
+    :Muestra tarjeta con datos completos;
+    if (¿Editar o Eliminar?) then (Editar)
+      :Formulario precargado;
+      :Valida campos con regex;
+      if (¿Datos válidos?) then (Sí)
+        :Guarda en BD;
+      else (No)
+        :Muestra errores;
       endif
-
-    ) else (┌─ Crear ─┐)
-      :Formulario vacío;
-      :Llena datos;
-      :Valida campos;
-      :Guarda en BD;
-
-    ) else (┌─ Buscar ─┐)
-      :Ingresa término;
-      :Filtra registros;
-      :Muestra resultados;
-
-    ) else (┌─ Exportar ─┐)
-      :Genera CSV;
-      :Descarga archivo;
-
-    ) else (┌─ Navegar ─┐)
-      :Click en paginación;
+    else (Eliminar)
+      :Elimina registro;
+      :Mensaje de éxito;
     endif
+  elseif (Crear) then
+    :Formulario vacío;
+    :Llena datos;
+    :Valida campos;
+    :Guarda en BD;
+  elseif (Buscar) then
+    :Ingresa término;
+    :Filtra registros;
+    :Muestra resultados;
+  elseif (Exportar) then
+    :Genera CSV;
+    :Descarga archivo;
+  elseif (Navegar) then
+    :Click en paginación;
+  endif
 
   repeat while (¿Continuar?) is (Sí)
   -> No;

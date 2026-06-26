@@ -83,11 +83,19 @@ package "Patrones Estructurales" {
     _record_service.delete()
   }
 
-  class "ProtectionProxy" as proxy "has_admin_role()\nget_object_or_404()"
+  class "ProtectionProxy" as proxy {
+    has_admin_role()
+    get_object_or_404()
+  }
 
-  class "Adapter" as adapter "DjangoRepository adapts ORM\nCrudService adapts ORM"
+  class "Adapter" as adapter {
+    DjangoRepository adapts ORM
+    CrudService adapts ORM
+  }
 
-  class "Pagination" as pag "Paginator(queryset, 5)"
+  class "Pagination" as pag {
+    Paginator(queryset, 5)
+  }
 
   () "Decorator" as decor
   () "ModelForm" as mf
@@ -131,11 +139,11 @@ package "Patrones de Comportamiento" {
 }
 
 package "Arquitectura MVT" {
-  rectangle "urls.py\nDispatcher" as urls
-  rectangle "views.py\nBusiness Logic" as vws
-  rectangle "models.py\nData" as mdl
-  rectangle "templates/*.html\nPresentation" as tmpl
-  rectangle "settings.py\nConfiguration" as settings
+  class "urls.py\nDispatcher" as urls
+  class "views.py\nBusiness Logic" as vws
+  class "models.py\nData" as mdl
+  class "templates/*.html\nPresentation" as tmpl
+  class "settings.py\nConfiguration" as settings
 
   urls --> vws : enruta
   vws --> mdl : consulta

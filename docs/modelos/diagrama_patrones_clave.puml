@@ -86,10 +86,18 @@ package "5. OBSERVER" as obs {
 }
 
 package "POO" as poo {
-  rectangle "Encapsulación\n_rol protegido" as enc
-  rectangle "Herencia\nBaseModel → Record" as her
-  rectangle "Polimorfismo\nCrudService genérico" as pol
-  rectangle "Abstracción\nBaseService ABC" as abs
+  class "Encapsulación" as enc {
+    _rol protegido
+  }
+  class "Herencia" as her {
+    BaseModel → Record
+  }
+  class "Polimorfismo" as pol {
+    CrudService genérico
+  }
+  class "Abstracción" as abs {
+    BaseService ABC
+  }
 }
 
 @enduml

@@ -1,5 +1,5 @@
 @startuml C2 - Diagrama de Contenedores
-!include <C4/C4_Container>
+!include c4lib/C4_Container.puml
 
 Person(usuario, "Usuario", "Rol: Cliente/Vendedor/Gestor/Admin")
 
@@ -18,5 +18,4 @@ Rel(api, core, "Usa", "POO")
 Rel(core, bbdd, "ORM", "SQL")
 Rel(web, static, "Carga", "HTTP")
 
-SHORT_TITLE("CRM - Contenedores")
 @enduml

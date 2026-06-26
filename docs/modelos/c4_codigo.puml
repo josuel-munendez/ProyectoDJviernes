@@ -1,0 +1,38 @@
+@startuml C4 - Diagrama de Código (Nivel 4)
+
+title C4 - Code Level (Clases del CRM)
+
+node "CRM Django - Código Fuente" {
+  node "Core" {
+    [BaseModel (abstracta)]
+    [CrudService (Singleton)]
+    [DjangoRepository]
+    [RegexValidator]
+  }
+  node "Website" {
+    [Record]
+    [LoginView]
+    [CRUD Views]
+  }
+  node "Usuarios" {
+    [UserProfile]
+    [RegisterForm]
+  }
+  node "Productos" {
+    [Producto]
+    [ProductoForm]
+  }
+  node "Catálogo" {
+    [Categoria]
+    [Catalogo]
+  }
+}
+
+note left
+  **C4 - Nivel 4 (Código)**
+  Diagrama detallado de clases en:
+  docs/uml/diagrama_clases.puml
+  (renderizado como diagrama_clases.png)
+end note
+
+@enduml

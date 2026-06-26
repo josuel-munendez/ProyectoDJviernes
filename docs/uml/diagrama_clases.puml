@@ -1,4 +1,4 @@
-@startuml
+@startuml C4 - Diagrama de Código (Clases)
 package "Core" {
   abstract class BaseModel {
     # _created_at : DateTime

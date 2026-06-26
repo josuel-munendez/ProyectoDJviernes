@@ -1,5 +1,5 @@
 @startuml C1 - Diagrama de Contexto
-!include <C4/C4_Context>
+!include c4lib/C4_Context.puml
 
 Person(usuario, "Usuario", "Cliente, Vendedor, Gestor o Admin del CRM")
 Person(admin_super, "Super Admin", "Administrador del sistema Django")
@@ -14,5 +14,4 @@ Rel(admin_super, crm, "Administra", "Django Admin")
 Rel(crm, bbdd, "Lee/Escribe", "ORM")
 Rel(crm, email, "Envía", "SMTP")
 
-SHORT_TITLE("CRM - Contexto")
 @enduml
