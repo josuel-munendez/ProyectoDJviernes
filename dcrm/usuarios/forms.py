@@ -5,14 +5,41 @@ from .models import UserProfile
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, label="Contrasena")
-    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirmar contrasena")
-    _telefono = forms.CharField(required=False, label="Telefono")
-    _direccion = forms.CharField(required=False, label="Direccion")
+    password = forms.CharField(
+        label="Contrasena",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Ingresa tu contrasena"}),
+    )
+    confirm_password = forms.CharField(
+        label="Confirmar contrasena",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Repite tu contrasena"}),
+    )
+    _telefono = forms.CharField(
+        label="Telefono",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Opcional"}),
+    )
+    _direccion = forms.CharField(
+        label="Direccion",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Opcional"}),
+    )
 
     class Meta:
         model = User
         fields = ["username", "email", "first_name", "last_name"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            if field_name not in ("password", "confirm_password", "_telefono", "_direccion"):
+                self.fields[field_name].widget.attrs["class"] = "form-control"
+                placeholder_map = {
+                    "username": "Nombre de usuario",
+                    "email": "Correo electronico",
+                    "first_name": "Nombre",
+                    "last_name": "Apellido",
+                }
+                self.fields[field_name].widget.attrs["placeholder"] = placeholder_map.get(field_name, "")
 
     def clean(self):
         cleaned_data = super().clean()

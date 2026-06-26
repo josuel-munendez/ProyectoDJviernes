@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Catálogo de Productos{% endblock %}
+{% block content %}
+
+<div class="animate-fade-in">
+    <div class="section-title">
+        <div>
+            <h3><i class="bi bi-shop me-2"></i>Catálogo de Productos</h3>
+            <p class="subtitle">Explora nuestros productos disponibles</p>
+        </div>
+    </div>
+
+    <div class="card-crm mb-4 animate-slide-in">
+        <div class="card-body">
+            <form method="get" class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label"><i class="bi bi-search me-1"></i>Buscar</label>
+                    <input type="text" name="q" class="form-control" placeholder="Nombre, código o descripción..." value="{{ query }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"><i class="bi bi-tags me-1"></i>Categoría</label>
+                    <select name="categoria" class="form-control">
+                        <option value="">Todas las categorías</option>
+                        {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if categoria_seleccionada == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-crm btn-crm-primary w-100 mt-auto">
+                        <i class="bi bi-funnel me-1"></i>Filtrar
+                    </button>
+                    <a href="{% url 'catalogo:productos_publicos' %}" class="btn btn-crm btn-crm-outline w-100 mt-auto">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if productos %}
+    <div class="row g-3">
+        {% for p in productos %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="card-crm h-100 animate-slide-in">
+                <div class="text-center p-3 bg-light" style="min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                    {% if p.codigo %}
+                    <i class="bi bi-box-seam" style="font-size: 4rem; color: var(--primary-light); opacity: 0.6;"></i>
+                    {% else %}
+                    <i class="bi bi-archive" style="font-size: 4rem; color: var(--text-muted); opacity: 0.4;"></i>
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h6 class="fw-semibold mb-1 text-truncate">{{ p.nombre }}</h6>
+                    <small class="text-muted mb-2">{{ p.codigo }}</small>
+                    <p class="small text-muted mb-2 flex-grow-1">{{ p.descripcion|truncatechars:60|default:"Sin descripción" }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="fw-bold fs-5" style="color: var(--primary);">${{ p.precio }}</span>
+                        {% if p.stock > 0 %}
+                        <span class="badge-crm role-cliente" style="font-size: 0.7rem;"><i class="bi bi-check-circle me-1"></i>{{ p.stock }} uds</span>
+                        {% else %}
+                        <span class="badge bg-danger" style="font-size: 0.7rem;"><i class="bi bi-x-circle me-1"></i>Agotado</span>
+                        {% endif %}
+                    </div>
+                    <div class="mt-2">
+                        <a href="{% url 'productos:detalle' p.id %}" class="btn btn-crm btn-crm-primary btn-crm-sm w-100">
+                            <i class="bi bi-eye me-1"></i>Ver detalle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if productos.has_other_pages %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination-crm">
+            {% if productos.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if categoria_seleccionada %}&categoria={{ categoria_seleccionada }}{% endif %}"><i class="bi bi-chevron-double-left"></i></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ productos.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if categoria_seleccionada %}&categoria={{ categoria_seleccionada }}{% endif %}"><i class="bi bi-chevron-left"></i></a>
+            </li>
+            {% endif %}
+            {% for num in productos.paginator.page_range %}
+                {% if productos.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > productos.number|add:'-3' and num < productos.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if categoria_seleccionada %}&categoria={{ categoria_seleccionada }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if productos.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ productos.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if categoria_seleccionada %}&categoria={{ categoria_seleccionada }}{% endif %}"><i class="bi bi-chevron-right"></i></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ productos.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if categoria_seleccionada %}&categoria={{ categoria_seleccionada }}{% endif %}"><i class="bi bi-chevron-double-right"></i></a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon"><i class="bi bi-box-seam"></i></div>
+        <h5>No se encontraron productos</h5>
+        <p class="text-muted">Intenta con otros filtros o términos de búsqueda.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

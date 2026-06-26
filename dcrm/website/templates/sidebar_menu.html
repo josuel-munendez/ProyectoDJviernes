@@ -1,52 +1,84 @@
+{% load nav_extras %}
 <ul class="nav nav-pills flex-column mb-auto px-2 py-2">
+
     <li class="nav-item">
-        <a href="{% url 'home' %}" class="nav-link {% if '/' == request.path or 'home' in request.path %}active{% endif %}">
+        <a href="{% url 'home' %}" class="nav-link {% active_link 'home' %}">
             <i class="bi bi-house me-2"></i>Inicio
         </a>
     </li>
+
+    {% user_has_role 'vendedor' 'gestor' 'admin' as show_crm %}
+    {% if show_crm %}
     <li class="nav-item">
-        <a href="{% url 'add_record' %}" class="nav-link {% if 'add_record' in request.path %}active{% endif %}">
+        <a href="{% url 'add_record' %}" class="nav-link {% active_link 'add_record' %}">
             <i class="bi bi-person-plus me-2"></i>+ Nuevo Registro
         </a>
     </li>
+    {% endif %}
+
     <li class="nav-item">
-        <a href="{% url 'productos:listado' %}" class="nav-link {% if 'productos' in request.path %}active{% endif %}">
+        <a href="{% url 'catalogo:productos_publicos' %}" class="nav-link {% active_link 'productos_publicos' %}">
+            <i class="bi bi-shop me-2"></i>Catálogo de Productos
+        </a>
+    </li>
+
+    {% user_has_role 'gestor' 'admin' as show_gestion %}
+    {% if show_gestion %}
+    <li class="nav-item">
+        <a href="{% url 'productos:listado' %}" class="nav-link {% active_link 'listado' %}">
             <i class="bi bi-box-seam me-2"></i>Productos
         </a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'catalogo:categorias' %}" class="nav-link {% if 'categorias' in request.path %}active{% endif %}">
+        <a href="{% url 'catalogo:categorias' %}" class="nav-link {% active_link 'categorias' %}">
             <i class="bi bi-tags me-2"></i>Categorías
         </a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'catalogo:catalogos' %}" class="nav-link {% if 'catalogos' in request.path %}active{% endif %}">
+        <a href="{% url 'catalogo:catalogos' %}" class="nav-link {% active_link 'catalogos' %}">
             <i class="bi bi-bookmark me-2"></i>Catálogos
         </a>
     </li>
+    {% endif %}
+
+    {% user_has_role 'admin' as is_admin %}
+    {% if is_admin %}
     <li class="nav-item">
-        <a href="{% url 'admin_dashboard' %}" class="nav-link {% if 'admin_dashboard' in request.path or 'admin-dashboard' in request.path %}active{% endif %}">
+        <a href="{% url 'admin_dashboard' %}" class="nav-link {% active_link 'admin_dashboard' %}">
             <i class="bi bi-speedometer2 me-2"></i>Dashboard
         </a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'user_list' %}" class="nav-link {% if 'user_list' in request.path %}active{% endif %}">
+        <a href="{% url 'user_list' %}" class="nav-link {% active_link 'user_list' %}">
             <i class="bi bi-people me-2"></i>Usuarios
         </a>
     </li>
+    {% endif %}
+
+    {% user_has_role 'vendedor' 'gestor' 'admin' as show_search %}
+    {% if show_search %}
     <li class="nav-item">
-        <a href="{% url 'search' %}" class="nav-link {% if 'search' in request.path %}active{% endif %}">
+        <a href="{% url 'search' %}" class="nav-link {% active_link 'search_records' %}">
             <i class="bi bi-search me-2"></i>Buscar
         </a>
     </li>
+    {% endif %}
+
+    {% user_has_role 'gestor' 'admin' as show_export %}
+    {% if show_export %}
     <li class="nav-item">
-        <a href="{% url 'export_csv' %}" class="nav-link {% if 'export_csv' in request.path %}active{% endif %}">
+        <a href="{% url 'export_csv' %}" class="nav-link {% active_link 'export_csv' %}">
             <i class="bi bi-download me-2"></i>Exportar CSV
         </a>
     </li>
+    {% endif %}
+
+    {% user_is_superuser as is_su %}
+    {% if is_su %}
     <li class="nav-item">
-        <a href="/admin/" class="nav-link {% if '/admin/' in request.path %}active{% endif %}">
+        <a href="/admin/" class="nav-link">
             <i class="bi bi-shield-lock me-2"></i>Admin Django
         </a>
     </li>
+    {% endif %}
 </ul>

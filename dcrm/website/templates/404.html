@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Página no encontrada</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="d-flex align-items-center justify-content-center vh-100">
-    <div class="text-center">
-        <h1 class="display-1 text-muted">404</h1>
-        <p class="lead">La página que buscas no existe.</p>
-        <a href="/" class="btn btn-primary">Volver al inicio</a>
+{% extends 'base.html' %}
+{% block title %}Página no encontrada - Django CRM{% endblock %}
+{% block content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="text-center animate-fade-in">
+        <div class="display-1 fw-bold text-primary mb-3">404</div>
+        <div class="display-6 text-muted mb-3"><i class="bi bi-emoji-frown"></i> Página no encontrada</div>
+        <p class="text-secondary mb-4">La página que buscas no existe o ha sido movida.</p>
+        <a href="{% url 'home' %}" class="btn btn-crm btn-crm-primary btn-lg">
+            <i class="bi bi-house me-1"></i> Volver al inicio
+        </a>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponse
@@ -22,6 +23,9 @@ def register_usuario(request: HttpRequest) -> HttpResponse:
                 messages.error(request, "La contrasena no cumple los requisitos")
                 return render(request, "usuarios/register.html", {"form": form})
             form.save()
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
             messages.success(request, "Usuario registrado exitosamente")
             return redirect("home")
     else:

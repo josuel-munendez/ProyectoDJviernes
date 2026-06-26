@@ -19,7 +19,15 @@
         <div class="card-body">
             <form method="post" action="" class="form-crm">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text|safe }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
                 <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn btn-crm btn-crm-success">
                         <i class="bi bi-check-lg me-1"></i>Guardar

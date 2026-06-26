@@ -28,6 +28,14 @@ entorno_viejo_lilliana/
 .DS_Store
 Thumbs.db
 
+# Security
+security.log
+
 # Project specific
-ejemplos_codigo/ProyectoDjviernesOK/
+ejemplos_codigo/
 clientes.sql
+dcrm/staticfiles/
+
+# Templates / examples
+*.zip
+*.fig
