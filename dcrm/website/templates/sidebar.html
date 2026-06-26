@@ -1,72 +1,21 @@
 {% if user.is_authenticated %}
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 250px; min-height: calc(100vh - 56px);">
-    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 text-white text-decoration-none">
-        <span class="fs-5 fw-semibold">Dashboard</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="{% url 'home' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                Inicio
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'add_record' %}" class="nav-link text-white">
-                + Nuevo Registro
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'productos:listado' %}" class="nav-link text-white {% if 'productos' in request.path %}active{% endif %}">
-                Productos
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'catalogo:categorias' %}" class="nav-link text-white {% if 'categorias' in request.path %}active{% endif %}">
-                Categorías
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'catalogo:catalogos' %}" class="nav-link text-white {% if 'catalogos' in request.path %}active{% endif %}">
-                Catálogos
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'admin_dashboard' %}" class="nav-link text-white {% if 'admin-dashboard' in request.path %}active{% endif %}">
-                Dashboard Admin
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'user_list' %}" class="nav-link text-white {% if 'users' in request.path %}active{% endif %}">
-                Usuarios
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'search' %}" class="nav-link text-white {% if 'buscar' in request.path %}active{% endif %}">
-                Buscar
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'export_csv' %}" class="nav-link text-white">
-                Exportar CSV
-            </a>
-        </li>
-        <li>
-            <a href="/admin/" class="nav-link text-white">
-                Admin Django
-            </a>
-        </li>
-    </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <strong>{{ user.username }}</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a></li>
-            <li><a class="dropdown-item" href="{% url 'change_password' %}">Cambiar Contrasena</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a></li>
-        </ul>
-    </div>
+{# Offcanvas sidebar for mobile #}
+<div class="offcanvas offcanvas-start d-lg-none text-white bg-dark" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+  <div class="offcanvas-header">
+    <span class="fs-5 fw-semibold" id="sidebarLabel">Dashboard</span>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    {% include 'sidebar_menu.html' %}
+  </div>
+</div>
+
+{# Inline sidebar for desktop #}
+<div class="d-none d-lg-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" style="width: 250px; min-height: calc(100vh - 56px);">
+  <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+    <span class="fs-5 fw-semibold">Dashboard</span>
+  </a>
+  <hr>
+  {% include 'sidebar_menu.html' %}
 </div>
 {% endif %}

@@ -165,18 +165,39 @@
         .login-split-container {
             flex-direction: column;
         }
-
         .login-left-section::after {
             display: none;
         }
-
         .login-left-section {
-            min-height: 40vh;
+            min-height: 35vh;
             padding: 2rem;
         }
-
         .login-right-section {
             padding: 2rem;
+        }
+    }
+    @media (max-width: 576px) {
+        .login-left-section {
+            min-height: 30vh;
+            padding: 1.5rem;
+        }
+        .login-left-section h1 {
+            font-size: 1.6rem;
+        }
+        .login-right-section {
+            padding: 1.5rem;
+        }
+        .login-right-section h2 {
+            font-size: 1.4rem;
+            text-align: center;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .login-btn {
+            float: none;
+            width: 100%;
         }
     }
 
@@ -192,11 +213,11 @@
 <div class="login-split-container">
     {% if user.is_authenticated %}
     <!-- Usuario autenticado - Vista con tabla de registros -->
-    <div class="container-fluid p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="text-primary">Registros</h2>
+    <div class="container-fluid p-3 p-md-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h2 class="text-primary m-0">Registros</h2>
             <div>
-                <span class="text-muted me-3">Hola, <strong>{{ user.username }}</strong></span>
+                <span class="text-muted me-3 d-none d-sm-inline">Hola, <strong>{{ user.username }}</strong></span>
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
             </div>
         </div>
@@ -231,9 +252,11 @@
                             <td>{{ record.state }}</td>
                             <td>{{ record.zip_code }}</td>
                             <td>
+                                <div class="d-flex flex-wrap gap-1">
                                 <a href="{% url 'customer_record' record.id %}" class="btn btn-sm btn-info">Ver</a>
                                 <a href="{% url 'update_record' record.id %}" class="btn btn-sm btn-warning">Editar</a>
                                 <a href="{% url 'delete_record' record.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}
