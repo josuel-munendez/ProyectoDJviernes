@@ -1,44 +1,554 @@
 [
-{
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$ojSuaJtYFqBFXP7WKNHga2$fVVRB9zNp2kd6s7X/NbJ6oX/Nfhf8Rf7ncbclYUEvZ4=",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Admin",
+      "last_name": "Istrador",
+      "email": "admin@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "last_login": "2024-01-15T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$YP494hZC8D1QXkJRhTFW4D$Aty4xxTek6Oy9HtpeqR5lmzg7De85QU7WdZ0GOb5bU4=",
+      "is_superuser": false,
+      "username": "gestor",
+      "first_name": "Gestion",
+      "last_name": "Efectiva",
+      "email": "gestor@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "last_login": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$x2ZSQm6ZNG3XMKzd5PEyM4$m9DJEru7oCE+mIJLq9wj2HrAuvjcXslry1WYOThx7A8=",
+      "is_superuser": false,
+      "username": "vendedor",
+      "first_name": "Vende",
+      "last_name": "Dor",
+      "email": "vendedor@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "last_login": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$CT1zfmWWnlWLQTLcJ4heP2$RpgRsUNU9NFU/AleHFRn3MEEx9H9cInqR8qpvRWx1NQ=",
+      "is_superuser": false,
+      "username": "cliente",
+      "first_name": "Client",
+      "last_name": "Ejemplo",
+      "email": "cliente@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "last_login": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usuarios.userprofile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "_rol": "admin",
+      "_telefono": "3001112233",
+      "_direccion": "Calle 100 #15-20, Bogota"
+    }
+  },
+  {
+    "model": "usuarios.userprofile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "_rol": "gestor",
+      "_telefono": "3102223344",
+      "_direccion": "Carrera 45 #30-10, Medellin"
+    }
+  },
+  {
+    "model": "usuarios.userprofile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "_rol": "vendedor",
+      "_telefono": "3203334455",
+      "_direccion": "Avenida 6N #15-20, Cali"
+    }
+  },
+  {
+    "model": "usuarios.userprofile",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "_rol": "cliente",
+      "_telefono": "3014445566",
+      "_direccion": "Calle 72 #10-30, Barranquilla"
+    }
+  },
+  {
     "model": "website.record",
     "pk": 1,
     "fields": {
-        "first_name": "Juan",
-        "last_name": "Perez",
-        "email": "juan@example.com",
-        "phone": "3001234567",
-        "address": "Calle 123",
-        "city": "Bogota",
-        "state": "Cundinamarca",
-        "zip_code": "110111"
+      "first_name": "Juan",
+      "last_name": "Perez",
+      "email": "juan.perez@email.com",
+      "phone": "3001234567",
+      "address": "Cra 7 #24-35",
+      "city": "Bogota",
+      "state": "Cundinamarca",
+      "zip_code": "110111",
+      "_created_at": "2024-01-20T09:00:00Z",
+      "_updated_at": "2024-01-20T09:00:00Z"
     }
-},
-{
+  },
+  {
     "model": "website.record",
     "pk": 2,
     "fields": {
-        "first_name": "Maria",
-        "last_name": "Gomez",
-        "email": "maria@example.com",
-        "phone": "3107654321",
-        "address": "Carrera 45",
-        "city": "Medellin",
-        "state": "Antioquia",
-        "zip_code": "050001"
+      "first_name": "Maria",
+      "last_name": "Gomez",
+      "email": "maria.gomez@email.com",
+      "phone": "3107654321",
+      "address": "Calle 50 #20-15",
+      "city": "Medellin",
+      "state": "Antioquia",
+      "zip_code": "050001",
+      "_created_at": "2024-02-10T14:30:00Z",
+      "_updated_at": "2024-02-10T14:30:00Z"
     }
-},
-{
+  },
+  {
     "model": "website.record",
     "pk": 3,
     "fields": {
-        "first_name": "Carlos",
-        "last_name": "Lopez",
-        "email": "carlos@example.com",
-        "phone": "3209876543",
-        "address": "Avenida 78",
-        "city": "Cali",
-        "state": "Valle",
-        "zip_code": "760001"
+      "first_name": "Carlos",
+      "last_name": "Lopez",
+      "email": "carlos.lopez@email.com",
+      "phone": "3209876543",
+      "address": "Av 3N #10-45",
+      "city": "Cali",
+      "state": "Valle del Cauca",
+      "zip_code": "760001",
+      "_created_at": "2024-03-05T11:15:00Z",
+      "_updated_at": "2024-03-05T11:15:00Z"
     }
-}
+  },
+  {
+    "model": "website.record",
+    "pk": 4,
+    "fields": {
+      "first_name": "Ana",
+      "last_name": "Martinez",
+      "email": "ana.martinez@email.com",
+      "phone": "3015550198",
+      "address": "Cra 54 #68-20",
+      "city": "Barranquilla",
+      "state": "Atlantico",
+      "zip_code": "080001",
+      "_created_at": "2024-03-20T16:45:00Z",
+      "_updated_at": "2024-03-20T16:45:00Z"
+    }
+  },
+  {
+    "model": "website.record",
+    "pk": 5,
+    "fields": {
+      "first_name": "Pedro",
+      "last_name": "Ramirez",
+      "email": "pedro.ramirez@email.com",
+      "phone": "3056789012",
+      "address": "Calle del Arsenal #8-12",
+      "city": "Cartagena",
+      "state": "Bolivar",
+      "zip_code": "130001",
+      "_created_at": "2024-04-12T08:30:00Z",
+      "_updated_at": "2024-04-12T08:30:00Z"
+    }
+  },
+  {
+    "model": "website.record",
+    "pk": 6,
+    "fields": {
+      "first_name": "Laura",
+      "last_name": "Sanchez",
+      "email": "laura.sanchez@email.com",
+      "phone": "3152345678",
+      "address": "Cra 27 #35-10",
+      "city": "Bucaramanga",
+      "state": "Santander",
+      "zip_code": "680001",
+      "_created_at": "2024-05-08T13:00:00Z",
+      "_updated_at": "2024-05-08T13:00:00Z"
+    }
+  },
+  {
+    "model": "website.record",
+    "pk": 7,
+    "fields": {
+      "first_name": "Diego",
+      "last_name": "Torres",
+      "email": "diego.torres@email.com",
+      "phone": "3105678901",
+      "address": "Calle 15 #8-32",
+      "city": "Pereira",
+      "state": "Risaralda",
+      "zip_code": "660001",
+      "_created_at": "2024-06-01T10:00:00Z",
+      "_updated_at": "2024-06-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "website.record",
+    "pk": 8,
+    "fields": {
+      "first_name": "Sofia",
+      "last_name": "Herrera",
+      "email": "sofia.herrera@email.com",
+      "phone": "3203456789",
+      "address": "Cra 23 #18-50",
+      "city": "Manizales",
+      "state": "Caldas",
+      "zip_code": "170001",
+      "_created_at": "2024-06-15T09:30:00Z",
+      "_updated_at": "2024-06-15T09:30:00Z"
+    }
+  },
+  {
+    "model": "catalogo.categoria",
+    "pk": 1,
+    "fields": {
+      "nombre": "Electronica",
+      "descripcion": "Productos electronicos y tecnologia",
+      "_created_at": "2024-01-10T08:00:00Z",
+      "_updated_at": "2024-01-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.categoria",
+    "pk": 2,
+    "fields": {
+      "nombre": "Ropa y Accesorios",
+      "descripcion": "Prendas de vestir y accesorios",
+      "_created_at": "2024-01-10T08:00:00Z",
+      "_updated_at": "2024-01-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.categoria",
+    "pk": 3,
+    "fields": {
+      "nombre": "Hogar",
+      "descripcion": "Articulos para el hogar",
+      "_created_at": "2024-01-10T08:00:00Z",
+      "_updated_at": "2024-01-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.categoria",
+    "pk": 4,
+    "fields": {
+      "nombre": "Deportes",
+      "descripcion": "Equipamiento deportivo",
+      "_created_at": "2024-01-10T08:00:00Z",
+      "_updated_at": "2024-01-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.categoria",
+    "pk": 5,
+    "fields": {
+      "nombre": "Libros",
+      "descripcion": "Libros y material de lectura",
+      "_created_at": "2024-01-10T08:00:00Z",
+      "_updated_at": "2024-01-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.categoria",
+    "pk": 6,
+    "fields": {
+      "nombre": "Juguetes",
+      "descripcion": "Juguetes y juegos",
+      "_created_at": "2024-01-10T08:00:00Z",
+      "_updated_at": "2024-01-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 1,
+    "fields": {
+      "nombre": "Smartphone X100",
+      "descripcion": "Telefono inteligente con pantalla AMOLED 6.5 pulgadas y 128GB de almacenamiento",
+      "precio": "2500000.00",
+      "stock": 15,
+      "codigo": "PROD001",
+      "_created_at": "2024-01-20T08:00:00Z",
+      "_updated_at": "2024-01-20T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 2,
+    "fields": {
+      "nombre": "Laptop Pro",
+      "descripcion": "Laptop de alto rendimiento con 16GB RAM y procesador i7",
+      "precio": "4500000.00",
+      "stock": 8,
+      "codigo": "PROD002",
+      "_created_at": "2024-01-20T08:00:00Z",
+      "_updated_at": "2024-01-20T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 3,
+    "fields": {
+      "nombre": "Audifonos Bluetooth",
+      "descripcion": "Audifonos inalambricos con cancelacion de ruido activa",
+      "precio": "350000.00",
+      "stock": 30,
+      "codigo": "PROD003",
+      "_created_at": "2024-01-20T08:00:00Z",
+      "_updated_at": "2024-01-20T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 4,
+    "fields": {
+      "nombre": "Camiseta Deportiva",
+      "descripcion": "Camiseta transpirable para entrenamiento, talla M",
+      "precio": "85000.00",
+      "stock": 50,
+      "codigo": "PROD004",
+      "_created_at": "2024-02-01T08:00:00Z",
+      "_updated_at": "2024-02-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 5,
+    "fields": {
+      "nombre": "Zapatos Casual",
+      "descripcion": "Zapatos comodos para uso diario, talla 42",
+      "precio": "180000.00",
+      "stock": 25,
+      "codigo": "PROD005",
+      "_created_at": "2024-02-01T08:00:00Z",
+      "_updated_at": "2024-02-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 6,
+    "fields": {
+      "nombre": "Reloj Inteligente",
+      "descripcion": "Smartwatch con monitoreo de actividad fisica y frecuencia cardiaca",
+      "precio": "650000.00",
+      "stock": 12,
+      "codigo": "PROD006",
+      "_created_at": "2024-02-01T08:00:00Z",
+      "_updated_at": "2024-02-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 7,
+    "fields": {
+      "nombre": "Lampara LED",
+      "descripcion": "Lampara de escritorio LED ajustable con brillo regulable",
+      "precio": "120000.00",
+      "stock": 40,
+      "codigo": "PROD007",
+      "_created_at": "2024-02-15T08:00:00Z",
+      "_updated_at": "2024-02-15T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 8,
+    "fields": {
+      "nombre": "Silla Ergonómica",
+      "descripcion": "Silla de oficina con soporte lumbar ajustable y reposabrazos",
+      "precio": "890000.00",
+      "stock": 10,
+      "codigo": "PROD008",
+      "_created_at": "2024-02-15T08:00:00Z",
+      "_updated_at": "2024-02-15T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 9,
+    "fields": {
+      "nombre": "Balón de Fútbol",
+      "descripcion": "Balon profesional talla 5, aprobado por la FIFA",
+      "precio": "95000.00",
+      "stock": 60,
+      "codigo": "PROD009",
+      "_created_at": "2024-03-01T08:00:00Z",
+      "_updated_at": "2024-03-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 10,
+    "fields": {
+      "nombre": "Pesas 10kg",
+      "descripcion": "Par de pesas de hierro fundido de 10kg cada una",
+      "precio": "150000.00",
+      "stock": 20,
+      "codigo": "PROD010",
+      "_created_at": "2024-03-01T08:00:00Z",
+      "_updated_at": "2024-03-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 11,
+    "fields": {
+      "nombre": "Python para Todos",
+      "descripcion": "Guia completa de programacion en Python para principiantes y avanzados",
+      "precio": "75000.00",
+      "stock": 35,
+      "codigo": "PROD011",
+      "_created_at": "2024-03-15T08:00:00Z",
+      "_updated_at": "2024-03-15T08:00:00Z"
+    }
+  },
+  {
+    "model": "productos.producto",
+    "pk": 12,
+    "fields": {
+      "nombre": "Juego de Mesa",
+      "descripcion": "Juego de estrategia y cooperacion para toda la familia, 2-6 jugadores",
+      "precio": "65000.00",
+      "stock": 45,
+      "codigo": "PROD012",
+      "_created_at": "2024-03-15T08:00:00Z",
+      "_updated_at": "2024-03-15T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 1,
+    "fields": {
+      "nombre": "Smartphones Avanzados",
+      "categoria": 1,
+      "producto": 1,
+      "activo": true,
+      "_created_at": "2024-01-25T08:00:00Z",
+      "_updated_at": "2024-01-25T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 2,
+    "fields": {
+      "nombre": "Computadores Portatiles",
+      "categoria": 1,
+      "producto": 2,
+      "activo": true,
+      "_created_at": "2024-01-25T08:00:00Z",
+      "_updated_at": "2024-01-25T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 3,
+    "fields": {
+      "nombre": "Accesorios Tecnologicos",
+      "categoria": 1,
+      "producto": 3,
+      "activo": true,
+      "_created_at": "2024-01-25T08:00:00Z",
+      "_updated_at": "2024-01-25T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 4,
+    "fields": {
+      "nombre": "Relojes Inteligentes",
+      "categoria": 1,
+      "producto": 6,
+      "activo": true,
+      "_created_at": "2024-02-05T08:00:00Z",
+      "_updated_at": "2024-02-05T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 5,
+    "fields": {
+      "nombre": "Moda Deportiva",
+      "categoria": 2,
+      "producto": 4,
+      "activo": true,
+      "_created_at": "2024-02-10T08:00:00Z",
+      "_updated_at": "2024-02-10T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 6,
+    "fields": {
+      "nombre": "Iluminacion Hogar",
+      "categoria": 3,
+      "producto": 7,
+      "activo": true,
+      "_created_at": "2024-02-20T08:00:00Z",
+      "_updated_at": "2024-02-20T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 7,
+    "fields": {
+      "nombre": "Equipamiento Futbol",
+      "categoria": 4,
+      "producto": 9,
+      "activo": true,
+      "_created_at": "2024-03-05T08:00:00Z",
+      "_updated_at": "2024-03-05T08:00:00Z"
+    }
+  },
+  {
+    "model": "catalogo.catalogo",
+    "pk": 8,
+    "fields": {
+      "nombre": "Programacion y Tecnologia",
+      "categoria": 5,
+      "producto": 11,
+      "activo": true,
+      "_created_at": "2024-03-20T08:00:00Z",
+      "_updated_at": "2024-03-20T08:00:00Z"
+    }
+  }
 ]

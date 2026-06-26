@@ -1,38 +1,75 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="mb-4">Panel de Administración</h1>
-<div class="row mt-4 g-3">
-    <div class="col-6 col-md-6 col-lg-3 dashboard-card">
-        <div class="card text-white bg-primary mb-3">
-            <div class="card-body text-center">
-                <h5 class="card-title display-6">{{ total_usuarios }}</h5>
-                <p class="card-text">Usuarios</p>
+
+<div class="animate-fade-in">
+    <div class="section-title">
+        <div>
+            <h3><i class="bi bi-speedometer2 me-2"></i>Panel de Administración</h3>
+            <p class="subtitle">Resumen del sistema</p>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="stat-card animate-slide-in stagger-1">
+                <div class="stat-icon primary">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_usuarios }}</h3>
+                    <span>Usuarios</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card animate-slide-in stagger-2">
+                <div class="stat-icon success">
+                    <i class="bi bi-person-badge"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_clientes }}</h3>
+                    <span>Clientes</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card animate-slide-in stagger-3">
+                <div class="stat-icon info">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_productos }}</h3>
+                    <span>Productos</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card animate-slide-in stagger-4">
+                <div class="stat-icon warning">
+                    <i class="bi bi-tags"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_categorias }}</h3>
+                    <span>Categorías</span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-6 col-md-6 col-lg-3 dashboard-card">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-body text-center">
-                <h5 class="card-title display-6">{{ total_clientes }}</h5>
-                <p class="card-text">Clientes</p>
-            </div>
+
+    <div class="bento-grid mt-4">
+        <div class="bento-item animate-fade-in">
+            <div class="bento-title"><i class="bi bi-people me-1"></i>Usuarios Recientes</div>
+            <p class="text-muted small mb-0">Panel de administración de usuarios del sistema.</p>
         </div>
-    </div>
-    <div class="col-6 col-md-6 col-lg-3 dashboard-card">
-        <div class="card text-white bg-info mb-3">
-            <div class="card-body text-center">
-                <h5 class="card-title display-6">{{ total_productos }}</h5>
-                <p class="card-text">Productos</p>
-            </div>
+        <div class="bento-item animate-fade-in">
+            <div class="bento-title"><i class="bi bi-box-seam me-1"></i>Productos Recientes</div>
+            <p class="text-muted small mb-0">Gestión de productos y stock disponible.</p>
         </div>
-    </div>
-    <div class="col-6 col-md-6 col-lg-3 dashboard-card">
-        <div class="card text-white bg-warning mb-3">
-            <div class="card-body text-center">
-                <h5 class="card-title display-6">{{ total_categorias }}</h5>
-                <p class="card-text">Categorías</p>
-            </div>
+        <div class="bento-item animate-fade-in">
+            <div class="bento-title"><i class="bi bi-activity me-1"></i>Resumen de Actividad</div>
+            <p class="text-muted small mb-0">Monitoreo de la actividad reciente del sistema.</p>
         </div>
     </div>
 </div>
+
 {% endblock %}
