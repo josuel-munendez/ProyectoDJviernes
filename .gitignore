@@ -1,0 +1,33 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+*.sqlite3
+db.sqlite3
+local_settings.py
+
+# Environment
+.env
+.venv
+env/
+venv/
+entorno/
+entorno_viejo_lilliana/
+
+# IDE
+.vscode/
+.obsidian/
+.sixth/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+ejemplos_codigo/ProyectoDjviernesOK/
+clientes.sql
