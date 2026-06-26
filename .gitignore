@@ -34,12 +34,13 @@ entorno*/
 .vs/
 
 # ==============================
-# OS
+# OS / Lock files
 # ==============================
 .DS_Store
 Thumbs.db
 desktop.ini
 *.lnk
+.~lock.*
 
 # ==============================
 # Security

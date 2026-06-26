@@ -27,7 +27,7 @@ El sistema cuenta con un diseño propio distintivo (apartado del tema original d
 - **Recursos 100% locales**: Bootstrap CSS/JS e iconos servidos internamente sin CDNs
 - **Catálogo de Productos (Galería)**: Vista pública con tarjetas de producto, filtros por categoría y búsqueda
 - **Seguridad 4 capas**: HTML5 + JavaScript + Django + Base de Datos en cada formulario
-- **Admin Django restringido**: Solo superusuarios pueden acceder a `/admin/`
+- **Admin Django oculto**: El enlace a `/admin/` fue eliminado del sidebar. Solo se accede escribiendo la URL manualmente. Exclusivo para superusuarios creados vía `createsuperuser` (sin rol en el sistema)
 
 ## Módulos
 
@@ -62,7 +62,7 @@ python manage.py seed_data
 | Vendedor | Gestión de clientes | CRUD clientes, búsqueda, catálogo público |
 | Gestor | Administración de productos y catálogos | CRUD clientes, CRUD productos, CRUD catálogos, exportar CSV |
 | Admin | Acceso completo (excepto Django admin) | Todo excepto /admin/ |
-| Superuser | Acceso total | Todo incluido /admin/ |
+| Superuser | Acceso total (sin rol en BD) | Creado vía `createsuperuser`, /admin/ solo con URL manual |
 
 ## Cómo ejecutar el proyecto
 
@@ -241,10 +241,17 @@ Una vez ejecutado `python manage.py seed_data` (o iniciado con Docker), puedes i
 
 | Usuario | Contraseña | Rol | Acceso a `/admin/` |
 |---------|-----------|-----|-------------------|
-| `admin` | `admin123` | Administrador | ✅ Sí (superuser) |
+| `admin_usu` | `admin123` | Admin | ❌ No |
 | `gestor` | `gestor123` | Gestor | ❌ No |
 | `vendedor` | `vendedor123` | Vendedor | ❌ No |
 | `cliente` | `cliente123` | Cliente | ❌ No |
+
+> **💡 Nota**: Los superusuarios NO se crean con `seed_data`. Usa `python manage.py createsuperuser` para crear usuarios con acceso total a `/admin/`. Los superusuarios existen fuera del sistema de roles y **no tienen un `rol` asignado** en la base de datos.
+>
+> ```bash
+> python manage.py createsuperuser
+> # Usuario: admin | Contraseña: admin123  (ejemplo de prueba)
+> ```
 
 ---
 
