@@ -33,3 +33,17 @@ def register_usuario(request: HttpRequest) -> HttpResponse:
 def perfil(request: HttpRequest) -> HttpResponse:
     profile = UserProfile.objects.get_or_create(user=request.user)[0]
     return render(request, "usuarios/perfil.html", {"profile": profile})
+
+
+@login_required
+def editar_perfil(request: HttpRequest) -> HttpResponse:
+    profile = UserProfile.objects.get_or_create(user=request.user)[0]
+    if request.method == "POST":
+        telefono = request.POST.get("telefono", "")
+        direccion = request.POST.get("direccion", "")
+        profile._telefono = telefono
+        profile._direccion = direccion
+        profile.save()
+        messages.success(request, "Perfil actualizado exitosamente")
+        return redirect("perfil")
+    return render(request, "usuarios/editar_perfil.html", {"profile": profile})

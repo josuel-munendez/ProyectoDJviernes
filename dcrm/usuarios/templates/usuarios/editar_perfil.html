@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Editar Perfil</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Teléfono</label>
+        <input type="text" name="telefono" class="form-control" value="{{ profile._telefono|default:'' }}">
+    </div>
+    <div class="mb-3">
+        <label>Dirección</label>
+        <input type="text" name="direccion" class="form-control" value="{{ profile._direccion|default:'' }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'perfil' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
