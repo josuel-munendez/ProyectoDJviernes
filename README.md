@@ -39,23 +39,16 @@ El sistema cuenta con un diseño propio distintivo (apartado del tema original d
 
 ## Seed Data
 
-El proyecto incluye datos de ejemplo para pruebas inmediatas. Ejecutar después de migrar:
+El proyecto incluye un comando que carga datos de ejemplo para pruebas inmediatas:
 
 ```bash
 python manage.py seed_data
 ```
 
-### Usuarios de prueba
-
-| Usuario | Rol | Password | Staff | Superuser |
-|---------|-----|----------|-------|-----------|
-| `admin` | Administrador | `admin123` | ✅ | ✅ |
-| `gestor` | Gestor | `gestor123` | ✅ | ❌ |
-| `vendedor` | Vendedor | `vendedor123` | ❌ | ❌ |
-| `cliente` | Cliente | `cliente123` | ❌ | ❌ |
-
 ### Datos incluidos
 
+- **4 usuarios** con distintos roles (ver tabla de usuarios de prueba)
+- **4 perfiles** de usuario vinculados
 - **8 registros** de clientes colombianos (Bogotá, Medellín, Cali, Barranquilla, etc.)
 - **6 categorías**: Electrónica, Ropa y Accesorios, Hogar, Deportes, Libros, Juguetes
 - **12 productos** con precios en COP y stock
@@ -71,123 +64,209 @@ python manage.py seed_data
 | Admin | Acceso completo (excepto Django admin) | Todo excepto /admin/ |
 | Superuser | Acceso total | Todo incluido /admin/ |
 
-## Quick Start (Cualquier SO)
+## Cómo ejecutar el proyecto
 
-### Requisitos mínimos
+Tienes **4 formas** de ejecutar el proyecto, elige la que mejor se adapte a tu entorno:
 
-| Opción | Requisito |
-|--------|-----------|
-| **Solo Python** | Python 3.12+ y pip |
-| **Solo Docker** | Docker y Docker Compose |
+| # | Método | Requisitos | Base de datos | Ideal para |
+|---|--------|------------|---------------|------------|
+| 1 | Python + SQLite | Python 3.12+ | SQLite (archivo local) | Pruebas rápidas, cualquier SO |
+| 2 | Python + MySQL | Python 3.12+ + MySQL 8.0+ | MySQL | Entorno de desarrollo completo |
+| 3 | Docker / Podman | Docker + Docker Compose | MySQL (contenedor) | Sin instalar Python/MySQL local |
+| 4 | Python + Docker MySQL | Python 3.12+ + Docker | MySQL (solo BD en Docker) | Desarrollo local con BD portátil |
 
-### Opción 1: Solo Python (SQLite) — recomendado para pruebas rápidas
+---
+
+### ▶️ Opción 1: Python + SQLite (la más rápida)
+
+Sin instalar MySQL, ideal para probar el proyecto al instante.
 
 ```bash
 # 1. Clonar
 git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
 cd ProyectoDJviernes
 
-# 2. Setup automático
-make setup                    # Linux/macOS (si tienes make)
-# O:
-bash setup.sh                 # Linux/macOS
-# O Windows PowerShell:
-# .\setup.ps1
+# 2. Setup automático (elige uno):
+make setup                          # Linux/macOS con make
+bash setup.sh                       # Linux/macOS
+.\setup.ps1                         # Windows PowerShell
 
-# 3. Iniciar servidor
-cd dcrm && python manage.py runserver
+# 3. Iniciar servidor de desarrollo
+cd dcrm
+python manage.py runserver
 ```
 
 Abrir http://localhost:8000
 
-### Opción 2: Solo Python con MySQL
-
+**Manual paso a paso** (si no usas Makefile ni scripts):
 ```bash
-# 1. Preparar MySQL (o usa Docker: ver más abajo)
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS dcrm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -p -e "CREATE USER IF NOT EXISTS 'dcrm_user'@'localhost' IDENTIFIED BY 'DcrmPass2026!';"
-mysql -u root -p -e "GRANT ALL PRIVILEGES ON dcrm.* TO 'dcrm_user'@'localhost'; FLUSH PRIVILEGES;"
-
-# 2. Clonar y setup
-git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
-cd ProyectoDJviernes
 python -m venv entorno
-source entorno/bin/activate      # Linux/Mac
-# .\entorno\Scripts\activate     # Windows
+source entorno/bin/activate              # Linux/Mac
+# .\entorno\Scripts\activate             # Windows
 pip install -r requirements.txt
-
-# 3. Migrar y ejecutar
 cd dcrm
+export DJANGO_DB_ENGINE=django.db.backends.sqlite3   # Linux/Mac
+# set DJANGO_DB_ENGINE=django.db.backends.sqlite3    # Windows CMD
 python manage.py migrate
 python manage.py seed_data
 python manage.py runserver
 ```
 
-### Opción 3: Solo Docker (todo incluido)
+---
+
+### ▶️ Opción 2: Python + MySQL (desarrollo completo)
+
+Requiere MySQL 8.0+ instalado y corriendo en tu máquina.
+
+#### 2a. Preparar la base de datos MySQL
+
+```bash
+mysql -u root -p -e "
+CREATE DATABASE IF NOT EXISTS dcrm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'dcrm_user'@'localhost' IDENTIFIED BY 'DcrmPass2026!';
+GRANT ALL PRIVILEGES ON dcrm.* TO 'dcrm_user'@'localhost';
+FLUSH PRIVILEGES;
+"
+```
+
+O si prefieres usar Docker **solo para la base de datos** (ver Opción 4).
+
+#### 2b. Clonar y configurar el entorno Python
 
 ```bash
 git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
 cd ProyectoDJviernes
-docker compose up -d
-# Esperar ~30s, luego abrir http://localhost:8000
+
+# Crear entorno virtual
+python -m venv entorno
+
+# Activar (según tu SO):
+source entorno/bin/activate              # Linux / Mac
+# .\entorno\Scripts\activate             # Windows PowerShell
+# entorno\Scripts\activate.bat           # Windows CMD
+
+# Instalar dependencias
+pip install -r requirements.txt
 ```
 
-### Usuarios de prueba (seed data)
-
-| Usuario | Rol | Contraseña |
-|---------|-----|-----------|
-| `admin` | Administrador | `admin123` |
-| `gestor` | Gestor | `gestor123` |
-| `vendedor` | Vendedor | `vendedor123` |
-| `cliente` | Cliente | `cliente123` |
-
-## Despliegue con Contenedores (Docker / Podman)
-
-El proyecto incluye un `docker-compose.yml` con dos servicios:
-
-| Servicio | Imagen | Función |
-|----------|--------|---------|
-| `db` | `mysql:8.0` | Base de datos MySQL |
-| `web` | Construcción local | Django + Gunicorn |
-
-### Construir y ejecutar
+#### 2c. Migrar, cargar datos y ejecutar
 
 ```bash
-# Usando docker-compose
+cd dcrm
+python manage.py migrate          # Crear tablas en MySQL
+python manage.py seed_data        # Cargar datos de ejemplo
+python manage.py runserver        # Iniciar servidor en http://localhost:8000
+```
+
+---
+
+### ▶️ Opción 3: Docker / Podman (todo en contenedores)
+
+No necesitas Python ni MySQL instalados localmente. Solo Docker.
+
+```bash
+# Clonar
+git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
+cd ProyectoDJviernes
+
+# Iniciar todo (MySQL + Django + Gunicorn)
 docker compose up -d
 
-# O usando podman-compose
-podman-compose up -d
+# Ver logs en vivo
+docker compose logs -f
+
+# Abrir http://localhost:8000
 ```
 
 El contenedor `web` ejecuta automáticamente:
-1. Espera a que MySQL esté listo (healthcheck)
-2. Migraciones de base de datos
-3. Recolección de archivos estáticos
-4. Carga de seed data (solo si no existe)
-5. Servidor Gunicorn en puerto 8000
+1. Espera a que MySQL esté listo (vía healthcheck)
+2. Aplica migraciones de base de datos
+3. Recolecta archivos estáticos
+4. Carga seed data (solo la primera vez)
+5. Inicia Gunicorn en el puerto 8000
 
-Los datos de MySQL persisten en el volumen `dcrm_mysql_data`.
-
-### Parar y limpiar
+**Comandos útiles:**
 
 ```bash
-docker compose down          # Parar servicios
-docker compose down -v       # Parar y borrar volúmenes (BD incluida)
+docker compose logs -f           # Ver logs en tiempo real
+docker compose down              # Detener servicios
+docker compose down -v           # Detener y borrar la BD
+docker compose restart web       # Reiniciar solo Django
 ```
+
+**Con Podman:**
+
+```bash
+podman-compose up -d
+```
+
+---
+
+### ▶️ Opción 4: Python local + MySQL en Docker (híbrido)
+
+Usa Docker solo para la base de datos, pero ejecuta Django directamente con Python.
+
+```bash
+# 1. Levantar MySQL en Docker
+docker run -d --name dcrm_mysql -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=Admin12345! \
+  -e MYSQL_DATABASE=dcrm \
+  -e MYSQL_USER=dcrm_user \
+  -e MYSQL_PASSWORD=DcrmPass2026! \
+  mysql:8.0
+
+# 2. Configurar Python (igual que Opción 2)
+git clone https://github.com/josuel-munendez/ProyectoDJviernes.git
+cd ProyectoDJviernes
+python -m venv entorno
+source entorno/bin/activate
+pip install -r requirements.txt
+
+# 3. Migrar, seed y ejecutar
+cd dcrm
+python manage.py migrate
+python manage.py seed_data
+python manage.py runserver
+
+# 4. Al terminar, detener MySQL
+docker stop dcrm_mysql
+docker rm dcrm_mysql
+```
+
+---
+
+### Usuarios de prueba (seed data)
+
+Una vez ejecutado `python manage.py seed_data` (o iniciado con Docker), puedes iniciar sesión con:
+
+| Usuario | Contraseña | Rol | Acceso a `/admin/` |
+|---------|-----------|-----|-------------------|
+| `admin` | `admin123` | Administrador | ✅ Sí (superuser) |
+| `gestor` | `gestor123` | Gestor | ❌ No |
+| `vendedor` | `vendedor123` | Vendedor | ❌ No |
+| `cliente` | `cliente123` | Cliente | ❌ No |
+
+---
 
 ### Variables de entorno
 
+Copia `.env.example` a `.env` y ajusta según tu entorno:
+
+```bash
+cp .env.example .env
+```
+
 | Variable | Default | Descripción |
 |----------|---------|-------------|
-| `DJANGO_SECRET_KEY` | (key por defecto) | Clave secreta de Django |
-| `DJANGO_DEBUG` | `False` | Modo debug (True/False) |
+| `DJANGO_SECRET_KEY` | (clave por defecto) | Clave secreta de Django |
+| `DJANGO_DEBUG` | `True` | Modo debug |
 | `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,0.0.0.0` | Hosts permitidos |
-| `DJANGO_DB_ENGINE` | `django.db.backends.mysql` | Motor de BD |
-| `DJANGO_DB_NAME` | `dcrm` | Nombre BD |
+| `DJANGO_DB_ENGINE` | `django.db.backends.mysql` | Motor de BD (`...sqlite3` para SQLite) |
+| `DJANGO_DB_NAME` | `dcrm` | Nombre BD (MySQL) |
+| `DJANGO_DB_PATH` | `db.sqlite3` | Ruta archivo BD (SQLite) |
 | `DJANGO_DB_USER` | `dcrm_user` | Usuario BD |
 | `DJANGO_DB_PASSWORD` | `DcrmPass2026!` | Contraseña BD |
-| `DJANGO_DB_HOST` | `db` (Docker) / `localhost` (local) | Host BD |
+| `DJANGO_DB_HOST` | `localhost` | Host BD (`db` dentro de Docker) |
 | `DJANGO_DB_PORT` | `3306` | Puerto BD |
 | `MYSQL_ROOT_PASSWORD` | `Admin12345!` | Contraseña root MySQL (solo contenedor) |
 | `MYSQL_PASSWORD` | `DcrmPass2026!` | Contraseña dcrm_user (solo contenedor) |
@@ -233,19 +312,25 @@ Ver `docs/` para documentación completa:
 
 ```
 ProyectoDJviernes/
-├── dcrm/
-│   ├── core/              # Capa base POO (modelos, servicios, repositorios)
-│   ├── website/           # CRUD clientes, seed data, templates
-│   ├── usuarios/          # Gestión de usuarios y roles
-│   ├── productos/         # CRUD productos
-│   ├── catalogo/          # Catálogos y categorías
-│   └── dcrm/              # Configuración del proyecto
-├── Dockerfile             # Construcción de imagen Docker
-├── docker-compose.yml     # Orquestación de contenedores
-├── docker-entrypoint.sh   # Script de inicio (migraciones + seed)
-├── requirements.txt       # Dependencias de desarrollo
-├── requirements.prod.txt  # Dependencias de producción
-└── README.md
+├── dcrm/                          # Proyecto Django
+│   ├── core/                      #   Capa base POO (modelos, servicios, repositorios)
+│   ├── website/                   #   CRUD clientes, seed data, templates
+│   ├── usuarios/                  #   Gestión de usuarios y roles
+│   ├── productos/                 #   CRUD productos
+│   ├── catalogo/                  #   Catálogos y categorías
+│   └── dcrm/                      #   Configuración del proyecto
+├── Dockerfile                     # Construcción de imagen Docker
+├── docker-compose.yml             # Orquestación de contenedores (web + MySQL)
+├── docker-entrypoint.sh           # Script de inicio para contenedor web
+├── requirements.txt               # Dependencias de Python
+├── requirements.prod.txt          # Dependencias de producción
+├── manage.py                      # Wrapper de manage.py desde la raíz
+├── Makefile                       # Comandos make (setup, run, test, docker)
+├── setup.sh                       # Script de setup para Linux/macOS
+├── setup.ps1                      # Script de setup para Windows PowerShell
+├── .env.example                   # Template de variables de entorno
+├── .gitignore                     # Archivos ignorados por git
+└── README.md                      # Este archivo
 ```
 
 ## Requisitos
