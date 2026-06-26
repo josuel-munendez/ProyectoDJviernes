@@ -36,6 +36,22 @@ class UserProfile(models.Model):
     def rol(self):
         return self._rol
 
+    @property
+    def telefono(self):
+        return self._telefono
+
+    @telefono.setter
+    def telefono(self, value):
+        self._telefono = value
+
+    @property
+    def direccion(self):
+        return self._direccion
+
+    @direccion.setter
+    def direccion(self, value):
+        self._direccion = value
+
     def get_rol_display(self):
         return dict(self.ROL_CHOICES).get(self._rol, self._rol)
 

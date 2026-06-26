@@ -45,8 +45,8 @@ def editar_perfil(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         telefono = request.POST.get("telefono", "")
         direccion = request.POST.get("direccion", "")
-        profile._telefono = telefono
-        profile._direccion = direccion
+        profile.telefono = telefono
+        profile.direccion = direccion
         profile.save()
         messages.success(request, "Perfil actualizado exitosamente")
         return redirect("perfil")
