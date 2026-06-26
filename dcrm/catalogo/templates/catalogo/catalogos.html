@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Catálogos</h1>
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Producto</th>
+            <th>Activo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in catalogos %}
+        <tr>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.categoria.nombre }}</td>
+            <td>{{ c.producto.nombre }}</td>
+            <td>{{ c.activo|yesno:"Sí,No" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">No hay catálogos</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
