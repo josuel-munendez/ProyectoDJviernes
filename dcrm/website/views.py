@@ -7,6 +7,7 @@ from django.core.paginator import Page, Paginator
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Q
 
 from core.security import has_admin_role, log_delete, log_failed_login
 from core.services import CrudService
@@ -116,3 +117,25 @@ def update_record(request: HttpRequest, pk: str) -> HttpResponse:
         return redirect("home")
 
     return render(request, "update_record.html", {"form": form})
+
+
+@login_required
+def search_records(request: HttpRequest) -> HttpResponse:
+    query = request.GET.get("q", "").strip()
+    results = Record.objects.none()
+    if query:
+        results = Record.objects.filter(
+            Q(first_name__icontains=query)
+            | Q(last_name__icontains=query)
+            | Q(email__icontains=query)
+            | Q(phone__icontains=query)
+        )
+    return render(request, "search.html", {"results": results, "query": query})
+
+
+def handler404(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:
+    return render(request, "404.html", status=404)
+
+
+def handler500(request: HttpRequest) -> HttpResponse:
+    return render(request, "500.html", status=500)

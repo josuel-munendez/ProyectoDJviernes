@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Buscar Registros</h1>
+<form method="GET" action="{% url 'search' %}" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Buscar por nombre, apellido o email..." value="{{ query }}">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+{% if query %}
+<h5>Resultados para "{{ query }}":</h5>
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for r in results %}
+        <tr>
+            <td>{{ r.first_name }} {{ r.last_name }}</td>
+            <td>{{ r.email }}</td>
+            <td>{{ r.phone }}</td>
+            <td><a href="{% url 'customer_record' r.id %}" class="btn btn-sm btn-info">Ver</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">Sin resultados</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
