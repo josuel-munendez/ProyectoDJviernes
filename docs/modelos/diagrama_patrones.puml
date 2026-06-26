@@ -1,0 +1,173 @@
+@startuml Diagrama de Patrones de Diseño
+
+skinparam package {
+  BackgroundColor #F3E5F5
+  BorderColor #7B1FA2
+}
+
+skinparam class {
+  BackgroundColor #E8F5E9
+  BorderColor #388E3C
+}
+
+skinparam interface {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+}
+
+skinparam note {
+  BackgroundColor #FFF8E1
+  BorderColor #F57F17
+}
+
+package "Patrones Creacionales" {
+  interface "BaseService" as bs
+  interface "BaseRepository" as br
+
+  class "BaseModel (Abstract)" as bm {
+    _created_at
+    _updated_at
+    get_metadata()
+  }
+
+  class "CrudService" as cs {
+    _model_class
+    get_all()
+    get_by_id()
+    create()
+    update()
+    delete()
+  }
+
+  class "_record_service (Singleton)" as rs
+  class "_producto_service (Singleton)" as ps
+
+  class "DjangoRepository" as dr {
+    find_all()
+    find_by_id()
+    save()
+    remove()
+  }
+
+  class "RegexValidator" as rv {
+    _patterns
+    validate()
+  }
+
+  class "UserRegistrationForm" as urf {
+    save()
+  }
+
+  bs <|.. cs : implements
+  br <|.. dr : implements
+  bm <|-- Record : extends
+  bm <|-- Producto : extends
+  bm <|-- Categoria : extends
+  bm <|-- Catalogo : extends
+  cs --> rs : singleton
+  cs --> ps : singleton
+  cs --> bm : <<DI>>
+  dr --> bm : <<DI>>
+  urf ..> User : Factory Method
+  urf ..> UserProfile : Factory Method
+}
+
+package "Patrones Estructurales" {
+  class "Django Views" as views {
+    @login_required
+    has_admin_role()
+  }
+
+  class "Facade" as facade {
+    _record_service.get_all()
+    _record_service.delete()
+  }
+
+  class "ProtectionProxy" as proxy "has_admin_role()\nget_object_or_404()"
+
+  class "Adapter" as adapter "DjangoRepository adapts ORM\nCrudService adapts ORM"
+
+  class "Pagination" as pag "Paginator(queryset, 5)"
+
+  () "Decorator" as decor
+  () "ModelForm" as mf
+}
+
+package "Patrones de Comportamiento" {
+  class "User" as user {
+    +save()
+  }
+
+  class "post_save Signal" as signal {
+    <<Observer>>
+  }
+
+  class "create_user_profile" as cup {
+    Crea UserProfile
+  }
+
+  class "Chain of Resp." as chain {
+    MIDDLEWARE stack
+    Password Validators
+  }
+
+  class "Role" as role {
+    ROL_CLIENTE
+    ROL_VENDEDOR
+    ROL_GESTOR
+    ROL_ADMIN
+    es_admin()
+    es_vendedor()
+  }
+
+  class "Specification" as spec {
+    Q() | Q() | Q()
+    Búsqueda flexible
+  }
+
+  user ..> signal : emite
+  signal ..> cup : notifica
+  role <-- UserProfile : _rol
+}
+
+package "Arquitectura MVT" {
+  rectangle "urls.py\nDispatcher" as urls
+  rectangle "views.py\nBusiness Logic" as vws
+  rectangle "models.py\nData" as mdl
+  rectangle "templates/*.html\nPresentation" as tmpl
+  rectangle "settings.py\nConfiguration" as settings
+
+  urls --> vws : enruta
+  vws --> mdl : consulta
+  vws --> tmpl : renderiza
+  settings ..> vws : configura
+}
+
+note top of urf
+  Template Method:
+  save() llama super().save(commit=False)
+  + comportamiento personalizado
+end note
+
+note left of rv
+  Strategy:
+  Cada regex es una
+  estrategia de validación
+end note
+
+note right of chain
+  Middleware:
+  Security -> Session
+  -> Common -> CSRF
+  -> Auth -> Messages -> XFrame
+end note
+
+note bottom of role
+  Role Pattern (RBAC):
+  Cliente: lectura
+  Vendedor: CRUD clientes
+  Gestor: CRUD completo
+  Admin: todo acceso
+end note
+
+@enduml
