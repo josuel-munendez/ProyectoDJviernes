@@ -26,8 +26,13 @@
             </a>
         </li>
         <li>
-            <a href="{% url 'perfil' %}" class="nav-link text-white {% if 'perfil' in request.path %}active{% endif %}">
-                Mi Perfil
+            <a href="{% url 'admin_dashboard' %}" class="nav-link text-white {% if 'admin-dashboard' in request.path %}active{% endif %}">
+                Dashboard Admin
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'search' %}" class="nav-link text-white {% if 'buscar' in request.path %}active{% endif %}">
+                Buscar
             </a>
         </li>
         <li>

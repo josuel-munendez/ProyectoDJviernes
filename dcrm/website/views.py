@@ -14,6 +14,9 @@ from core.services import CrudService
 from core.validators import RegexValidator
 from .forms import LoginForm, RecordForm, UserRegisterForm
 from .models import Record
+from productos.models import Producto
+from catalogo.models import Categoria
+from django.contrib.auth.models import User
 
 
 _record_service = CrudService(Record)
@@ -139,3 +142,17 @@ def handler404(request: HttpRequest, exception: Exception | None = None) -> Http
 
 def handler500(request: HttpRequest) -> HttpResponse:
     return render(request, "500.html", status=500)
+
+
+@login_required
+def admin_dashboard(request: HttpRequest) -> HttpResponse:
+    if not has_admin_role(request.user):
+        messages.error(request, "No tienes permisos de administrador")
+        return redirect("home")
+    context = {
+        "total_usuarios": User.objects.count(),
+        "total_clientes": Record.objects.count(),
+        "total_productos": Producto.objects.count(),
+        "total_categorias": Categoria.objects.count(),
+    }
+    return render(request, "admin_dashboard.html", context)

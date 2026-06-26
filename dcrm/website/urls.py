@@ -10,6 +10,7 @@ urlpatterns = [
     path('delete_record/<str:pk>/', views.delete_record, name='delete_record'),
     path('update_record/<str:pk>/', views.update_record, name='update_record'),
     path('buscar/', views.search_records, name='search'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
 
 handler404 = 'website.views.handler404'

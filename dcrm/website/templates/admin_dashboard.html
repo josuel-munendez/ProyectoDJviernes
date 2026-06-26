@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Panel de Administración</h1>
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ total_usuarios }}</h5>
+                <p class="card-text">Usuarios</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ total_clientes }}</h5>
+                <p class="card-text">Clientes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ total_productos }}</h5>
+                <p class="card-text">Productos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ total_categorias }}</h5>
+                <p class="card-text">Categorías</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
