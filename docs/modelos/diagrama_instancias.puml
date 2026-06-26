@@ -1,0 +1,63 @@
+@startuml Diagrama de Instancias
+
+skinparam object {
+  BackgroundColor #FFF8E1
+  BorderColor #F57F17
+}
+
+object "App: Website" as web {
+  auth_user (User)
+  website_record (Record)
+  login/logout
+  CRUD clientes
+}
+
+object "App: Usuarios" as user {
+  usuarios_userprofile
+  roles
+  registro
+}
+
+object "App: Productos" as prod {
+  productos_producto
+  CRUD productos
+}
+
+object "App: Catálogo" as cat {
+  catalogo_categoria
+  catalogo_catalogo
+  CRUD catálogo
+}
+
+object "App: Core" as core {
+  BaseModel (abstracto)
+  CrudService (singleton)
+  DjangoRepository
+  RegexValidator
+}
+
+object "Template: Base" as t_base {
+  navbar.html
+  sidebar.html
+  footer.html
+  custom.css
+}
+
+object "Template: Website" as t_web {
+  home.html
+  record.html
+  update_record.html
+  register.html
+}
+
+web -down-> user : UserProfile (1:1)
+web -down-> prod : Producto FK
+web -down-> cat : Catálogo FK
+web -up-> core : Hereda BaseModel
+user -up-> core : Hereda BaseModel
+prod -up-> core : Hereda BaseModel
+cat -up-> core : Hereda BaseModel
+web -right-> t_web : Renderiza
+t_web -up-> t_base : Extiende
+
+@enduml

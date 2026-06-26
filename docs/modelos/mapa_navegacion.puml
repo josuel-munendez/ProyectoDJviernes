@@ -1,0 +1,55 @@
+@startuml Mapa de Navegación
+
+skinparam rectangle {
+  BackgroundColor #E1F5FE
+  BorderColor #0288D1
+}
+
+skinparam card {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+}
+
+skinparam note {
+  BackgroundColor #F3E5F5
+  BorderColor #7B1FA2
+}
+
+rectangle "<size:16><b>Login</b></size>\n/home/" as login
+rectangle "<size:16><b>Home</b></size>\nRegistros + Paginación" as home
+rectangle "<size:16><b>Registro</b></size>\n/register/" as register
+rectangle "<size:16><b>Detalle</b></size>\n/record/\\<id>" as detail
+rectangle "<size:16><b>Editar</b></size>\n/update_record/\\<id>" as edit
+rectangle "<size:16><b>Dashboard</b></size>\n/admin_panel/" as dashboard
+rectangle "<size:16><b>Productos</b></size>\n/productos/" as productos
+rectangle "<size:16><b>Catálogo</b></size>\n/catalogo/" as catalogo
+rectangle "<size:16><b>Perfil</b></size>\n/profile/" as profile
+rectangle "<size:16><b>Buscar</b></size>\n/search_record/" as search
+
+card "<b>Menú Horizontal</b>\n(Todos los roles)" as menu_h
+card "<b>Sidebar Vertical</b>\n(Admin/CRUD)" as menu_v
+
+note bottom of login
+  <b>Rol:</b> Todos
+  <b>Acción:</b> Autenticarse
+end note
+
+note bottom of dashboard
+  <b>Rol:</b> Admin
+  <b>Muestra:</b> Estadísticas
+end note
+
+login --> home : Login exitoso
+login --> register : "Registrarse"
+home --> detail : Click en ID
+detail --> edit : "Update"
+detail --> home : "Back"
+edit --> home : Guardado
+home --> dashboard : Sidebar Admin
+home --> productos : Sidebar Admin
+home --> catalogo : Sidebar Admin
+home --> profile : Navbar
+home --> search : Navbar
+home --> login : Logout
+
+@enduml

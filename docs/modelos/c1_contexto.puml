@@ -1,0 +1,18 @@
+@startuml C1 - Diagrama de Contexto
+!include <C4/C4_Context>
+
+Person(usuario, "Usuario", "Cliente, Vendedor, Gestor o Admin del CRM")
+Person(admin_super, "Super Admin", "Administrador del sistema Django")
+
+System(crm, "CRM Django", "Sistema de gestión de clientes, productos, catálogo y usuarios")
+
+System_Ext(bbdd, "Base de Datos", "SQLite / MySQL")
+System_Ext(email, "Servicio Email", "Notificaciones por correo")
+
+Rel(usuario, crm, "Usa", "HTTPS")
+Rel(admin_super, crm, "Administra", "Django Admin")
+Rel(crm, bbdd, "Lee/Escribe", "ORM")
+Rel(crm, email, "Envía", "SMTP")
+
+SHORT_TITLE("CRM - Contexto")
+@enduml

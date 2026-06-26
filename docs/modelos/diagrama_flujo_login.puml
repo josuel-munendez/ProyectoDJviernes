@@ -1,0 +1,43 @@
+@startuml Diagrama de Flujo - Login
+
+start
+:Usuario ingresa a /home/;
+
+if (¿Usuario autenticado?) then (Sí)
+  :Muestra tabla de registros;
+  :Muestra menú completo (según rol);
+  stop
+else (No)
+  :Muestra formulario de login;
+  :Usuario ingresa username + password;
+  :Envía POST;
+
+  :Django authenticate();
+  if (¿Credenciales válidas?) then (Sí)
+    :login(request, user);
+    :messages.success("Acceso exitoso");
+    :Redirige a /home/;
+    stop
+  else (No)
+    :messages.error("Credenciales inválidas");
+    :Renderiza home.html con error;
+    note right
+      El usuario puede intentar
+      de nuevo o registrarse
+    end note
+  endif
+endif
+
+:Usuario hace clic en "Registrarse";
+:Formulario UserRegisterForm;
+:Valida campos (regex);
+if (¿Válido?) then (Sí)
+  :Guarda usuario;
+  :Autentica automáticamente;
+  :Redirige a /home/;
+else (No)
+  :Muestra errores del formulario;
+endif
+
+stop
+@enduml

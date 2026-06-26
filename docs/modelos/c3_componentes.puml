@@ -1,0 +1,46 @@
+@startuml C3 - Diagrama de Componentes
+!include <C4/C4_Component>
+
+Person(usuario, "Usuario")
+
+System_Boundary(crm, "CRM Django") {
+    System_Boundary(website, "App Website") {
+        Component(login, "Login/Logout", "Django Auth", "Autenticación de usuarios")
+        Component(crud, "CRUD Clientes", "Views+Forms", "Registro, edición, eliminación")
+        Component(paginacion, "Paginación", "Paginator", "5 registros por página")
+        Component(export, "Export CSV", "HTTPResponse", "Exportar datos")
+    }
+    System_Boundary(usuarios, "App Usuarios") {
+        Component(profile, "UserProfile", "Modelo", "Roles: Cliente/Vendedor/Gestor/Admin")
+        Component(register, "Registro", "Form", "Registro con validación")
+    }
+    System_Boundary(productos, "App Productos") {
+        Component(prod_crud, "CRUD Productos", "Views+Forms", "Gestión de productos")
+    }
+    System_Boundary(catalogo, "App Catálogo") {
+        Component(cat_crud, "CRUD Catálogo", "Views+Forms", "Categorías y productos")
+    }
+    System_Boundary(core, "App Core") {
+        Component(base_model, "BaseModel", "Abstract Model", "Template Method Pattern")
+        Component(crud_service, "CrudService", "Singleton", "Servicio CRUD único")
+        Component(repo, "DjangoRepository", "Repository", "Abstracción de datos")
+        Component(validator, "RegexValidator", "Validation", "Validación de campos")
+    }
+}
+
+System_Ext(bbdd, "Base de Datos")
+
+Rel(usuario, login, "Inicia sesión")
+Rel(usuario, crud, "Gestiona clientes")
+Rel(usuario, prod_crud, "Gestiona productos")
+Rel(usuario, cat_crud, "Gestiona catálogo")
+Rel(crud, base_model, "Hereda")
+Rel(usuarios, base_model, "Hereda")
+Rel(productos, base_model, "Hereda")
+Rel(catalogo, base_model, "Hereda")
+Rel(core, bbdd, "ORM")
+Rel(crud_service, repo, "Usa")
+Rel(repo, base_model, "Opera")
+
+SHORT_TITLE("CRM - Componentes")
+@enduml

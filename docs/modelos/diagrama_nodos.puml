@@ -1,0 +1,36 @@
+@startuml Diagrama de Nodos (Despliegue)
+
+skinparam node {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+}
+
+node "Cliente" as client {
+  artifact "Navegador Web" as browser
+  artifact "Responsive Design" as responsive
+}
+
+node "Servidor Web" as server {
+  artifact "Django 4.2" as django
+  artifact "Gunicorn / runserver" as wsgi
+  database "SQLite (Dev)" as sqlite
+}
+
+node "Servidor de Producción (Futuro)" as prod {
+  artifact "Nginx" as nginx
+  artifact "Gunicorn" as gunicorn
+  database "MySQL / MariaDB" as mysql
+  artifact "Archivos Estáticos" as static
+}
+
+node "Cliente Móvil" as mobile {
+  artifact "Navegador Móvil" as mob_browser
+}
+
+client -down-> server : HTTP/HTTPS
+mobile -down-> server : HTTP/HTTPS
+server -right-> sqlite : ORM Django
+server -down-> prod : Migración futura
+prod -right-> mysql : SQL
+
+@enduml

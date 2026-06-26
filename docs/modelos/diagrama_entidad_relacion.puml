@@ -1,0 +1,72 @@
+@startuml Diagrama Entidad-Relación
+
+entity User {
+  * id: integer <<PK>>
+  --
+  username: string
+  email: string
+  password: string
+  first_name: string
+  last_name: string
+  is_staff: boolean
+  is_superuser: boolean
+  date_joined: datetime
+}
+
+entity UserProfile {
+  * id: integer <<PK>>
+  --
+  rol: string (Cliente/Vendedor/Gestor/Admin)
+  telefono: string
+  direccion: string
+  user_id: integer <<FK>>
+}
+
+entity Record {
+  * id: integer <<PK>>
+  --
+  created_at: datetime
+  first_name: string
+  last_name: string
+  email: string
+  phone: string
+  address: string
+  city: string
+  state: string
+  zip_code: string
+}
+
+entity Producto {
+  * id: integer <<PK>>
+  --
+  created_at: datetime
+  updated_at: datetime
+  nombre: string
+  descripcion: text
+  precio: decimal
+  stock: integer
+}
+
+entity Categoria {
+  * id: integer <<PK>>
+  --
+  created_at: datetime
+  updated_at: datetime
+  nombre: string
+  descripcion: text
+}
+
+entity Catalogo {
+  * id: integer <<PK>>
+  --
+  created_at: datetime
+  updated_at: datetime
+  producto_id: integer <<FK>>
+  categoria_id: integer <<FK>>
+}
+
+User ||--o| UserProfile : tiene
+Catalogo }o--|| Producto : contiene
+Catalogo }o--|| Categoria : pertenece
+
+@enduml

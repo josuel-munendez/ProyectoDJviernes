@@ -1,0 +1,80 @@
+@startuml Mapa de Procesos - CRM
+
+skinparam activity {
+  BackgroundColor #E8F5E9
+  BorderColor #388E3C
+}
+
+skinparam note {
+  BackgroundColor #FFF3E0
+  BorderColor #E65100
+}
+
+start
+:Usuario llega al sistema;
+:Ingresa credenciales;
+
+if (¿Credenciales válidas?) then (Sí)
+  :Redirige a Home;
+  :Carga menú según rol;
+
+  repeat
+    :Muestra tabla de registros (paginada);
+
+    if (¿Qué acción realizar?) as accion (
+    ┌─ Ver detalle ─┐) then (Ver detalle)
+      :Click en ID del cliente;
+      :Muestra tarjeta con datos completos;
+
+      if (¿Editar o Eliminar?) then (Editar)
+        :Formulario precargado;
+        :Valida campos con regex;
+        if (¿Datos válidos?) then (Sí)
+          :Guarda en BD;
+        else (No)
+          :Muestra errores;
+        endif
+      else (Eliminar)
+        :Elimina registro;
+        :Mensaje de éxito;
+      endif
+
+    ) else (┌─ Crear ─┐)
+      :Formulario vacío;
+      :Llena datos;
+      :Valida campos;
+      :Guarda en BD;
+
+    ) else (┌─ Buscar ─┐)
+      :Ingresa término;
+      :Filtra registros;
+      :Muestra resultados;
+
+    ) else (┌─ Exportar ─┐)
+      :Genera CSV;
+      :Descarga archivo;
+
+    ) else (┌─ Navegar ─┐)
+      :Click en paginación;
+    endif
+
+  repeat while (¿Continuar?) is (Sí)
+  -> No;
+
+  :Cierra sesión;
+
+else (No)
+  :Muestra error de credenciales;
+endif
+
+stop
+
+note right
+  **4 Roles:**
+  - Admin: Todo el acceso
+  - Gestor: CRUD + Dashboard
+  - Vendedor: CRUD clientes
+  - Cliente: Solo lectura
+end note
+
+@enduml

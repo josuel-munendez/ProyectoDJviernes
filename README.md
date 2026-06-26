@@ -48,6 +48,25 @@ python manage.py runserver
 - **Template Method**: BaseModel con métodos abstractos
 - **ModelForm**: Generación automática de formularios (DRY)
 
+## Documentación de Modelos y Diagramas
+
+Ver `docs/modelos/` para documentación completa:
+
+| Documento | Descripción |
+|-----------|-------------|
+| [Modelo C4 (C1-C4)](docs/modelos/) | Contexto, Contenedores, Componentes, Código |
+| [Diagramas UML](docs/uml/) | Clases, Casos de Uso, Secuencia, Arquitectura |
+| [Matriz de Requerimientos](docs/modelos/matriz_requerimientos.md) | 22 requerimientos priorizados (MoSCoW) |
+| [Historias de Usuario](docs/modelos/historias_usuario.md) | 10 HU con criterios de aceptación |
+| [Modelo Relacional](docs/modelos/modelo_relacional.md) | Tablas, columnas y relaciones |
+| [Diccionario de Datos](docs/modelos/diccionario_datos.md) | Descripción de cada campo |
+| [Metodologías](docs/modelos/metodologias.md) | GitFlow, Kanban, MoSCoW, MVP, POO, SOLID |
+| [Árboles (Problema/Objetivos/Decisiones)](docs/modelos/arboles.md) | Análisis del problema y soluciones |
+| [Mapa de Navegación](docs/modelos/mapa_navegacion.puml) | Flujo de pantallas del sistema |
+| [Mapa de Procesos](docs/modelos/mapa_procesos.puml) | Proceso completo del CRM |
+| [Mapa de Empatía](docs/modelos/mapa_empatia.md) | Perfiles de usuario |
+| [Patrones de Diseño](docs/patrones_diseno.md) | 6 patrones documentados |
+
 ## Estructura
 
 ```

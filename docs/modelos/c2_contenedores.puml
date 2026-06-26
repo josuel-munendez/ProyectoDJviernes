@@ -1,0 +1,22 @@
+@startuml C2 - Diagrama de Contenedores
+!include <C4/C4_Container>
+
+Person(usuario, "Usuario", "Rol: Cliente/Vendedor/Gestor/Admin")
+
+System_Boundary(crm, "CRM Django") {
+    Container(web, "Aplicación Web", "Django 4.2", "Interfaz HTML+CSS+Bootstrap JS")
+    Container(api, "API Views", "Django Views", "Lógica CRUD y autenticación")
+    Container(core, "Core", "Python/Django", "Modelos base, servicios, repositorios")
+}
+
+System_Ext(bbdd, "Base de Datos", "SQLite/MySQL")
+System_Ext(static, "Archivos Estáticos", "CSS/JS/Imágenes")
+
+Rel(usuario, web, "Navega", "HTTPS")
+Rel(web, api, "Llama", "Python")
+Rel(api, core, "Usa", "POO")
+Rel(core, bbdd, "ORM", "SQL")
+Rel(web, static, "Carga", "HTTP")
+
+SHORT_TITLE("CRM - Contenedores")
+@enduml
