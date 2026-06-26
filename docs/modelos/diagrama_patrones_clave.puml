@@ -1,0 +1,95 @@
+@startuml Patrones Clave - Sustentación
+
+skinparam package {
+  BackgroundColor #F3E5F5
+  BorderColor #7B1FA2
+}
+
+skinparam class {
+  BackgroundColor #E8F5E9
+  BorderColor #388E3C
+}
+
+skinparam rectangle {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+}
+
+title Patrones de Diseño - Proyecto CRM
+
+package "1. SINGLETON" as sing {
+  class "_record_service" as rs {
+    CrudService(Record)
+    Instancia única
+  }
+  class "_producto_service" as ps {
+    CrudService(Producto)
+    Instancia única
+  }
+  note right: "Una sola instancia\npara toda la app"
+}
+
+package "2. REPOSITORY" as repo {
+  interface "BaseRepository" as br {
+    + find_all()
+    + find_by_id()
+    + save()
+    + remove()
+  }
+  class "DjangoRepository" as dr {
+    Implementa usando ORM
+  }
+  br <|.. dr : implementa
+  note right: "Abstrae el acceso\na la base de datos"
+}
+
+package "3. TEMPLATE METHOD" as tm {
+  class "BaseModel" as bm {
+    _created_at
+    _updated_at
+    get_metadata()
+    <<abstract>>
+  }
+  class "Record" as rec
+  class "Producto" as prod
+  class "Categoria" as cat
+  class "Catalogo" as catg
+  bm <|-- rec : hereda
+  bm <|-- prod : hereda
+  bm <|-- cat : hereda
+  bm <|-- catg : hereda
+  note right: "Plantilla base para\ntodos los modelos"
+}
+
+package "4. STRATEGY" as strat {
+  class "RegexValidator" as rv {
+    + validate(tipo, valor)
+  }
+  note left of rv: "username → ^[a-z...]$\nemail → ^[\\w.+-]+@...\nphone → ^\\+?\\d{7,15}$\npassword → ^(?=.*[A-Z])..."
+  note right: "Cada campo tiene su\npropia estrategia\nde validación"
+}
+
+package "5. OBSERVER" as obs {
+  class "User" as user {
+    + save()
+  }
+  class "Signal" as sig {
+    post_save
+  }
+  class "create_user_profile" as cup {
+    Crea UserProfile
+    Asigna rol=cliente
+  }
+  user ..> sig : emite
+  sig ..> cup : notifica
+  note right: "Al crear usuario\nautomáticamente\nse crea su perfil"
+}
+
+package "POO" as poo {
+  rectangle "Encapsulación\n_rol protegido" as enc
+  rectangle "Herencia\nBaseModel → Record" as her
+  rectangle "Polimorfismo\nCrudService genérico" as pol
+  rectangle "Abstracción\nBaseService ABC" as abs
+}
+
+@enduml
