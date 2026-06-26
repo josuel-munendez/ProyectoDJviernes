@@ -14,6 +14,7 @@ urlpatterns = [
     path('buscar/', views.search_records, name='search'),
     path('users/', views.user_list, name='user_list'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('cambiar-password/', views.change_password, name='change_password'),
     path('exportar-csv/', export_csv, name='export_csv'),
 ]
 

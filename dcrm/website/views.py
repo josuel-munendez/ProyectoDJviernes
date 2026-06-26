@@ -1,7 +1,8 @@
 from typing import Any
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.paginator import Page, Paginator
 from django.db.models import QuerySet
@@ -156,6 +157,20 @@ def user_list(request: HttpRequest) -> HttpResponse:
     for u in users:
         UserProfile.objects.get_or_create(user=u)
     return render(request, "user_list.html", {"users": users})
+
+
+@login_required
+def change_password(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Contrasena cambiada exitosamente")
+            return redirect("home")
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, "change_password.html", {"form": form})
 
 
 def handler404(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:
