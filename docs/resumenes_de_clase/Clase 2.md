@@ -1,4 +1,4 @@
-# Clase 2:
+# Clase 2 - 08/05/2026:
 
 Primero vino regañada sobre porque nos estaba pidiendo CRUDS django relacionados con el proyecto y luego charla reflexiva sobre el trabajo y empleabilidad del desarrollador de software Junior actual y la importancia del github, inglés y saberse presentar/vender.
 

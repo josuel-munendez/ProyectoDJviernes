@@ -1,4 +1,4 @@
-# Clase 1:
+# Clase 1 - 24/04/26:
 
 Primero se nos introduce a la metodología de trabajo: todo será individual, cada uno escoge un módulo y vamos a trabajar con base en eso. Los resúmenes como este serán parte de la evaluación. También vamos a estar haciendo resúmenes de clases para medir el nivel de concentración de las personas en las clases.
 
