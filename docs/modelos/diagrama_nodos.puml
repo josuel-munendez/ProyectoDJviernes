@@ -10,27 +10,32 @@ node "Cliente" as client {
   artifact "Responsive Design" as responsive
 }
 
-node "Servidor Web" as server {
-  artifact "Django 4.2" as django
-  artifact "Gunicorn / runserver" as wsgi
-  database "SQLite (Dev)" as sqlite
-}
-
-node "Servidor de Producción (Futuro)" as prod {
-  artifact "Nginx" as nginx
-  artifact "Gunicorn" as gunicorn
-  database "MySQL / MariaDB" as mysql
+node "Contenedor Docker / Podman" as docker {
+  artifact "docker-entrypoint.sh" as entrypoint
+  artifact "Gunicorn 26.x" as gunicorn
+  artifact "Django 6.0 + Whitenoise" as django
+  database "SQLite (Persistente)" as sqlite
   artifact "Archivos Estáticos" as static
+  artifact "Seed Data (1 vez)" as seed
 }
 
-node "Cliente Móvil" as mobile {
-  artifact "Navegador Móvil" as mob_browser
+node "Volumen Docker" as volume {
+  database "db.sqlite3" as db_file
+  artifact ".seed_done (flag)" as flag
 }
 
-client -down-> server : HTTP/HTTPS
-mobile -down-> server : HTTP/HTTPS
-server -right-> sqlite : ORM Django
-server -down-> prod : Migración futura
-prod -right-> mysql : SQL
+client -up-> docker : HTTP :8000
+entrypoint -down-> gunicorn : migrate + collectstatic + seed
+gunicorn -down-> django : WSGI
+django -down-> sqlite : ORM
+sqlite -down-> volume : persistencia
+django -left-> static : Whitenoise serve
+seed -right-> volume : flag file
+
+note bottom of docker
+  <b>Imagen:</b> python:3.12-slim
+  <b>Puerto:</b> 8000
+  <b>Reinicio:</b> unless-stopped
+end note
 
 @enduml

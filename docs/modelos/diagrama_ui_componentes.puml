@@ -1,0 +1,104 @@
+@startuml Diagrama de Componentes - UI
+
+skinparam component {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+}
+
+skinparam database {
+  BackgroundColor #FFF3E0
+  BorderColor #E65100
+}
+
+package "Plantilla Base" as base {
+  [base.html] as base_html
+  [navbar.html] as navbar
+  [sidebar.html] as sidebar
+  [sidebar_menu.html] as menu
+}
+
+package "Páginas Públicas" as public {
+  [home.html (login)] as login_page
+  [register.html] as register_page
+}
+
+package "Páginas Autenticadas" as auth {
+  [home.html (records)] as records_page
+  [admin_dashboard.html] as dashboard
+  [record.html] as detail
+  [add_record.html] as add
+  [update_record.html] as edit
+  [search.html] as search
+  [user_list.html] as userlist
+  [change_password.html] as changepw
+}
+
+package "Módulo Productos" as prod {
+  [productos/listado.html] as prod_list
+  [productos/form.html] as prod_form
+  [productos/detalle.html] as prod_detail
+}
+
+package "Módulo Catálogo" as cat {
+  [catalogo/categorias.html] as cat_list
+  [catalogo/catalogos.html] as cat_catalogs
+}
+
+package "Módulo Usuarios" as users {
+  [usuarios/perfil.html] as profile
+  [usuarios/editar_perfil.html] as edit_profile
+  [usuarios/register.html] as user_register
+}
+
+package "Recursos Locales" as static_res {
+  database "Bootstrap 5.3 CSS/JS" as bs
+  database "Bootstrap Icons" as icons
+  database "custom.css" as custom
+}
+
+base_html --> navbar : incluye
+base_html --> sidebar : incluye
+sidebar --> menu : incluye
+
+base_html --> login_page : content (no auth)
+base_html --> register_page : content (no auth)
+base_html --> records_page : content (auth)
+base_html --> dashboard : content (auth)
+base_html --> detail : content (auth)
+base_html --> add : content (auth)
+base_html --> edit : content (auth)
+base_html --> search : content (auth)
+base_html --> userlist : content (auth)
+base_html --> changepw : content (auth)
+base_html --> prod_list : content (auth)
+base_html --> prod_form : content (auth)
+base_html --> prod_detail : content (auth)
+base_html --> cat_list : content (auth)
+base_html --> cat_catalogs : content (auth)
+base_html --> profile : content (auth)
+base_html --> edit_profile : content (auth)
+base_html --> user_register : content (no auth)
+
+base_html --> bs : static
+base_html --> icons : static
+base_html --> custom : static
+
+note right of base_html
+  <b>{% block content %}</b>
+  único (no duplicado)
+  usa if/else para wrapper
+end note
+
+note right of navbar
+  <b>Glassmorphism</b>
+  Avatar con inicial
+  Dropdown usuario
+end note
+
+note right of sidebar
+  <b>Degradado índigo</b>
+  Offcanvas móvil
+  Footer con rol
+end note
+
+@enduml

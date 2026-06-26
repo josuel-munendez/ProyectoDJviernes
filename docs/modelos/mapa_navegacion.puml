@@ -15,41 +15,60 @@ skinparam note {
   BorderColor #7B1FA2
 }
 
-rectangle "<size:16><b>Login</b></size>\n/home/" as login
-rectangle "<size:16><b>Home</b></size>\nRegistros + Paginación" as home
+rectangle "<size:16><b>Login</b></size>\n/home/ (GET)" as login
+rectangle "<size:16><b>Home</b></size>\nRegistros + Paginación\n/home/ (POST)" as home
 rectangle "<size:16><b>Registro</b></size>\n/register/" as register
 rectangle "<size:16><b>Detalle</b></size>\n/record/\\<id>" as detail
 rectangle "<size:16><b>Editar</b></size>\n/update_record/\\<id>" as edit
-rectangle "<size:16><b>Dashboard</b></size>\n/admin_panel/" as dashboard
+rectangle "<size:16><b>Añadir</b></size>\n/add_record/" as add
+rectangle "<size:16><b>Dashboard</b></size>\n/admin_dashboard/" as dashboard
 rectangle "<size:16><b>Productos</b></size>\n/productos/" as productos
-rectangle "<size:16><b>Catálogo</b></size>\n/catalogo/" as catalogo
+rectangle "<size:16><b>Categorías</b></size>\n/catalogo/categorias/" as categorias
+rectangle "<size:16><b>Catálogos</b></size>\n/catalogo/catalogos/" as catalogos
 rectangle "<size:16><b>Perfil</b></size>\n/profile/" as profile
+rectangle "<size:16><b>Editar Perfil</b></size>\n/editar_perfil/" as edit_profile
+rectangle "<size:16><b>Usuarios</b></size>\n/usuarios/" as userlist
 rectangle "<size:16><b>Buscar</b></size>\n/search_record/" as search
+rectangle "<size:16><b>Exportar CSV</b></size>\n/export_csv/" as export
 
-card "<b>Menú Horizontal</b>\n(Todos los roles)" as menu_h
-card "<b>Sidebar Vertical</b>\n(Admin/CRUD)" as menu_v
+card "<b>Navbar Superior</b>\n(Todos los roles)\nGlassmorphism + Avatar" as menu_h
+card "<b>Sidebar Lateral</b>\n(Usuarios autenticados)\nDegradado índigo + Iconos" as menu_v
+card "<b>Offcanvas Móvil</b>\n(< 992px)\nHamburguesa + Sidebar" as menu_m
 
 note bottom of login
   <b>Rol:</b> Todos
-  <b>Acción:</b> Autenticarse
+  <b>Estilo:</b> Tarjeta centrada
+  <b>Fondo:</b> Degradado pastel
 end note
 
 note bottom of dashboard
-  <b>Rol:</b> Admin
-  <b>Muestra:</b> Estadísticas
+  <b>Rol:</b> Admin/Gestor
+  <b>Estilo:</b> Bento-grid
+  <b>Incluye:</b> Stats + Actividad + Accesos
+end note
+
+note bottom of home
+  <b>Rol:</b> Todos (autenticados)
+  <b>Tabla:</b> table-crm con paginación
+  <b>Búsqueda:</b> Por nombre/email/teléfono
 end note
 
 login --> home : Login exitoso
 login --> register : "Registrarse"
 home --> detail : Click en ID
-detail --> edit : "Update"
-detail --> home : "Back"
+detail --> edit : "Actualizar"
+detail --> home : "Volver"
 edit --> home : Guardado
-home --> dashboard : Sidebar Admin
-home --> productos : Sidebar Admin
-home --> catalogo : Sidebar Admin
+home --> add : "Añadir"
+home --> dashboard : Sidebar
+home --> productos : Sidebar
+home --> categorias : Sidebar
+home --> catalogos : Sidebar
 home --> profile : Navbar
-home --> search : Navbar
+home --> edit_profile : Navbar > Perfil
+home --> search : Navbar/Sidebar
+home --> export : Sidebar
+home --> userlist : Sidebar (Admin)
 home --> login : Logout
 
 @enduml

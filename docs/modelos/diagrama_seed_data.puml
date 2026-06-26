@@ -1,0 +1,57 @@
+@startuml Diagrama de Flujo - Seed Data
+
+skinparam activity {
+  BackgroundColor #E8F5E9
+  BorderColor #2E7D32
+}
+
+skinparam partition {
+  BackgroundColor #F3E5F5
+  BorderColor #7B1FA2
+}
+
+start
+
+:Leer initial_data.json
+(42 registros en 6 modelos);
+
+:Iniciar transacción atómica;
+
+:Limpiar datos existentes
+(Catalogo→Producto→Categoria→
+Record→Profile→User);
+
+while (Procesar cada entrada del fixture) is (siguiente)
+  if (Modelo == auth.User?) then (sí)
+    :Crear usuario con
+    create_user(username, password);
+    :Guardar en pk_map
+    ("auth.user", oldPK)→newPK;
+  elseif (Modelo == UserProfile?) then (sí)
+    :Buscar user_id en pk_map;
+    :update_or_create perfil;
+  elseif (Modelo == Categoria?) then (sí)
+    :Crear categoría;
+    :Guardar en pk_map;
+  elseif (Modelo == Producto?) then (sí)
+    :Crear producto;
+    :Guardar en pk_map;
+  elseif (Modelo == Catalogo?) then (sí)
+    :Resolver categoria_id y
+    producto_id desde pk_map;
+    :Crear catálogo;
+  else (Record)
+    :Crear registro directamente;
+  endif
+endwhile
+
+:Commit transacción;
+
+:Mostrar resumen
+(4 usuarios, 8 registros,
+6 categorías, 12 productos,
+8 catálogos);
+
+stop
+
+@enduml
