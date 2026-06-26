@@ -1,0 +1,42 @@
+/* Custom styles for Django CRM */
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table th {
+    background-color: #343a40;
+    color: white;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.sidebar {
+    background-color: #212529;
+}
+
+.sidebar .nav-link {
+    border-radius: 0;
+    padding: 10px 15px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #343a40;
+}
+
+.sidebar .nav-link.active {
+    background-color: #0d6efd;
+}
+
+.footer {
+    background-color: #212529;
+    color: #adb5bd;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px;
+}
