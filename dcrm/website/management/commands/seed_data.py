@@ -20,7 +20,17 @@ USER_PASSWORDS = {
 class Command(BaseCommand):
     help = "Load seed data from fixture and set proper passwords"
 
+    def add_arguments(self, parser):
+        parser.add_argument("--check", action="store_true", help="Check if seed data exists (exit 0 if yes, 1 if no)")
+
     def handle(self, *args, **options):
+        if options.get("check"):
+            if User.objects.filter(username__in=USER_PASSWORDS.keys()).count() == len(USER_PASSWORDS):
+                self.stdout.write("Seed data already loaded.")
+                return
+            self.stdout.write("Seed data not loaded.")
+            raise SystemExit(1)
+
         if not FIXTURE_PATH.exists():
             self.stderr.write(f"Fixture not found: {FIXTURE_PATH}")
             return

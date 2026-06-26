@@ -9,7 +9,7 @@ Sistema de gestión de clientes (CRM) desarrollado en Django con arquitectura mo
 | Django | 6.0.6 | Framework web |
 | Bootstrap 5 | 5.3.x | UI components (local) |
 | Bootstrap Icons | 1.11.3 | Iconografía (local) |
-| SQLite | - | Base de datos |
+| MySQL 8.0+ | 8.0 / 9.x | Base de datos |
 | Gunicorn | 26.0.0 | Servidor producción |
 | Python | 3.12+ | Lenguaje |
 
@@ -78,8 +78,30 @@ python manage.py seed_data
 - Python 3.12+
 - pip
 - virtualenv (recomendado)
+- MySQL 8.0+ (o Docker para ejecutar MySQL en contenedor)
 
-### Pasos
+### Opción A: Local con MySQL
+
+#### 1. Preparar MySQL
+
+```bash
+# Asegúrate de tener MySQL corriendo y crea la base de datos:
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS dcrm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p -e "CREATE USER IF NOT EXISTS 'dcrm_user'@'localhost' IDENTIFIED BY 'DcrmPass2026!';"
+mysql -u root -p -e "GRANT ALL PRIVILEGES ON dcrm.* TO 'dcrm_user'@'localhost'; FLUSH PRIVILEGES;"
+```
+
+O usa Docker para levantar solo MySQL:
+```bash
+docker run -d --name dcrm_mysql -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=Admin12345! \
+  -e MYSQL_DATABASE=dcrm \
+  -e MYSQL_USER=dcrm_user \
+  -e MYSQL_PASSWORD=DcrmPass2026! \
+  mysql:8.0
+```
+
+#### 2. Preparar Python
 
 ```bash
 # Clonar repositorio
@@ -88,26 +110,53 @@ cd ProyectoDJviernes
 
 # Crear y activar entorno virtual
 python -m venv entorno
-source entorno/bin/activate  # Linux/Mac
-# .\entorno\Scripts\activate  # Windows
+source entorno/bin/activate      # Linux/Mac
+# .\entorno\Scripts\activate     # Windows
 
-# Instalar dependencias
+# Instalar dependencias (incluye mysqlclient)
 pip install -r requirements.txt
+```
 
-# Migrar base de datos
+#### 3. Migrar y cargar datos
+
+```bash
 cd dcrm
 python manage.py migrate
-
-# Cargar datos de ejemplo
 python manage.py seed_data
-
-# Iniciar servidor de desarrollo
 python manage.py runserver
 ```
 
 Acceder en http://localhost:8000
 
+### Opción B: Todo con Docker
+
+```bash
+docker compose up -d
+# Esperar ~30s a que MySQL esté listo y las migraciones terminen
+# Acceder en http://localhost:8000
+```
+
+### Opción C: SQLite (alternativa)
+
+Si no tienes MySQL, puedes usar SQLite sobreescribiendo variables de entorno:
+
+```bash
+export DJANGO_DB_ENGINE=django.db.backends.sqlite3
+export DJANGO_DB_PATH=db.sqlite3
+cd dcrm
+python manage.py migrate
+python manage.py seed_data
+python manage.py runserver
+```
+
 ## Despliegue con Contenedores (Docker / Podman)
+
+El proyecto incluye un `docker-compose.yml` con dos servicios:
+
+| Servicio | Imagen | Función |
+|----------|--------|---------|
+| `db` | `mysql:8.0` | Base de datos MySQL |
+| `web` | Construcción local | Django + Gunicorn |
 
 ### Construir y ejecutar
 
@@ -119,13 +168,21 @@ docker compose up -d
 podman-compose up -d
 ```
 
-El contenedor ejecuta automáticamente:
-1. Migraciones de base de datos
-2. Recolección de archivos estáticos
-3. Carga de seed data (solo si la BD está vacía)
-4. Servidor Gunicorn en puerto 8000
+El contenedor `web` ejecuta automáticamente:
+1. Espera a que MySQL esté listo (healthcheck)
+2. Migraciones de base de datos
+3. Recolección de archivos estáticos
+4. Carga de seed data (solo si no existe)
+5. Servidor Gunicorn en puerto 8000
 
-La base de datos persiste en un volumen Docker.
+Los datos de MySQL persisten en el volumen `dcrm_mysql_data`.
+
+### Parar y limpiar
+
+```bash
+docker compose down          # Parar servicios
+docker compose down -v       # Parar y borrar volúmenes (BD incluida)
+```
 
 ### Variables de entorno
 
@@ -134,7 +191,14 @@ La base de datos persiste en un volumen Docker.
 | `DJANGO_SECRET_KEY` | (key por defecto) | Clave secreta de Django |
 | `DJANGO_DEBUG` | `False` | Modo debug (True/False) |
 | `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,0.0.0.0` | Hosts permitidos |
-| `DJANGO_DB_PATH` | `db.sqlite3` (local) | Ruta de la BD SQLite |
+| `DJANGO_DB_ENGINE` | `django.db.backends.mysql` | Motor de BD |
+| `DJANGO_DB_NAME` | `dcrm` | Nombre BD |
+| `DJANGO_DB_USER` | `dcrm_user` | Usuario BD |
+| `DJANGO_DB_PASSWORD` | `DcrmPass2026!` | Contraseña BD |
+| `DJANGO_DB_HOST` | `db` (Docker) / `localhost` (local) | Host BD |
+| `DJANGO_DB_PORT` | `3306` | Puerto BD |
+| `MYSQL_ROOT_PASSWORD` | `Admin12345!` | Contraseña root MySQL (solo contenedor) |
+| `MYSQL_PASSWORD` | `DcrmPass2026!` | Contraseña dcrm_user (solo contenedor) |
 
 ## Seguridad (4 Capas)
 

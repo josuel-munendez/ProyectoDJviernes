@@ -1,4 +1,23 @@
 services:
+  db:
+    image: mysql:8.0
+    container_name: dcrm_mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-Admin12345!}
+      - MYSQL_DATABASE=dcrm
+      - MYSQL_USER=dcrm_user
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-DcrmPass2026!}
+    ports:
+      - "3306:3306"
+    volumes:
+      - dcrm_mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     build: .
     container_name: dcrm_crm
@@ -8,10 +27,16 @@ services:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-django-insecure-wrd@k5c63l-25ln)85jwma^uf$he_n077de(m!-(rhiu5#*d+q}
       - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0}
-      - DJANGO_DB_PATH=/app/data/db.sqlite3
-    volumes:
-      - dcrm_data:/app/data
+      - DJANGO_DB_ENGINE=django.db.backends.mysql
+      - DJANGO_DB_NAME=dcrm
+      - DJANGO_DB_USER=dcrm_user
+      - DJANGO_DB_PASSWORD=${MYSQL_PASSWORD:-DcrmPass2026!}
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=3306
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
-  dcrm_data:
+  dcrm_mysql_data:
