@@ -17,6 +17,7 @@ from .models import Record
 from productos.models import Producto
 from catalogo.models import Categoria
 from django.contrib.auth.models import User
+from usuarios.models import UserProfile
 
 
 _record_service = CrudService(Record)
@@ -144,6 +145,17 @@ def add_record(request: HttpRequest) -> HttpResponse:
         messages.success(request, "Registro creado exitosamente")
         return redirect("home")
     return render(request, "add_record.html", {"form": form})
+
+
+@login_required
+def user_list(request: HttpRequest) -> HttpResponse:
+    if not has_admin_role(request.user):
+        messages.error(request, "No tienes permisos para ver esta pagina")
+        return redirect("home")
+    users = User.objects.all().order_by("username")
+    for u in users:
+        UserProfile.objects.get_or_create(user=u)
+    return render(request, "user_list.html", {"users": users})
 
 
 def handler404(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:
