@@ -11,6 +11,7 @@ urlpatterns = [
     path('update_record/<str:pk>/', views.update_record, name='update_record'),
     path('add_record/', views.add_record, name='add_record'),
     path('buscar/', views.search_records, name='search'),
+    path('users/', views.user_list, name='user_list'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
 
