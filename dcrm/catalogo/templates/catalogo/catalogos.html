@@ -1,3 +1,4 @@
+<!-- Pagina de listado de catalogos con tabla y paginacion. Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
@@ -10,6 +11,7 @@
     </div>
 
     {% if catalogos %}
+    <!-- Tabla de catalogos -->
     <div class="table-responsive animate-slide-in">
         <table class="table-crm">
             <thead>

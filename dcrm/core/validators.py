@@ -1,7 +1,11 @@
+"""Validadores de campos mediante expresiones regulares para el CRM."""
+
 import re
 
 
 class RegexValidator:
+    """Valida campos comunes (usuario, email, teléfono, etc.) usando patrones regex predefinidos."""
+
     _patterns = {
         "username": re.compile(r"^[a-zA-Z0-9@\.\+\-_]+$"),
         "name": re.compile(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"),
@@ -13,6 +17,10 @@ class RegexValidator:
 
     @classmethod
     def validate(cls, field_type: str, value: str) -> bool:
+        """Valida un valor contra el patrón correspondiente al tipo de campo.
+
+        Si el tipo de campo no está registrado, retorna True.
+        """
         pattern = cls._patterns.get(field_type)
         if pattern is None:
             return True

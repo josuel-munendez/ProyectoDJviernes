@@ -1,3 +1,4 @@
+/* ===== VARIABLES CSS (colores, sombras, tipografía, dimensiones) ===== */
 :root {
   --primary: #4F46E5;
   --primary-dark: #3730A3;
@@ -36,6 +37,7 @@
 
 * { box-sizing: border-box; }
 
+/* ===== ESTILOS BASE ===== */
 body {
   font-family: var(--font-sans);
   background: var(--body-bg);
@@ -45,10 +47,7 @@ body {
   padding: 0;
 }
 
-/* Fix whitespace above navbar: no padding-top on body.
-   Instead, main content areas get top padding via their containers. */
-
-/* ===== ANIMATED BACKGROUND (Mario UI inspired - cool colors) ===== */
+/* ===== FONDO ANIMADO (inspiración Mario UI - colores fríos) ===== */
 #bg-animation {
   position: fixed;
   top: 0;
@@ -141,7 +140,7 @@ body {
   animation: pan 480s linear infinite;
 }
 
-/* Magic mouse glow effect */
+/* ===== EFECTO DE BRILLO DEL CURSOR (partículas estelares) ===== */
 #magic-mouse-container {
   position: fixed;
   top: 0;
@@ -169,6 +168,7 @@ body {
   color: rgba(255,255,255,0.6);
 }
 
+/* Animación de desplazamiento horizontal para el fondo de estrellas */
 @keyframes pan {
   0% { background-position: 0% 0%; }
   100% { background-position: 100% 0%; }
@@ -190,7 +190,7 @@ body {
   100% { transform: translate(20px,120px) rotateX(-180deg) rotateY(-90deg) scale(0.5); opacity: 0; }
 }
 
-/* ===== LANDING PAGE ===== */
+/* ===== LANDING PAGE (página de aterrizaje pública) ===== */
 .landing-page {
   position: relative;
   z-index: 1;
@@ -293,7 +293,7 @@ body {
   50% { transform: translateX(-50%) translateY(8px); }
 }
 
-/* Landing Features */
+/* ===== SECCIÓN DE CARACTERÍSTICAS DE LA LANDING ===== */
 .landing-features {
   background: var(--card-bg);
   padding: 5rem 2rem;
@@ -364,7 +364,7 @@ body {
   margin: 0;
 }
 
-/* Landing CTA */
+/* ===== SECCIÓN DE LLAMADA A LA ACCIÓN (CTA) DE LA LANDING ===== */
 .landing-cta {
   background: linear-gradient(135deg, var(--dark-sidebar), var(--primary-dark));
   padding: 4rem 2rem;
@@ -404,7 +404,7 @@ body {
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 }
 
-/* Landing Nav */
+/* ===== BARRA DE NAVEGACIÓN DE LA LANDING PAGE ===== */
 .landing-nav {
   position: fixed;
   top: 0;
@@ -470,7 +470,7 @@ body {
 }
 .landing-nav .nav-links .btn-nav-register:hover { background: var(--primary-light); color: #fff; }
 
-/* Hamburger toggle for landing nav */
+/* Botón hamburguesa para el menú responsivo de la landing */
 .landing-nav-toggle {
   display: none;
   background: rgba(255,255,255,0.1);
@@ -506,7 +506,7 @@ body {
   .landing-nav .nav-links .btn-nav { text-align: center; }
 }
 
-/* ===== LOGIN PAGE (standalone /login/ page) ===== */
+/* ===== PÁGINA DE INICIO DE SESIÓN (/login) ===== */
 .login-page {
   min-height: calc(100vh - var(--navbar-height));
   display: flex;
@@ -544,7 +544,7 @@ body.star-bg > .container .login-page {
 .login-card .login-header p { opacity: 0.8; font-size: 0.9rem; margin: 0.25rem 0 0; }
 .login-card .login-body { padding: 2rem; }
 
-/* ===== REGISTER PAGE ===== */
+/* ===== PÁGINA DE REGISTRO (/register) ===== */
 .register-page {
   min-height: calc(100vh - var(--navbar-height) - 2rem);
   display: flex;
@@ -623,7 +623,7 @@ body.star-bg > .container .login-page {
   color: var(--text-muted);
 }
 
-/* ===== NAVBAR ===== */
+/* ===== BARRA DE NAVEGACIÓN SUPERIOR DEL CRM ===== */
 .navbar-crm {
   background: linear-gradient(135deg, var(--dark-sidebar) 0%, var(--primary-dark) 100%) !important;
   min-height: var(--navbar-height);
@@ -690,7 +690,7 @@ body.star-bg > .container .login-page {
   color: #fff;
 }
 
-/* Responsive navbar collapse */
+/* Comportamiento responsivo del menú colapsado */
 .navbar-crm .navbar-collapse {
   background: var(--dark-sidebar);
   border-radius: 0 0 var(--radius) var(--radius);
@@ -710,7 +710,7 @@ body.star-bg > .container .login-page {
   }
 }
 
-/* ===== SIDEBAR ===== */
+/* ===== BARRA LATERAL DEL CRM ===== */
 .sidebar-crm {
   position: fixed;
   top: var(--navbar-height);
@@ -813,7 +813,7 @@ body.star-bg > .container .login-page {
 .offcanvas-sidebar .offcanvas-header { border-bottom: 1px solid rgba(255,255,255,0.08); }
 .offcanvas-sidebar .btn-close { filter: invert(1) brightness(200%); }
 
-/* ===== MAIN CONTENT ===== */
+/* ===== CONTENIDO PRINCIPAL DEL CRM ===== */
 .main-content-crm {
   margin-left: var(--sidebar-width);
   padding: 2rem 2rem;
@@ -821,7 +821,7 @@ body.star-bg > .container .login-page {
   transition: var(--transition);
 }
 
-/* ===== CARDS ===== */
+/* ===== TARJETAS (cards) ===== */
 .card-crm {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -839,7 +839,7 @@ body.star-bg > .container .login-page {
 }
 .card-crm .card-body { padding: 1.25rem; }
 
-/* ===== STAT CARDS (Dashboard) ===== */
+/* ===== TARJETAS DE ESTADÍSTICAS (Dashboard) ===== */
 .stat-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -881,7 +881,7 @@ body.star-bg > .container .login-page {
 .stat-card .stat-trend.up { background: #ECFDF5; color: var(--success); }
 .stat-card .stat-trend.down { background: #FEF2F2; color: var(--danger); }
 
-/* ===== BENTO GRID ===== */
+/* ===== CUADRÍCULA BENTO (diseño tipo dashboard) ===== */
 .bento-grid {
   display: grid;
   gap: 1.25rem;
@@ -913,7 +913,7 @@ body.star-bg > .container .login-page {
 .bento-item.bento-tall { grid-row: span 2; }
 .bento-item.bento-wide { grid-column: span 2; }
 
-/* ===== TABLES ===== */
+/* ===== TABLAS ===== */
 .table-crm {
   width: 100%;
   border-collapse: separate;
@@ -942,7 +942,7 @@ body.star-bg > .container .login-page {
 .table-crm tbody tr:last-child td:last-child { border-radius: 0 0 var(--radius-sm) 0; }
 .table-crm .actions { white-space: nowrap; }
 
-/* ===== FORMS ===== */
+/* ===== FORMULARIOS ===== */
 .form-crm .form-label {
   font-weight: 600;
   font-size: 0.875rem;
@@ -965,7 +965,7 @@ body.star-bg > .container .login-page {
   box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
 }
 
-/* ===== BUTTONS ===== */
+/* ===== BOTONES ===== */
 .btn-crm {
   padding: 0.5rem 1.25rem;
   border-radius: var(--radius-sm);
@@ -997,7 +997,7 @@ body.star-bg > .container .login-page {
 .btn-crm-sm { padding: 0.35rem 0.85rem; font-size: 0.8rem; }
 .btn-crm-lg { padding: 0.7rem 1.5rem; font-size: 1rem; }
 
-/* ===== PAGINATION ===== */
+/* ===== PAGINACIÓN ===== */
 .pagination-crm {
   display: flex;
   gap: 0.3rem;
@@ -1025,7 +1025,7 @@ body.star-bg > .container .login-page {
   color: var(--primary);
 }
 
-/* ===== ALERTS ===== */
+/* ===== ALERTAS ===== */
 .alert-crm {
   border: none;
   border-radius: var(--radius);
@@ -1040,7 +1040,7 @@ body.star-bg > .container .login-page {
 .alert-crm.alert-warning { background: #FFFBEB; color: #92400E; border-left: 4px solid var(--accent); }
 .alert-crm.alert-info { background: #ECFEFF; color: #155E75; border-left: 4px solid var(--info); }
 
-/* ===== EMPTY STATE ===== */
+/* ===== ESTADO VACÍO (sin datos) ===== */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -1063,7 +1063,7 @@ body.star-bg > .container .login-page {
 .empty-state h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
 .empty-state p { color: var(--text-secondary); font-size: 0.9rem; max-width: 300px; }
 
-/* ===== SECTION TITLES ===== */
+/* ===== TÍTULOS DE SECCIÓN ===== */
 .section-title {
   font-size: 1.35rem;
   font-weight: 700;
@@ -1079,7 +1079,7 @@ body.star-bg > .container .login-page {
   color: var(--text-secondary);
 }
 
-/* ===== BADGES ===== */
+/* ===== INSIGNIAS (badges) ===== */
 .badge-crm {
   padding: 0.25rem 0.65rem;
   border-radius: 20px;
@@ -1091,7 +1091,7 @@ body.star-bg > .container .login-page {
 .badge-crm.role-vendedor { background: #ECFDF5; color: #065F46; }
 .badge-crm.role-cliente { background: #EEF2FF; color: #3730A3; }
 
-/* ===== FOOTER ===== */
+/* ===== PIE DE PÁGINA ===== */
 .footer-crm {
   background: var(--dark);
   color: var(--text-muted);
@@ -1111,7 +1111,7 @@ body.star-bg > .container .login-page {
   z-index: 1;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== DISEÑO RESPONSIVO (media queries) ===== */
 @media (max-width: 1199.98px) {
   .bento-grid-4 { grid-template-columns: repeat(2, 1fr); }
   .bento-grid-3 { grid-template-columns: repeat(2, 1fr); }
@@ -1160,18 +1160,18 @@ body.star-bg > .container .login-page {
   .register-card .register-body { padding: 1.5rem; }
 }
 
-/* ===== SPA ===== */
+/* ===== CONTENEDOR SPA (Single Page Application) ===== */
 #spa-content {
   min-height: 200px;
 }
 
-/* ===== SCROLLBAR ===== */
+/* ===== BARRA DE DESPLAZAMIENTO ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ===== ANIMATIONS ===== */
+/* ===== ANIMACIONES ===== */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

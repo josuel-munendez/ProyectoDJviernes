@@ -1,3 +1,4 @@
+<!-- Panel de administracion con estadisticas del sistema. Extiende base.html. Solo visible para superusuarios. -->
 {% extends 'base.html' %}
 {% block content %}
 
@@ -9,6 +10,7 @@
         </div>
     </div>
 
+    <!-- Tarjetas de estadisticas del sistema -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-lg-3">
             <div class="stat-card animate-slide-in stagger-1">
@@ -56,6 +58,7 @@
         </div>
     </div>
 
+    <!-- Secciones informativas del panel -->
     <div class="bento-grid mt-4">
         <div class="bento-item animate-fade-in">
             <div class="bento-title"><i class="bi bi-people me-1"></i>Usuarios Recientes</div>

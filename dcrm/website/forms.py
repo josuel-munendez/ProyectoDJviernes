@@ -1,3 +1,9 @@
+"""Formularios de la aplicacion website.
+
+Define los formularios para autenticacion, registro de
+usuarios y gestion de registros de clientes.
+"""
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -7,6 +13,7 @@ from .models import Record
 
 
 class LoginForm(AuthenticationForm):
+    """Formulario de inicio de sesion con validacion de nombre de usuario."""
     username = forms.CharField(
         label="Usuario",
         widget=forms.TextInput(attrs={
@@ -29,6 +36,7 @@ class LoginForm(AuthenticationForm):
     )
 
     def clean_username(self):
+        """Valida que el nombre de usuario cumpla con el formato permitido."""
         value = self.cleaned_data.get("username", "")
         if value and not RegexValidator.validate("username", value):
             raise forms.ValidationError("El usuario solo puede contener letras, numeros y @/./+/-/_.")
@@ -36,6 +44,7 @@ class LoginForm(AuthenticationForm):
 
 
 class UserRegisterForm(UserCreationForm):
+    """Formulario de registro de nuevo usuario con campos adicionales de perfil."""
     email = forms.EmailField(
         label="Correo electronico",
         widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Correo electronico"}),
@@ -54,24 +63,28 @@ class UserRegisterForm(UserCreationForm):
         fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
 
     def clean_first_name(self):
+        """Valida que el nombre solo contenga letras y espacios."""
         value = self.cleaned_data.get("first_name", "")
         if value and not RegexValidator.validate("name", value):
             raise forms.ValidationError("El nombre solo puede contener letras y espacios.")
         return value
 
     def clean_last_name(self):
+        """Valida que el apellido solo contenga letras y espacios."""
         value = self.cleaned_data.get("last_name", "")
         if value and not RegexValidator.validate("name", value):
             raise forms.ValidationError("El apellido solo puede contener letras y espacios.")
         return value
 
     def clean_email(self):
+        """Valida que el correo electronico tenga un formato valido."""
         value = self.cleaned_data.get("email", "")
         if value and not RegexValidator.validate("email", value):
             raise forms.ValidationError("El formato del email no es valido.")
         return value
 
     def __init__(self, *args, **kwargs):
+        """Inicializa el formulario asignando clases y atributos Bootstrap a los campos."""
         super(UserRegisterForm, self).__init__(*args, **kwargs)
 
         self.fields["username"].widget.attrs["class"] = "form-control"
@@ -103,6 +116,7 @@ class UserRegisterForm(UserCreationForm):
 
 
 class RecordForm(forms.ModelForm):
+    """Formulario para crear y actualizar registros de clientes."""
     first_name = forms.CharField(
         label="Nombre",
         widget=forms.TextInput(attrs={"placeholder": "Nombre", "class": "form-control", "required": "", "minlength": "2"}),
@@ -137,30 +151,35 @@ class RecordForm(forms.ModelForm):
     )
 
     def clean_first_name(self):
+        """Valida que el nombre solo contenga letras y espacios."""
         value = self.cleaned_data.get("first_name", "")
         if value and not RegexValidator.validate("name", value):
             raise forms.ValidationError("El nombre solo puede contener letras y espacios.")
         return value
 
     def clean_last_name(self):
+        """Valida que el apellido solo contenga letras y espacios."""
         value = self.cleaned_data.get("last_name", "")
         if value and not RegexValidator.validate("name", value):
             raise forms.ValidationError("El apellido solo puede contener letras y espacios.")
         return value
 
     def clean_email(self):
+        """Valida que el correo electronico tenga un formato valido."""
         value = self.cleaned_data.get("email", "")
         if value and not RegexValidator.validate("email", value):
             raise forms.ValidationError("El formato del email no es valido.")
         return value
 
     def clean_phone(self):
+        """Valida que el telefono tenga entre 7 y 15 digitos, con signo + opcional."""
         value = self.cleaned_data.get("phone", "")
         if value and not RegexValidator.validate("phone", value):
             raise forms.ValidationError("El telefono debe contener entre 7 y 15 digitos, opcionalmente con + al inicio.")
         return value
 
     def clean_zip_code(self):
+        """Valida que el codigo postal tenga entre 4 y 10 digitos."""
         value = self.cleaned_data.get("zip_code", "")
         if value and not RegexValidator.validate("zip_code", value):
             raise forms.ValidationError("El codigo postal debe contener entre 4 y 10 digitos.")
@@ -171,4 +190,5 @@ class RecordForm(forms.ModelForm):
         fields = ["first_name", "last_name", "email", "phone", "address", "city", "state", "zip_code"]
 
 
+# Alias para mantener compatibilidad con importaciones existentes
 AddRecordForm = RecordForm
