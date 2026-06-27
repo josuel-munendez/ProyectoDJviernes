@@ -7,6 +7,14 @@ Write-Host "==> Activando entorno virtual..." -ForegroundColor Cyan
 Write-Host "==> Instalando dependencias..." -ForegroundColor Cyan
 pip install -r requirements.txt --quiet
 
+Write-Host "==> (Opcional) Intentando instalar mysqlclient..." -ForegroundColor Cyan
+pip install mysqlclient==2.2.8 --quiet 2>$null
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "    mysqlclient instalado (MySQL disponible)" -ForegroundColor Green
+} else {
+    Write-Host "    mysqlclient no disponible - usando SQLite" -ForegroundColor Yellow
+}
+
 Write-Host "==> Aplicando migraciones..." -ForegroundColor Cyan
 Set-Location dcrm
 python manage.py migrate --noinput
