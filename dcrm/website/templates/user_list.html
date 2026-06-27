@@ -1,3 +1,4 @@
+<!-- Pagina de listado de usuarios del sistema (solo admin). Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
@@ -10,6 +11,7 @@
     </div>
 
     {% if users %}
+    <!-- Tabla de usuarios del sistema -->
     <div class="table-responsive animate-slide-in">
         <table class="table-crm">
             <thead>

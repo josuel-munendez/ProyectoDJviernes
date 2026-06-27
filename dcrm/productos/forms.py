@@ -1,10 +1,18 @@
+"""Formularios de la aplicación productos.
+
+Define el formulario para crear y editar productos con validación
+de nombre mediante expresiones regulares.
+"""
 from django import forms
 from core.validators import RegexValidator
 from .models import Producto
 
 
 class ProductoForm(forms.ModelForm):
+    """Formulario para la creación y edición de productos."""
+
     def clean_nombre(self):
+        """Valida que el nombre solo contenga caracteres permitidos."""
         value = self.cleaned_data.get("nombre", "")
         if value and not RegexValidator.validate("name", value):
             raise forms.ValidationError("El nombre solo puede contener letras, numeros y espacios.")

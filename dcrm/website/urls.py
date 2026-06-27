@@ -1,3 +1,9 @@
+"""Configuracion de rutas (URLs) de la aplicacion website.
+
+Define las rutas para autenticacion, gestion de registros,
+busqueda, panel de administracion y exportacion de datos.
+"""
+
 from django.urls import path
 from . import views
 from .export import export_csv
@@ -18,5 +24,6 @@ urlpatterns = [
     path('exportar-csv/', export_csv, name='export_csv'),
 ]
 
+# Manejadores personalizados para errores HTTP
 handler404 = 'website.views.handler404'
 handler500 = 'website.views.handler500'

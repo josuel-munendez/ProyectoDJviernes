@@ -1,3 +1,4 @@
+<!-- Pagina de busqueda de registros por nombre, apellido o email. Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
@@ -9,6 +10,7 @@
         </div>
     </div>
 
+    <!-- Formulario de busqueda -->
     <form method="GET" action="{% url 'search' %}" class="form-crm mb-4">
         <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="Buscar por nombre, apellido o email..." value="{{ query }}">
@@ -19,6 +21,7 @@
     </form>
 
     {% if query %}
+    <!-- Resultados de la busqueda -->
     <div class="section-title mt-4">
         <h5><i class="bi bi-funnel me-1"></i>Resultados para "{{ query }}"</h5>
     </div>

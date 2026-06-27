@@ -1,7 +1,9 @@
+<!-- Pagina principal: muestra lista de registros (autenticado) o formulario de inicio de sesion (invitado). Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
 {% if user.is_authenticated %}
+<!-- Seccion: listado de registros con tabla y paginacion -->
 <div class="animate-fade-in">
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
         <div>
@@ -101,6 +103,7 @@
 </div>
 
 {% else %}
+<!-- Seccion: formulario de inicio de sesion para usuarios no autenticados -->
 <div class="login-page animate-fade-in">
     <div class="login-card">
         <div class="login-header">
@@ -159,4 +162,5 @@ document.getElementById('togglePassword')?.addEventListener('click', function() 
 </script>
 {% endif %}
 
+<!-- Fin del bloque content -->
 {% endblock %}

@@ -1,3 +1,4 @@
+<!-- Pagina de listado de productos con tabla y paginacion. Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
@@ -13,6 +14,7 @@
     </div>
 
     {% if productos %}
+    <!-- Tabla de productos con acciones -->
     <div class="table-responsive animate-slide-in">
         <table class="table-crm">
             <thead>

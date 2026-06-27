@@ -1,7 +1,9 @@
+<!-- Pagina de detalle de un registro individual de cliente. Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
 <div class="animate-fade-in">
+    <!-- Encabezado con nombre del registro -->
     <div class="section-title">
         <div>
             <h3><i class="bi bi-person-badge me-2"></i>Detalle del Registro</h3>
@@ -9,6 +11,7 @@
         </div>
     </div>
 
+    <!-- Datos detallados del registro -->
     <div class="card-crm">
         <div class="card-header">
             <i class="bi bi-person me-1"></i>{{ customer_record.first_name }} {{ customer_record.last_name }}
@@ -43,6 +46,7 @@
         </div>
     </div>
 
+    <!-- Acciones: volver, editar y eliminar -->
     <div class="d-flex gap-2 mt-4 flex-wrap">
         <a href="{% url 'home' %}" class="btn btn-crm btn-crm-outline">
             <i class="bi bi-arrow-left me-1"></i>Volver

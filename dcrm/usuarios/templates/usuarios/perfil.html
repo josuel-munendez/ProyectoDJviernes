@@ -1,3 +1,4 @@
+<!-- Pagina de perfil del usuario autenticado. Muestra datos de la cuenta y rol. Extiende base.html. -->
 {% extends 'base.html' %}
 {% block content %}
 
@@ -12,6 +13,7 @@
         </a>
     </div>
 
+    <!-- Datos del perfil del usuario -->
     <div class="card-crm">
         <div class="card-header">
             <i class="bi bi-person me-1"></i>{{ profile.user.username }}
