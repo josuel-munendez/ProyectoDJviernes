@@ -1,3 +1,8 @@
+"""Vistas de la aplicación productos.
+
+Implementa el CRUD completo de productos con paginación
+y protección mediante autenticación.
+"""
 from typing import Any
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -15,6 +20,7 @@ _producto_service = CrudService(Producto)
 
 @login_required
 def listado(request: HttpRequest) -> HttpResponse:
+    """Muestra el listado paginado de productos."""
     productos = _producto_service.get_all()
     paginator = Paginator(productos, 5)
     page = request.GET.get("page")
@@ -24,12 +30,14 @@ def listado(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def detalle(request: HttpRequest, pk: Any) -> HttpResponse:
+    """Muestra el detalle de un producto específico."""
     producto = get_object_or_404(Producto, id=pk)
     return render(request, "productos/detalle.html", {"producto": producto})
 
 
 @login_required
 def crear(request: HttpRequest) -> HttpResponse:
+    """Crea un nuevo producto a través de un formulario."""
     if request.method == "POST":
         form = ProductoForm(request.POST)
         if form.is_valid():
@@ -43,6 +51,7 @@ def crear(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def editar(request: HttpRequest, pk: Any) -> HttpResponse:
+    """Actualiza los datos de un producto existente."""
     producto = get_object_or_404(Producto, id=pk)
     if request.method == "POST":
         form = ProductoForm(request.POST, instance=producto)
@@ -57,6 +66,7 @@ def editar(request: HttpRequest, pk: Any) -> HttpResponse:
 
 @login_required
 def eliminar(request: HttpRequest, pk: Any) -> HttpResponse:
+    """Elimina un producto del sistema."""
     producto = get_object_or_404(Producto, id=pk)
     _producto_service.delete(producto)
     messages.success(request, "Producto eliminado exitosamente")

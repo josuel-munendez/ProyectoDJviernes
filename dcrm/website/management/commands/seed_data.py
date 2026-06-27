@@ -1,3 +1,10 @@
+"""Comando personalizado de Django para cargar datos iniciales (seed data) en el CRM.
+
+Lee datos desde un archivo fixture JSON, crea usuarios,
+perfiles, registros de clientes, categorias, productos y
+catalogos, asignando contrasenas predefinidas.
+"""
+
 import json
 from pathlib import Path
 
@@ -5,10 +12,12 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+# Ruta al archivo fixture con los datos iniciales
 FIXTURE_PATH = (
     Path(__file__).resolve().parent.parent.parent / "fixtures" / "initial_data.json"
 )
 
+# Contrasenas asignadas a los usuarios predefinidos
 USER_PASSWORDS = {
     "admin_usu": "admin123",
     "gestor": "gestor123",
@@ -18,13 +27,18 @@ USER_PASSWORDS = {
 
 
 class Command(BaseCommand):
+    """Comando seed_data: carga datos iniciales desde un fixture JSON."""
+
     help = "Load seed data from fixture and set proper passwords"
 
     def add_arguments(self, parser):
+        """Agrega el argumento opcional --check para verificar si los datos ya existen."""
         parser.add_argument("--check", action="store_true", help="Check if seed data exists (exit 0 if yes, 1 if no)")
 
     def handle(self, *args, **options):
+        """Ejecuta la carga de datos: verifica, limpia datos existentes e inserta los nuevos."""
         if options.get("check"):
+            # Verifica si los datos semilla ya estan cargados
             if User.objects.filter(username__in=USER_PASSWORDS.keys()).count() == len(USER_PASSWORDS):
                 self.stdout.write("Seed data already loaded.")
                 return
@@ -38,6 +52,7 @@ class Command(BaseCommand):
         with open(FIXTURE_PATH) as f:
             data = json.load(f)
 
+        # Ejecuta toda la operacion dentro de una transaccion atomica
         with transaction.atomic():
             from catalogo.models import Catalogo as CatalogoModel, Categoria as CategoriaModel
             from productos.models import Producto as ProductoModel
@@ -45,15 +60,17 @@ class Command(BaseCommand):
             from website.models import Record as RecordModel
 
             self.stdout.write("Clearing existing data...")
+            # Elimina datos existentes en orden inverso a las dependencias
             CatalogoModel.objects.all().delete()
             ProductoModel.objects.all().delete()
             CategoriaModel.objects.all().delete()
             RecordModel.objects.all().delete()
-            # Preserve superusers created via `createsuperuser`
+            # Preserva los superusuarios creados via `createsuperuser`
             superuser_ids = list(User.objects.filter(is_superuser=True).values_list("pk", flat=True))
             UserProfileModel.objects.exclude(user_id__in=superuser_ids).delete()
             User.objects.exclude(is_superuser=True).delete()
 
+            # Mapa para traducir claves primarias viejas a nuevas
             pk_map = {}
 
             for entry in data:
@@ -63,6 +80,7 @@ class Command(BaseCommand):
                 if model == "auth.user":
                     username = fields.pop("username")
                     password = fields.pop("password")
+                    # Elimina campos que no se pasan en create_user
                     fields.pop("groups", None)
                     fields.pop("user_permissions", None)
                     fields.pop("last_login", None)
@@ -97,6 +115,7 @@ class Command(BaseCommand):
                     self.stdout.write(f"  Product: {fields['nombre']}")
 
                 elif model == "catalogo.catalogo":
+                    # Reemplaza claves foraneas viejas por las nuevas del mapa
                     old_cat_pk = fields.pop("categoria")
                     old_prod_pk = fields.pop("producto")
                     fields["categoria_id"] = pk_map[("catalogo.categoria", old_cat_pk)]

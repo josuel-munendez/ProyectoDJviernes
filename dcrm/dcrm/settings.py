@@ -1,19 +1,30 @@
+"""Configuración principal del proyecto CRM Django.
+
+Define la configuración de la aplicación, incluyendo base de datos,
+aplicaciones instaladas, middleware, seguridad y archivos estáticos.
+"""
 from pathlib import Path
 import os
 
+# Directorio base del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Clave secreta para firma de sesiones y tokens CSRF
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-wrd@k5c63l-25ln)85jwma^uf$he_n077de(m!-(rhiu5#*d+q')
+# Modo debug: deshabilitar en producción
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() == 'true'
+# Hosts permitidos para la aplicación
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
+    # Aplicaciones base de Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Aplicaciones del proyecto CRM
     'website',
     'core',
     'usuarios',
@@ -33,6 +44,7 @@ MIDDLEWARE = [
     'core.middleware.SecurityHeadersMiddleware',
 ]
 
+# Configuración de URLs raíz
 ROOT_URLCONF = 'dcrm.urls'
 
 TEMPLATES = [
@@ -51,6 +63,7 @@ TEMPLATES = [
     },
 ]
 
+# Aplicación WSGI para servir el proyecto
 WSGI_APPLICATION = 'dcrm.wsgi.application'
 
 # --- Database: SQLite por defecto, MySQL si está configurado ---
@@ -85,6 +98,7 @@ if not _is_sqlite:
     DATABASES['default']['OPTIONS'] = {'charset': 'utf8mb4'}
 # -----------------------------------------------------------------
 
+# Validadores de seguridad para contraseñas de usuarios
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -92,14 +106,17 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# URL de redirección para usuarios no autenticados
 LOGIN_URL = '/login/'
 
+# Cabeceras de seguridad HTTP
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = True
 
+# Configuración de logging para eventos de seguridad
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -119,15 +136,18 @@ LOGGING = {
     },
 }
 
+# Configuración de internacionalización
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# Archivos estáticos (CSS, JavaScript, imágenes)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'website', 'templates', 'static'),
 ]
 
+# Campo auto-incremental por defecto para modelos
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

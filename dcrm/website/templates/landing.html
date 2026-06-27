@@ -1,3 +1,4 @@
+<!-- Pagina de aterrizaje (landing page) publica. Muestra presentacion del CRM con caracteristicas y llamadas a la accion. No extiende base.html. -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -11,6 +12,7 @@
 </head>
 <body>
 
+<!-- Animacion de fondo estelar -->
 <div id="bg-animation">
     <div id="star-container">
         <div id="star-pattern"></div>
@@ -23,6 +25,7 @@
 
 <div id="magic-mouse-container"></div>
 
+<!-- Barra de navegacion de la landing page -->
 <nav class="landing-nav" id="landingNav">
     <a href="{% url 'home' %}" class="nav-brand">
         <i class="bi bi-box-seam"></i> CRM
@@ -42,6 +45,7 @@
 </nav>
 
 <main class="landing-page">
+    <!-- Seccion hero principal con llamado a la accion -->
     <section class="landing-hero">
         <div class="landing-hero-content animate-fade-in-up">
             <h1>Gestiona tus <span>clientes</span> con inteligencia</h1>
@@ -60,6 +64,7 @@
         </div>
     </section>
 
+    <!-- Seccion de caracteristicas del CRM -->
     <section class="landing-features" id="features">
         <h2>Todo lo que necesitas</h2>
         <p class="section-subtitle">Herramientas profesionales para la gestión de tu negocio</p>
@@ -97,6 +102,7 @@
         </div>
     </section>
 
+    <!-- Seccion de llamada a la accion final -->
     <section class="landing-cta">
         <h2>¿Listo para optimizar tu negocio?</h2>
         <p>Únete hoy y descubre cómo un CRM puede transformar tu gestión de clientes.</p>
@@ -106,6 +112,7 @@
     </section>
 </main>
 
+<!-- Pie de pagina de la landing -->
 <footer class="landing-footer">
     <p class="mb-0">&copy; 2026 Django CRM - Proyecto de Formación. Hecho con <i class="bi bi-heart-fill text-danger"></i></p>
 </footer>

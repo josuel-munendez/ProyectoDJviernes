@@ -1,5 +1,7 @@
+<!-- Barra lateral (sidebar) con menu de navegacion. Incluye version offcanvas para movil y version fija para escritorio. Solo visible para usuarios autenticados. -->
 {% if user.is_authenticated %}
 
+<!-- Sidebar en modo offcanvas para dispositivos moviles -->
 <div class="offcanvas offcanvas-start d-lg-none offcanvas-sidebar" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
     <div class="offcanvas-header">
         <span class="fs-5 fw-semibold" id="sidebarOffcanvasLabel">
@@ -12,6 +14,7 @@
     </div>
 </div>
 
+<!-- Sidebar fijo para pantallas de escritorio -->
 <div class="d-none d-lg-flex flex-column sidebar-crm">
     <div class="sidebar-header text-center py-3 border-bottom border-secondary">
         <a href="{% url 'home' %}" class="text-white text-decoration-none">

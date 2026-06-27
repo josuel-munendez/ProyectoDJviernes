@@ -1,3 +1,4 @@
+"""Configuración del panel de administración para catálogo."""
 from django.contrib import admin
 from .models import Categoria, Catalogo
 

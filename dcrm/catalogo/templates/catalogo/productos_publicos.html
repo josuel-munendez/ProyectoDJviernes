@@ -1,3 +1,4 @@
+<!-- Catalogo publico de productos con busqueda y filtro por categoria. Extiende base.html. -->
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Catálogo de Productos{% endblock %}
@@ -11,6 +12,7 @@
         </div>
     </div>
 
+    <!-- Filtros de busqueda y categoria -->
     <div class="card-crm mb-4 animate-slide-in">
         <div class="card-body">
             <form method="get" class="row g-2 align-items-end">
@@ -40,6 +42,7 @@
     </div>
 
     {% if productos %}
+    <!-- Grid de productos publicos -->
     <div class="row g-3">
         {% for p in productos %}
         <div class="col-6 col-md-4 col-lg-3">

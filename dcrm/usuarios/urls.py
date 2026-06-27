@@ -1,3 +1,4 @@
+"""Configuración de rutas URL para la aplicación usuarios."""
 from django.urls import path
 from . import views
 
