@@ -1,8 +1,15 @@
 from django import forms
+from core.validators import RegexValidator
 from .models import Producto
 
 
 class ProductoForm(forms.ModelForm):
+    def clean_nombre(self):
+        value = self.cleaned_data.get("nombre", "")
+        if value and not RegexValidator.validate("name", value):
+            raise forms.ValidationError("El nombre solo puede contener letras, numeros y espacios.")
+        return value
+
     class Meta:
         model = Producto
         fields = ["nombre", "descripcion", "precio", "stock", "codigo"]

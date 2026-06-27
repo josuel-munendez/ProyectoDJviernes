@@ -12,23 +12,32 @@ help:
 	@echo "  clean        Eliminar entorno virtual y archivos temporales"
 
 VENV = entorno
+MANAGE = python manage.py
+UNAME := $(shell uname -s)
+
+ifeq ($(OS),Windows_NT)
+PYTHON = python
+ACTIVATE = $(VENV)\Scripts\activate.bat
+RUN_IN_VENV = $(ACTIVATE) && pip install -r requirements.txt --quiet && $(MANAGE)
+else
 PYTHON = python3
-MANAGE = cd dcrm && ../$(VENV)/bin/python manage.py
+ACTIVATE = $(VENV)/bin/activate
+RUN_IN_VENV = . $(ACTIVATE) && pip install -r requirements.txt --quiet && $(MANAGE)
+endif
 
-setup: $(VENV)/bin/activate
-	$(MANAGE) migrate --noinput
-	$(MANAGE) seed_data
+setup: $(ACTIVATE)
+	cd dcrm && bash -c "$(RUN_IN_VENV) migrate --noinput && $(RUN_IN_VENV) seed_data"
 
-$(VENV)/bin/activate: requirements.txt
+$(ACTIVATE): requirements.txt
 	$(PYTHON) -m venv $(VENV)
-	. $(VENV)/bin/activate && pip install -r requirements.txt --quiet
-	touch $(VENV)/bin/activate
+	$(RUN_IN_VENV) collectstatic --noinput 2>/dev/null || true
+	touch $(ACTIVATE)
 
 run:
-	$(MANAGE) runserver
+	cd dcrm && $(PYTHON) manage.py runserver
 
 test:
-	$(MANAGE) test
+	cd dcrm && $(PYTHON) manage.py test
 
 docker:
 	docker compose up -d

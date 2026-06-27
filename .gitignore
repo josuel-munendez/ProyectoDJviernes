@@ -32,6 +32,8 @@ entorno*/
 *~
 *.orig
 .vs/
+.specstory/
+.cursorindexingignore
 
 # ==============================
 # OS / Lock files
@@ -59,3 +61,8 @@ dcrm/staticfiles/
 # ==============================
 *.zip
 *.fig
+
+# ==============================
+# Presentation / sustentación docs
+# ==============================
+docs/hablarpuntos/

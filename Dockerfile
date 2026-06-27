@@ -4,11 +4,10 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libmagic1 \
-    default-libmysqlclient-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.prod.txt .
-RUN pip install --no-cache-dir -r requirements.prod.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

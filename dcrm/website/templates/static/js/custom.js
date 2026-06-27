@@ -1,39 +1,38 @@
-// Client-side form validation
+// Client-side form validation (event delegation for SPA support)
 (function() {
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.form-crm').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                var valid = true;
-                form.querySelectorAll('input[required], select[required], textarea[required]').forEach(function(input) {
-                    if (!input.value.trim()) {
-                        input.classList.add('is-invalid');
-                        valid = false;
-                    } else {
-                        input.classList.remove('is-invalid');
-                    }
-                });
-                form.querySelectorAll('input[type="email"]').forEach(function(input) {
-                    if (input.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-                        input.classList.add('is-invalid');
-                        valid = false;
-                    }
-                });
-                form.querySelectorAll('input[type="password"]').forEach(function(input) {
-                    if (input.value && input.value.length < 8) {
-                        input.classList.add('is-invalid');
-                        valid = false;
-                    }
-                });
-                if (!valid) {
-                    e.preventDefault();
-                }
-            });
-            form.querySelectorAll('input, select, textarea').forEach(function(input) {
-                input.addEventListener('input', function() {
-                    this.classList.remove('is-invalid');
-                });
-            });
+    document.addEventListener('submit', function(e) {
+        var form = e.target.closest('.form-crm');
+        if (!form) return;
+        var valid = true;
+        form.querySelectorAll('input[required], select[required], textarea[required]').forEach(function(input) {
+            if (!input.value.trim()) {
+                input.classList.add('is-invalid');
+                valid = false;
+            } else {
+                input.classList.remove('is-invalid');
+            }
         });
+        form.querySelectorAll('input[type="email"]').forEach(function(input) {
+            if (input.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+                input.classList.add('is-invalid');
+                valid = false;
+            }
+        });
+        form.querySelectorAll('input[type="password"]').forEach(function(input) {
+            if (input.value && input.value.length < 8) {
+                input.classList.add('is-invalid');
+                valid = false;
+            }
+        });
+        if (!valid) {
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('input', function(e) {
+        if (e.target.closest('.form-crm')) {
+            e.target.classList.remove('is-invalid');
+        }
     });
 })();
 
