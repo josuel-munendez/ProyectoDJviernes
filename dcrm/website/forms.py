@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
+from core.validators import RegexValidator
 from .models import Record
 
 
@@ -27,6 +28,12 @@ class LoginForm(AuthenticationForm):
         })
     )
 
+    def clean_username(self):
+        value = self.cleaned_data.get("username", "")
+        if value and not RegexValidator.validate("username", value):
+            raise forms.ValidationError("El usuario solo puede contener letras, numeros y @/./+/-/_.")
+        return value
+
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(
@@ -45,6 +52,24 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
+
+    def clean_first_name(self):
+        value = self.cleaned_data.get("first_name", "")
+        if value and not RegexValidator.validate("name", value):
+            raise forms.ValidationError("El nombre solo puede contener letras y espacios.")
+        return value
+
+    def clean_last_name(self):
+        value = self.cleaned_data.get("last_name", "")
+        if value and not RegexValidator.validate("name", value):
+            raise forms.ValidationError("El apellido solo puede contener letras y espacios.")
+        return value
+
+    def clean_email(self):
+        value = self.cleaned_data.get("email", "")
+        if value and not RegexValidator.validate("email", value):
+            raise forms.ValidationError("El formato del email no es valido.")
+        return value
 
     def __init__(self, *args, **kwargs):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
@@ -110,6 +135,36 @@ class RecordForm(forms.ModelForm):
         label="Codigo Postal",
         widget=forms.TextInput(attrs={"placeholder": "Codigo Postal", "class": "form-control", "required": "", "minlength": "4"}),
     )
+
+    def clean_first_name(self):
+        value = self.cleaned_data.get("first_name", "")
+        if value and not RegexValidator.validate("name", value):
+            raise forms.ValidationError("El nombre solo puede contener letras y espacios.")
+        return value
+
+    def clean_last_name(self):
+        value = self.cleaned_data.get("last_name", "")
+        if value and not RegexValidator.validate("name", value):
+            raise forms.ValidationError("El apellido solo puede contener letras y espacios.")
+        return value
+
+    def clean_email(self):
+        value = self.cleaned_data.get("email", "")
+        if value and not RegexValidator.validate("email", value):
+            raise forms.ValidationError("El formato del email no es valido.")
+        return value
+
+    def clean_phone(self):
+        value = self.cleaned_data.get("phone", "")
+        if value and not RegexValidator.validate("phone", value):
+            raise forms.ValidationError("El telefono debe contener entre 7 y 15 digitos, opcionalmente con + al inicio.")
+        return value
+
+    def clean_zip_code(self):
+        value = self.cleaned_data.get("zip_code", "")
+        if value and not RegexValidator.validate("zip_code", value):
+            raise forms.ValidationError("El codigo postal debe contener entre 4 y 10 digitos.")
+        return value
 
     class Meta:
         model = Record

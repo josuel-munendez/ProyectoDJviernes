@@ -24,6 +24,7 @@
     {% endif %}
     {% include 'navbar.html' %}
     
+    <div id="messages-container">
     {% if messages %}
     <div class="container-fluid px-4 pt-2" style="position: relative; z-index: 1040;">
         {% for message in messages %}
@@ -35,12 +36,13 @@
         {% endfor %}
     </div>
     {% endif %}
+    </div>
 
     {% if user.is_authenticated %}
         {% include 'sidebar.html' %}
-        <main class="main-content-crm">
+        <main class="main-content-crm" id="spa-content">
     {% else %}
-    <div class="container-fluid px-0" style="position: relative; z-index: 1;">
+    <div class="container-fluid px-0" id="spa-content" style="position: relative; z-index: 1;">
     {% endif %}
         {% block content %}{% endblock %}
     {% if user.is_authenticated %}
@@ -56,15 +58,7 @@
     {% endif %}
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                document.querySelectorAll('.alert-crm').forEach(function(alert) {
-                    var bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 5000);
-        });
-    </script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/spa.js' %}"></script>
 </body>
 </html>

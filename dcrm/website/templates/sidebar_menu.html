@@ -67,7 +67,7 @@
     {% user_has_role 'gestor' 'admin' as show_export %}
     {% if show_export %}
     <li class="nav-item">
-        <a href="{% url 'export_csv' %}" class="nav-link {% active_link 'export_csv' %}">
+        <a href="{% url 'export_csv' %}" class="nav-link {% active_link 'export_csv' %}" data-spa-ignore>
             <i class="bi bi-download me-2"></i>Exportar CSV
         </a>
     </li>

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from core.validators import RegexValidator
 from .models import UserProfile
 
 
@@ -40,6 +41,18 @@ class UserRegistrationForm(forms.ModelForm):
                     "last_name": "Apellido",
                 }
                 self.fields[field_name].widget.attrs["placeholder"] = placeholder_map.get(field_name, "")
+
+    def clean_username(self):
+        value = self.cleaned_data.get("username", "")
+        if value and not RegexValidator.validate("username", value):
+            raise forms.ValidationError("El usuario solo puede contener letras, numeros y @/./+/-/_.")
+        return value
+
+    def clean_password(self):
+        value = self.cleaned_data.get("password", "")
+        if value and not RegexValidator.validate("password", value):
+            raise forms.ValidationError("La contrasena debe tener al menos 8 caracteres, incluyendo letras y numeros.")
+        return value
 
     def clean(self):
         cleaned_data = super().clean()

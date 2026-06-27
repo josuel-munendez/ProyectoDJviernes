@@ -1160,6 +1160,11 @@ body.star-bg > .container .login-page {
   .register-card .register-body { padding: 1.5rem; }
 }
 
+/* ===== SPA ===== */
+#spa-content {
+  min-height: 200px;
+}
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
